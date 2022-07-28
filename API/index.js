@@ -162,3 +162,30 @@ app.get('/alarms/last',async (req,res)=>{
      });
     dbConnection.execSql(request);
 });
+
+app.post('/loginRequest',(req, res)=>{
+    var body = req.body;
+    var Request = tedious.Request; 
+    var found = false;
+    var o = {};
+    var request = new Request(`select users.id , users.name from users where name = '${body.name}' and 
+    password = '${body.password}' `,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+    });
+
+    request.on('row',function(columns){
+        columns.forEach(function(column) {
+            o[column.metadata.colName] = column.value;
+        });
+    });
+    request.on('doneInProc', function () {
+        res.send(o);
+     });
+    dbConnection.execSql(request);
+});
+
