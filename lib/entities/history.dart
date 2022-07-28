@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 class History{
   int? _hourTaken;
   int? _minuteTaken;
@@ -9,7 +12,7 @@ class History{
   int? _dayOfWeek;
   String? _doseUnit;
   String? _doseUnit2;
-  String? _alarmId;
+  int? _alarmId;
 
   History() {}
 
@@ -35,9 +38,9 @@ class History{
 
   int get minuteTaken => _minuteTaken!;
 
-  String get alarmId => _alarmId!;
+  int get alarmId => _alarmId!;
 
-  set alarmId(String value) {
+  set alarmId(int value) {
     _alarmId = value;
   }
 
@@ -97,6 +100,13 @@ class History{
     return (hourTaken < 12) ? "ص" : "م";
   }
 
+  DateTime getdate()
+  {
+    initializeDateFormatting();
+    DateTime dateTime = DateFormat('MMMM d, y', 'en_US').parse("$dateString");
+    return dateTime;
+  }
+
   String getStringTime() {
     int nonMilitaryHour = hourTaken % 12;
     if (nonMilitaryHour == 0) {
@@ -114,22 +124,26 @@ class History{
   }
 
   String getFormattedDate() {
-    return dateString+"           "+ getStringTime();
+    initializeDateFormatting();
+    DateTime dateTime = DateFormat('MMMM d, y', 'en_US').parse("$dateString");
+    var formatter = DateFormat.yMMMMd('ar_EG');
+    String formattedDate = formatter.format(dateTime);
+    return formattedDate;
   }
 
   factory History.fromJson(Map<String, dynamic> json) {
     return History.name(
-        json['hourTaken'],
-        json['minuteTaken'],
-        json['dateString'],
+        json['hour'],
+        json['minute'],
+        json['date'],
         json['pillName'],
         json['action'],
-        json['doseQuantity'],
-        json['doseQuantity2'],
+        json['dose_quantity'],
+        json['dose_quantity2'],
         json['dayOfWeek'],
-        json['doseUnit'],
-        json['doseUnit2'],
-        json['alarmId']
+        json['dose_units'],
+        json['dose_units'],
+        json['alarm_id']
     );
   }
 

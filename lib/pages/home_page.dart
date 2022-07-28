@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
+import 'package:medicine_time/globals.dart' as globals;
 
 class Homepage extends StatelessWidget{
   @override
@@ -37,6 +39,12 @@ class MyHomepage extends StatelessWidget{
           child: Column(
             children: [
               const SizedBox(height: 30,),
+              ElevatedButton(onPressed: () async {
+                await globals.user.write(key: 'logged', value: "false");
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                    LoginPage()), (Route<dynamic> route) => false);
+              }, child: Text("خروج",style: const TextStyle(color: Colors.teal),),
+                style: ElevatedButton.styleFrom(primary: Colors.white70),),
               Image.asset("images/home.png",
               width: 200,
               height: 200,),

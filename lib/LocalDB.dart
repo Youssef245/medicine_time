@@ -126,8 +126,8 @@ class LocalDB {
           "INSERT INTO $HISTORIES_TABLE($KEY_PILLNAME  , $KEY_DOSE_QUANTITY , $KEY_DOSE_UNITS , $KEY_DOSE_QUANTITY2 ,"
               "$KEY_DOSE_UNITS2  ,$KEY_DATE_STRING , $KEY_HOUR , $KEY_ACTION , $KEY_MINUTE  , $KEY_ALARM_ID ,"
               " $KEY_DAY_WEEK) "
-              "VALUES(N'${history.pillName}', ${history.doseQuantity}, N'${history.doseUnit}',${history.doseQuantity2},"
-              " N'${history.doseUnit2}', ${history.dateString},${history.hourTaken}, ${history.action}, "
+              "VALUES('${history.pillName}', ${history.doseQuantity}, '${history.doseUnit}',${history.doseQuantity2},"
+              " '${history.doseUnit2}','${history.dateString}',${history.hourTaken}, ${history.action}, "
               "${history.minuteTaken},${history.alarmId}, ${history.dayOfWeek})");
       print('inserted1: $id1');
       id=id1;
@@ -177,10 +177,10 @@ class LocalDB {
     return alarms;
   }
 
-  Future<List<History>> getHistories (int id) async {
+  Future<List<History>> getHistories () async {
     Database database = await openDB();
     List <History> alarms = [];
-    List<Map> list = await database.rawQuery("SELECT * FROM $HISTORIES_TABLE order by date desc");
+    List<Map> list = await database.rawQuery("SELECT * FROM $HISTORIES_TABLE order by date(date) desc,hour asc,minute asc");
     alarms = list.map((alarm) => History.fromJson(alarm as Map<String, dynamic>)).toList();
     closeDB(database);
     return alarms;
@@ -193,6 +193,11 @@ class LocalDB {
   Future deleteAlarm (MedicineAlarm medicineAlarm) async{
     Database database = await openDB();
     await database.rawDelete('DELETE FROM $ALARM_TABLE WHERE $KEY_ALARM_ID = ?', [medicineAlarm.alarmId]);
+    closeDB(database);
+  }
+  Future deleteHistory() async{
+    Database database = await openDB();
+    await database.rawDelete('DELETE FROM $HISTORIES_TABLE');
     closeDB(database);
   }
 
