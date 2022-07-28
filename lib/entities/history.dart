@@ -13,6 +13,7 @@ class History{
   String? _doseUnit;
   String? _doseUnit2;
   int? _alarmId;
+  int? _userID;
 
   History() {}
 
@@ -48,6 +49,13 @@ class History{
 
   set doseUnit2(String value) {
     _doseUnit2 = value;
+  }
+
+
+  int get userID => _userID!;
+
+  set userID(int value) {
+    _userID = value;
   }
 
   String get doseUnit => _doseUnit!;
@@ -142,9 +150,26 @@ class History{
         json['dose_quantity2'],
         json['dayOfWeek'],
         json['dose_units'],
-        json['dose_units'],
+        json['dose_units2'],
         json['alarm_id']
     );
+  }
+
+  toJson () {
+   return {
+     "hour": _hourTaken,
+     "day_of_week": _dayOfWeek,
+     "minute": _minuteTaken,
+     "pillName": _pillName,
+     "dose_quantity": _doseQuantity,
+     "dose_units": _doseUnit,
+     "dose_units2": _doseUnit2,
+     "date": _dateString,
+     "dose_quantity2": _doseQuantity2,
+     "alarm_id" : _alarmId,
+     "user_id" : _userID,
+     "action" : _action
+   };
   }
 
 }

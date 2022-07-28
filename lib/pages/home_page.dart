@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_time/LocalDB.dart';
+import 'package:medicine_time/entities/history.dart';
+import 'package:medicine_time/entities/medicine_alarm.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/globals.dart' as globals;
+import 'package:medicine_time/services/alarm_service.dart';
+import 'package:medicine_time/services/history_service.dart';
 
 class Homepage extends StatelessWidget{
   @override
@@ -20,7 +25,13 @@ class Homepage extends StatelessWidget{
 }
 
 
-class MyHomepage extends StatelessWidget{
+class MyHomepage extends StatefulWidget{
+  @override
+  State<MyHomepage> createState() => _MyHomepageState();
+}
+
+class _MyHomepageState extends State<MyHomepage> {
+  bool isLoaded = false;
   List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png","ViewAlarms"),
     _HomePageItem("حسابي", "images/users.png",""),
     _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",""),
@@ -30,12 +41,30 @@ class MyHomepage extends StatelessWidget{
     _HomePageItem("عن التطبيق", "images/about.png",""),
     _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",""),
   ];
+  
+  @override
+  void initState() {
+    sendOffline();
+    setState(() {
+      isLoaded = true;
+    });
+  }
+  
+  sendOffline () async {
+    LocalDB dbHelper = LocalDB();
+    AlarmService alarmService = AlarmService();
+    List<MedicineAlarm> offlineAlarms = await dbHelper.getOfflineAlarms();
+    offlineAlarms.forEach((element) async {await alarmService.createAlarm(element.toJson());});
 
+    HistoryService historyService = HistoryService();
+    List<History> offlineHistory = await dbHelper.getOfflineHistories();
+    offlineHistory.forEach((element) async { await historyService.createHistory(element.toJson());});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
+        body: isLoaded ? SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 30,),
@@ -58,7 +87,7 @@ class MyHomepage extends StatelessWidget{
                 )
             ],
           ),
-        ),
+        ) : const Center(child: CircularProgressIndicator() ,),
       );
   }
 

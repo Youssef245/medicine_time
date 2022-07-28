@@ -201,6 +201,91 @@ class LocalDB {
     closeDB(database);
   }
 
+  //////// OFFLINE DATABASE ////////
+
+  Future<Database> offlineDB () async {
+    databasesPath = await getDatabasesPath();
+    path = join(databasesPath, 'medicine_time_offline.db');
+    Database database = await openDatabase(path!, version: 1,
+        onCreate: (Database db, int version) async {
+          createStatements();
+          await db.execute(CREATE_ALARM_TABLE!);
+          await db.execute(CREATE_HISTORIES_TABLE!);
+        });
+    return database;
+
+  }
+
+  void closeOffline (Database database) async {
+    await database.close();
+
+  }
+
+  Future<int> createOfflineAlarm (MedicineAlarm alarm) async {
+    int id=0;
+    Database database = await offlineDB();
+    await database.transaction((txn) async {
+      int id1 = await txn.rawInsert(
+          "INSERT INTO $ALARM_TABLE($KEY_HOUR, $KEY_MINUTE, $KEY_DAY_WEEK, $KEY_ALARMS_PILL_NAME,"
+              "$KEY_DOSE_QUANTITY, $KEY_DOSE_UNITS,$KEY_DOSE_QUANTITY2, $KEY_DOSE_UNITS2,$KEY_DATE_STRING, $KEY_ALARM_ID)"
+              "VALUES(${alarm.hour}, ${alarm.minute}, ${alarm.weekday}, '${alarm.pillName}', ${alarm.doseQuantity}, "
+              "'${alarm.doseUnit}', ${alarm.doseQuantity2}, '${alarm.doseUnit2}', '${alarm.dateString}', ${alarm.alarmId})");
+      print('inserted1: $id1');
+      id=id1;
+    });
+    closeOffline(database);
+    return id;
+
+  }
+
+  Future<int> createOfflineHistory (History history) async{
+    int id=0;
+    Database database = await offlineDB();
+    await database.transaction((txn) async {
+      int id1 = await txn.rawInsert(
+          "INSERT INTO $HISTORIES_TABLE($KEY_PILLNAME  , $KEY_DOSE_QUANTITY , $KEY_DOSE_UNITS , $KEY_DOSE_QUANTITY2 ,"
+              "$KEY_DOSE_UNITS2  ,$KEY_DATE_STRING , $KEY_HOUR , $KEY_ACTION , $KEY_MINUTE  , $KEY_ALARM_ID ,"
+              " $KEY_DAY_WEEK) "
+              "VALUES('${history.pillName}', ${history.doseQuantity}, '${history.doseUnit}',${history.doseQuantity2},"
+              " '${history.doseUnit2}','${history.dateString}',${history.hourTaken}, ${history.action}, "
+              "${history.minuteTaken},${history.alarmId}, ${history.dayOfWeek})");
+      print('inserted1: $id1');
+      id=id1;
+    });
+    closeOffline(database);
+    return id;
+  }
+
+  Future<List<MedicineAlarm>> getOfflineAlarms () async {
+    Database database = await offlineDB();
+    List <MedicineAlarm> alarms = [];
+    List<Map> list = await database.rawQuery('SELECT * FROM alarms');
+    alarms = list.map((alarm) => MedicineAlarm.fromJson(alarm as Map<String, dynamic>)).toList();
+    closeOffline(database);
+    return alarms;
+  }
+
+  Future<List<History>> getOfflineHistories () async {
+    Database database = await offlineDB();
+    List <History> alarms = [];
+    List<Map> list = await database.rawQuery("SELECT * FROM $HISTORIES_TABLE order by date(date) desc,hour asc,minute asc");
+    alarms = list.map((alarm) => History.fromJson(alarm as Map<String, dynamic>)).toList();
+    closeOffline(database);
+    return alarms;
+  }
+
+  Future deleteOfflineHistory() async{
+    Database database = await offlineDB();
+    await database.rawDelete('DELETE FROM $HISTORIES_TABLE');
+    closeOffline(database);
+  }
+
+  Future deleteOfflineAlarms (MedicineAlarm medicineAlarm) async{
+    Database database = await offlineDB();
+    await database.rawDelete('DELETE FROM $ALARM_TABLE WHERE $KEY_ALARM_ID = ?', [medicineAlarm.alarmId]);
+    closeOffline(database);
+  }
+
 
 
 

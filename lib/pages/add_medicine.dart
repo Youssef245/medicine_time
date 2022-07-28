@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:medicine_time/LocalDB.dart';
@@ -59,17 +63,54 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
   TextEditingController? dose_quantity = TextEditingController();
   TextEditingController? dose_quantity2 = TextEditingController();
 
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
 
   @override
   void initState() {
     super.initState();
-    // cancel();
+    initConnectivity();
+
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+
   }
-  /* cancel()async{
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin.cancelAll();
-    print("cancellation done");
-  }*/
+
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      developer.log('Couldn\'t check connectivity status', error: e);
+      return;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +356,14 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
               dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,3000);
           print(formattedDate);
           await dbHelper.createAlarm(alarm);
-          await service.createAlarm(alarm.toJson());
+          if(_connectionStatus==ConnectivityResult.mobile||_connectionStatus==ConnectivityResult.wifi)
+          {
+            await service.createAlarm(alarm.toJson());
+          }
+          else
+          {
+            await dbHelper.createOfflineAlarm(alarm);
+          }
           //handleNotification(timesPickers[i],selectedDays[j].number);
         }
       }
