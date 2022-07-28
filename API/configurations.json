@@ -1,0 +1,15 @@
+{
+    "server" : "",
+    "authentication" : {
+        "type" : "default",
+        "options" : {
+            "userName" : "",
+            "password" : ""
+        }
+    },
+    "options" : {
+        "encrypt" : false,
+        "database" : "facultyofpharmacy"
+    }
+
+}
