@@ -313,6 +313,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
         {
           MedicineAlarm alarm = MedicineAlarm.name2(timesPickers[i].hour, selectedDays[j].number, timesPickers[i].minute, widget.chosenMedicine, quantity1,
               dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,3000);
+          print(formattedDate);
           await dbHelper.createAlarm(alarm);
           await service.createAlarm(alarm.toJson());
           //handleNotification(timesPickers[i],selectedDays[j].number);
