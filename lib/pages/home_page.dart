@@ -4,10 +4,14 @@ import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
+import 'package:medicine_time/pages/add_measures.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/globals.dart' as globals;
 import 'package:medicine_time/services/alarm_service.dart';
 import 'package:medicine_time/services/history_service.dart';
+import 'package:medicine_time/services/measures_service.dart';
+
+import '../entities/Measure.dart';
 
 class Homepage extends StatelessWidget{
   @override
@@ -16,6 +20,7 @@ class Homepage extends StatelessWidget{
         initialRoute: '/',
         routes: {
           '/ViewAlarms': (context) => ViewAlarms(),
+          '/AddMeasures' : (context) => AddMeasures(),
         },
         home:MyHomepage()
     );
@@ -35,7 +40,7 @@ class _MyHomepageState extends State<MyHomepage> {
   List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png","ViewAlarms"),
     _HomePageItem("حسابي", "images/users.png",""),
     _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",""),
-    _HomePageItem("القياسات", "images/measures.png",""),
+    _HomePageItem("القياسات", "images/measures.png","AddMeasures"),
     _HomePageItem("اسأل الطبيب او الصيدلي", "images/measures.png",""),
     _HomePageItem("معلومات ونصائح", "images/knowledge.png",""),
     _HomePageItem("عن التطبيق", "images/about.png",""),
@@ -59,6 +64,11 @@ class _MyHomepageState extends State<MyHomepage> {
     HistoryService historyService = HistoryService();
     List<History> offlineHistory = await dbHelper.getOfflineHistories();
     offlineHistory.forEach((element) async { await historyService.createHistory(element.toJson());});
+
+    MeasuresService measuresService = MeasuresService();
+    List<Measure> offlineMeasures = await dbHelper.getOfflineMeasures();
+    offlineMeasures.forEach((element) async {await measuresService.addMeasure(element.toJson());});
+
   }
 
   @override
@@ -68,12 +78,15 @@ class _MyHomepageState extends State<MyHomepage> {
           child: Column(
             children: [
               const SizedBox(height: 30,),
-              ElevatedButton(onPressed: () async {
-                await globals.user.write(key: 'logged', value: "false");
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                    LoginPage()), (Route<dynamic> route) => false);
-              }, child: Text("خروج",style: const TextStyle(color: Colors.teal),),
-                style: ElevatedButton.styleFrom(primary: Colors.white70),),
+              Align(
+                alignment: Alignment.topLeft,
+                child: ElevatedButton(onPressed: () async {
+                  await globals.user.write(key: 'logged', value: "false");
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                      LoginPage()), (Route<dynamic> route) => false);
+                }, child: Text("خروج",style: const TextStyle(color: Colors.teal),),
+                  style: ElevatedButton.styleFrom(primary: Colors.white70),),
+              ),
               Image.asset("images/home.png",
               width: 200,
               height: 200,),

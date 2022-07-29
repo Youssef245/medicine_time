@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'package:awesome_notifications/android_foreground_service.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -354,7 +356,6 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
         {
           MedicineAlarm alarm = MedicineAlarm.name2(timesPickers[i].hour, selectedDays[j].number, timesPickers[i].minute, widget.chosenMedicine, quantity1,
               dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,3000);
-          print(formattedDate);
           await dbHelper.createAlarm(alarm);
           if(_connectionStatus==ConnectivityResult.mobile||_connectionStatus==ConnectivityResult.wifi)
           {
@@ -364,7 +365,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
           {
             await dbHelper.createOfflineAlarm(alarm);
           }
-          //handleNotification(timesPickers[i],selectedDays[j].number);
+          handleNotification(timesPickers[i],selectedDays[j].number);
         }
       }
       Navigator.of(context).pop();
@@ -384,19 +385,8 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.startForegroundService(700, '', 'تمت إضافة الدواء!',
-        notificationDetails: const AndroidNotificationDetails(
-          'AlarmChannel5', 'addAlarm',
-          channelDescription: 'Alarm Channel',importance: Importance.high, priority: Priority.high,
-          playSound: false,
-        ),
-        payload: 'item x');
-
-
+    if(DateTime.now().weekday > dayofWeek)
+      dayofWeek=dayofWeek+7;
     int dayofweekdiff = DateTime.now().weekday - dayofWeek;
     dayofweekdiff = dayofweekdiff.abs();
     DateTime alarmdate =DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time.hour, time.minute);
@@ -410,7 +400,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
         0,
         'حان وقت الدواء',
         'اضغط هنا!',
-        tz.TZDateTime.from(alarmdate , tz.getLocation('Africa/Cairo')),
+        tz.TZDateTime.from(DateTime.now().add(Duration(minutes: 2)) , tz.getLocation('Africa/Cairo')),
         const NotificationDetails(
             android: AndroidNotificationDetails(
               'AlarmChannel2', 'Alarm',
@@ -423,6 +413,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
         UILocalNotificationDateInterpretation.absoluteTime);
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
 
   }
 

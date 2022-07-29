@@ -140,6 +140,7 @@ class MedicineAlarm {
     return "${doseQuantity} ${doseUnit} ${doseQuantity2} ${doseUnit2}";
   }
 
+
   toJson(){
     return {
     "hour": _hour,

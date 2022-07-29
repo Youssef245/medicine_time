@@ -2,6 +2,7 @@ import 'package:medicine_time/entities/history.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'entities/Measure.dart';
 import 'entities/medicine_alarm.dart';
 
 class LocalDB {
@@ -14,6 +15,7 @@ class LocalDB {
   final String users_Table = "users";
   final String ALARM_TABLE = "alarms";
   final String HISTORIES_TABLE = "histories";
+  final String MEASURES_TABLE = "measures";
 
   final String KEY_id = "id";
   final String KEY_name = "name";
@@ -36,6 +38,7 @@ class LocalDB {
   final String KEY_ACTION = "action";
   String? CREATE_users_TABLE;
   String? CREATE_ALARM_TABLE;
+  String? CREATE_MEASURES_TABLE;
   String? CREATE_HISTORIES_TABLE;
 
 
@@ -46,6 +49,22 @@ class LocalDB {
         "create table " + users_Table + "("
             + KEY_id + " integer  primary key not null,"
             + KEY_name + " text not null" + ")";
+
+    CREATE_MEASURES_TABLE =
+        "create table " + MEASURES_TABLE + "("
+            + KEY_ROWID + " integer primary key,"
+            + "pressure" + " text,"
+            + "glucose" + " float,"
+            + "random_glucose" + " float,"
+            + "sodium" + " float,"
+            + "potassium" + " float,"
+            + "phosphate" + " float,"
+            + "createnin" + " float,"
+            + "hemoglobin" + " float,"
+            + "weight" + " float,"
+            + "inserted_date" + " text,"
+            + "calcium" + " float,"
+            + "range" + " float" + ")";
 
     CREATE_ALARM_TABLE =
         "create table " + ALARM_TABLE + "("
@@ -78,6 +97,7 @@ class LocalDB {
           await db.execute(CREATE_users_TABLE!);
           await db.execute(CREATE_ALARM_TABLE!);
           await db.execute(CREATE_HISTORIES_TABLE!);
+          await db.execute(CREATE_MEASURES_TABLE!);
         });
     return database;
 
@@ -136,6 +156,23 @@ class LocalDB {
     return id;
   }
 
+  Future<int> addMeasure (Measure measure) async{
+    int id=0;
+    Database database = await openDB();
+    await database.transaction((txn) async {
+      int id1 = await txn.rawInsert(
+          "INSERT INTO $MEASURES_TABLE(pressure,glucose,random_glucose,sodium,potassium,phosphate,"
+              "createnin,hemoglobin,weight,inserted_date,calcium,range)"
+              "VALUES('${measure.pressure}', ${measure.glucose}, ${measure.random_glucose},${measure.sodium},"
+              " ${measure.potassium},${measure.phosphate},${measure.createnin}, ${measure.hemoglobin}, "
+              "${measure.weight},'${measure.inserted_date}', ${measure.calcium},${measure.range})");
+      print('inserted1: $id1');
+      id=id1;
+    });
+    closeDB(database);
+    return id;
+  }
+
   //////// GET ////////
 
   void getUser(){}
@@ -186,6 +223,15 @@ class LocalDB {
     return alarms;
   }
 
+  Future<List<Measure>> getMeasures () async {
+    Database database = await openDB();
+    List <Measure> measures = [];
+    List<Map> list = await database.rawQuery("SELECT * FROM $MEASURES_TABLE");
+    measures = list.map((measure) => Measure.fromJson(measure as Map<String, dynamic>)).toList();
+    closeDB(database);
+    return measures;
+  }
+
   //////// DELETE ////////
 
   void deleteUser () {}
@@ -211,6 +257,7 @@ class LocalDB {
           createStatements();
           await db.execute(CREATE_ALARM_TABLE!);
           await db.execute(CREATE_HISTORIES_TABLE!);
+          await db.execute(CREATE_MEASURES_TABLE!);
         });
     return database;
 
@@ -256,6 +303,23 @@ class LocalDB {
     return id;
   }
 
+  Future<int> addOfflineMeasure (Measure measure) async{
+    int id=0;
+    Database database = await offlineDB();
+    await database.transaction((txn) async {
+      int id1 = await txn.rawInsert(
+          "INSERT INTO $MEASURES_TABLE(pressure,glucose,random_glucose,sodium,potassium,phosphate,"
+              "createnin,hemoglobin,weight,inserted_date,calcium,range)"
+              "VALUES('${measure.pressure}', ${measure.glucose}, ${measure.random_glucose},${measure.sodium},"
+              " ${measure.potassium},${measure.phosphate},${measure.createnin}, ${measure.hemoglobin}, "
+              "${measure.weight},'${measure.inserted_date}', ${measure.calcium},${measure.range})");
+      print('inserted1: $id1');
+      id=id1;
+    });
+    closeOffline(database);
+    return id;
+  }
+
   Future<List<MedicineAlarm>> getOfflineAlarms () async {
     Database database = await offlineDB();
     List <MedicineAlarm> alarms = [];
@@ -274,15 +338,29 @@ class LocalDB {
     return alarms;
   }
 
+  Future<List<Measure>> getOfflineMeasures () async {
+    Database database = await offlineDB();
+    List <Measure> measures = [];
+    List<Map> list = await database.rawQuery("SELECT * FROM $MEASURES_TABLE");
+    measures = list.map((measure) => Measure.fromJson(measure as Map<String, dynamic>)).toList();
+    closeOffline(database);
+    return measures;
+  }
+
   Future deleteOfflineHistory() async{
     Database database = await offlineDB();
     await database.rawDelete('DELETE FROM $HISTORIES_TABLE');
     closeOffline(database);
   }
 
-  Future deleteOfflineAlarms (MedicineAlarm medicineAlarm) async{
+  Future deleteOfflineAlarms () async{
     Database database = await offlineDB();
-    await database.rawDelete('DELETE FROM $ALARM_TABLE WHERE $KEY_ALARM_ID = ?', [medicineAlarm.alarmId]);
+    await database.rawDelete('DELETE FROM $ALARM_TABLE');
+    closeOffline(database);
+  }
+  Future deleteOfflineMeasures () async{
+    Database database = await offlineDB();
+    await database.rawDelete('DELETE FROM $MEASURES_TABLE');
     closeOffline(database);
   }
 
