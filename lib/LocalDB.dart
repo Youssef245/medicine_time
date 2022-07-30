@@ -180,7 +180,7 @@ class LocalDB {
   Future<List<MedicineAlarm>> getAlarmsbyDay (DateTime dateTime) async {
     Database database = await openDB();
     List <MedicineAlarm> alarms = [];
-    List<Map> list = await database.rawQuery('SELECT * FROM alarms where $KEY_DAY_WEEK = ${dateTime.weekday}');
+    List<Map> list = await database.rawQuery('SELECT * FROM alarms where $KEY_DAY_WEEK = ${dateTime.weekday}  ORDER BY hour asc, minute asc');
     alarms = list.map((alarm) => MedicineAlarm.fromJson(alarm as Map<String, dynamic>)).toList();
     print(list.length);
     closeDB(database);
@@ -190,7 +190,7 @@ class LocalDB {
   Future<List<MedicineAlarm>> getallAlarms () async {
     Database database = await openDB();
     List <MedicineAlarm> alarms = [];
-    List<Map> list = await database.rawQuery('SELECT * FROM alarms');
+    List<Map> list = await database.rawQuery('SELECT * FROM alarms ORDER BY hour asc, minute asc');
     alarms = list.map((alarm) => MedicineAlarm.fromJson(alarm as Map<String, dynamic>)).toList();
     closeDB(database);
     return alarms;

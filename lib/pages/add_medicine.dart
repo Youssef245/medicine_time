@@ -356,7 +356,8 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
         {
           MedicineAlarm alarm = MedicineAlarm.name2(timesPickers[i].hour, selectedDays[j].number, timesPickers[i].minute, widget.chosenMedicine, quantity1,
               dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,3000);
-          await dbHelper.createAlarm(alarm);
+          int? al_id = await dbHelper.createAlarm(alarm);
+          alarm.id = al_id;
           if(_connectionStatus==ConnectivityResult.mobile||_connectionStatus==ConnectivityResult.wifi)
           {
             await service.createAlarm(alarm.toJson());
@@ -365,7 +366,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
           {
             await dbHelper.createOfflineAlarm(alarm);
           }
-          handleNotification(timesPickers[i],selectedDays[j].number);
+          handleNotification(timesPickers[i],selectedDays[j].number,al_id);
         }
       }
       Navigator.of(context).pop();
@@ -374,17 +375,8 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     }
   }
 
-  handleNotification(TimeOfDay time , int dayofWeek) async {
+  handleNotification(TimeOfDay time , int dayofWeek,int al_id) async {
 
-    tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings =  InitializationSettings(
-      android: initializationSettingsAndroid,);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
     if(DateTime.now().weekday > dayofWeek)
       dayofWeek=dayofWeek+7;
     int dayofweekdiff = DateTime.now().weekday - dayofWeek;
@@ -396,15 +388,29 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     if(timeinMinutes<nowInMinutes&&dayofweekdiff==0)
       alarmdate = alarmdate.add(const Duration(days: 7));
 
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =  InitializationSettings(
+      android: initializationSettingsAndroid,);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
+   /* */
+
+    //DateTime alarmDate = DateTime.now().add(Duration (minutes: 2));
+    print(DateTime.now().add(DateTime.now().difference(alarmdate)));
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
+        al_id,
         'حان وقت الدواء',
         'اضغط هنا!',
-        tz.TZDateTime.from(DateTime.now().add(Duration(minutes: 2)) , tz.getLocation('Africa/Cairo')),
-        const NotificationDetails(
+        tz.TZDateTime.from(DateTime.now().add(alarmdate.difference(DateTime.now())), tz.getLocation('Africa/Cairo')),
+         NotificationDetails(
             android: AndroidNotificationDetails(
-              'AlarmChannel2', 'Alarm',
-              channelDescription: 'Alarm Channel',importance: Importance.high, priority: Priority.high,
+              'ALARMS_${al_id}', 'Alarm_${al_id}',
+              channelDescription: 'Alarm Channel for ${al_id}',importance: Importance.high, priority: Priority.high,
               playSound: true,
               sound: RawResourceAndroidNotificationSound('cuco_sound'),
             )),
