@@ -189,3 +189,29 @@ app.post('/loginRequest',(req, res)=>{
     dbConnection.execSql(request);
 });
 
+app.post('/measures',(req, res)=>{
+    var body = req.body;
+    var Request = tedious.Request; 
+    var request = new Request(`insert into measures(user_id,pressure,glucose,random_glucose,
+        sodium,potassium,phosphate,createnin,hemoglobin,weight,inserted_date,calcium,range)
+     VALUES (${body.user_id},'${body.pressure}'
+    ,${body.glucose},${body.random_glucose},${body.sodium},${body.potassium},${body.phosphate}
+    ,${body.createnin},${body.hemoglobin},${body.weight},'${body.inserted_date}',${body.calcium},
+    ${body.range})`,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+        else{
+            res.send({
+                alarm : 'Created Successfully'
+            });
+        }
+    });
+
+    dbConnection.execSql(request);
+});
+
+
