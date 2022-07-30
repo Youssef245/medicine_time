@@ -205,13 +205,14 @@ class LocalDB {
     return alarms;
   }
 
-  Future<List<MedicineAlarm>> getAlarmsbyID (int id) async {
+  Future<MedicineAlarm> getAlarmsbyID (int id) async {
     Database database = await openDB();
-    List <MedicineAlarm> alarms = [];
-    List<Map> list = await database.rawQuery("SELECT * FROM alarms where $KEY_ROWID = $id");
-    alarms = list.map((alarm) => MedicineAlarm.fromJson(alarm as Map<String, dynamic>)).toList();
+    DateTime now = DateTime.now();
+    MedicineAlarm alarm;
+    List<Map> list = await database.rawQuery("SELECT * FROM alarms where $KEY_ROWID = $id and $KEY_DAY_WEEK = ${now.weekday} ");
+    alarm = MedicineAlarm.fromJson(list[0] as Map<String, dynamic>);
     closeDB(database);
-    return alarms;
+    return alarm;
   }
 
   Future<List<History>> getHistories () async {

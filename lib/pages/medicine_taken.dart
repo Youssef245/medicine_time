@@ -1,42 +1,72 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/services/medicine_service.dart';
 
 import '../LocalDB.dart';
 import '../entities/medicine_alarm.dart';
 import '../services/alarm_service.dart';
+import '../services/history_service.dart';
 
 class MedicineTaken extends StatelessWidget {
-  MedicineAlarm alarm;
-  MedicineTaken(this.alarm);
+  int alarmId;
+  MedicineTaken(this.alarmId);
 
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'MedicineTaken', home: MyMedicineTaken(alarm));
+    return MaterialApp(title: 'MedicineTaken', home: MyMedicineTaken(alarmId));
   }
 }
 
 class MyMedicineTaken extends StatefulWidget {
-  MedicineAlarm alarm;
-  MyMedicineTaken(this.alarm);
+  int alarmId;
+  MyMedicineTaken(this.alarmId);
 
   @override
   State<MyMedicineTaken> createState() => _MyMedicineTakenState();
 }
 
 class _MyMedicineTakenState extends State<MyMedicineTaken> {
+  MedicineAlarm? alarm;
+  LocalDB dbHelper = LocalDB();
+  bool isLoaded = false;
 
   @override
   void initState() {
     super.initState();
+    getAlarm();
+  }
+
+  getAlarm () async {
+    alarm = await dbHelper.getAlarmsbyID(widget.alarmId);
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  createHistory(bool taken) async
+  {
+    int action = taken ? 1 : 0 ;
+    History history = History.name(alarm!.hour, alarm!.minute, alarm!.dateString, alarm!.pillName,
+        action, alarm!.doseQuantity, alarm!.doseQuantity2, alarm!.weekday, alarm!.doseUnit, alarm!.doseUnit2, alarm!.alarmId);
+    await dbHelper.createHistory(history);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile||connectivityResult == ConnectivityResult.wifi) {
+      HistoryService service = HistoryService();
+      service.createHistory(history.toJson());
+    } else{
+       dbHelper.createOfflineHistory(history);
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Column(
+      body: isLoaded ? Column(
           children: [
             Container(
               color: Colors.teal,
@@ -61,7 +91,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20 ),
                             child: Text(
-                              widget.alarm.getStringTime(),
+                              alarm!.getStringTime(),
                               style: const TextStyle(
                                   color: Colors.black, fontSize: 35),
                             ),
@@ -83,13 +113,13 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                                   Column(
                                     children: [
                                       Text(
-                                        widget.alarm.pillName,
+                                        alarm!.pillName,
                                         style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 20),
                                       ),
                                       Text(
-                                        widget.alarm.getFormattedDose(),
+                                        alarm!.getFormattedDose(),
                                         style: const TextStyle(
                                             color: Colors.black45,
                                             fontSize: 15),
@@ -122,7 +152,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
               ),
 
           ],
-        )
+        ) : const Center(child: CircularProgressIndicator(),)
       );
   }
 }

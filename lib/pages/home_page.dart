@@ -37,14 +37,14 @@ class MyHomepage extends StatefulWidget{
 
 class _MyHomepageState extends State<MyHomepage> {
   bool isLoaded = false;
-  List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png","ViewAlarms"),
-    _HomePageItem("حسابي", "images/users.png",""),
-    _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",""),
-    _HomePageItem("القياسات", "images/measures.png","AddMeasures"),
-    _HomePageItem("اسأل الطبيب او الصيدلي", "images/measures.png",""),
-    _HomePageItem("معلومات ونصائح", "images/knowledge.png",""),
-    _HomePageItem("عن التطبيق", "images/about.png",""),
-    _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",""),
+  List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png",1),
+    _HomePageItem("حسابي", "images/users.png",2),
+    _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",3),
+    _HomePageItem("القياسات", "images/measures.png",4),
+    _HomePageItem("اسأل الطبيب او الصيدلي", "images/measures.png",5),
+    _HomePageItem("معلومات ونصائح", "images/knowledge.png",6),
+    _HomePageItem("عن التطبيق", "images/about.png",7),
+    _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",8),
   ];
   
   @override
@@ -124,10 +124,7 @@ class _MyHomepageState extends State<MyHomepage> {
             ],
           ),
         ),
-        onTap: (){
-          Navigator.of(context);
-          Navigator.pushNamed(context, '/${item.pageTitle}');
-        },
+        onTap: () => onClicked(context,item.choice),
       ),
       width: 150,
       height: 150,
@@ -138,6 +135,52 @@ class _MyHomepageState extends State<MyHomepage> {
 class _HomePageItem {
   String value;
   String assetName;
-  String pageTitle;
-  _HomePageItem(this.value,this.assetName,this.pageTitle);
+  int choice;
+  _HomePageItem(this.value,this.assetName,this.choice);
+}
+
+void onClicked (BuildContext context,int index){
+  Navigator.of(context).pop();
+  switch (index) {
+    case 1:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ViewAlarms(),
+      ));
+      break;
+    case 2:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ));
+      break;
+    case 3:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ));
+      break;
+    case 4:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddMeasures(),
+      ));
+      break;
+    case 5:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ));
+      break;
+    case 6:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ));
+      break;
+    case 7:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ));
+      break;
+    case 8:
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage(),
+      ));
+      break;
+  }
 }

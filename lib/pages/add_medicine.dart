@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:awesome_notifications/android_foreground_service.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -11,6 +12,7 @@ import 'package:medicine_time/LocalDB.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
 import 'package:medicine_time/pages/home_page.dart';
+import 'package:medicine_time/pages/medicine_taken.dart';
 import 'package:medicine_time/services/alarm_service.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -21,8 +23,9 @@ import 'choose_medicine.dart';
 class AddMedicine extends StatelessWidget {
   String? chosenMedicine;
 
-  AddMedicine(this.chosenMedicine);
+  AddMedicine(this.chosenMedicine, {Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'AddMedicine',
@@ -33,7 +36,7 @@ class AddMedicine extends StatelessWidget {
 class MyAddMedicine extends StatefulWidget{
   String? chosenMedicine;
 
-  MyAddMedicine(this.chosenMedicine);
+  MyAddMedicine(this.chosenMedicine, {Key? key}) : super(key: key);
 
   @override
   State<MyAddMedicine> createState() => _MyAddMedicineState();
@@ -366,7 +369,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
           {
             await dbHelper.createOfflineAlarm(alarm);
           }
-          handleNotification(timesPickers[i],selectedDays[j].number,al_id);
+          handleNotification(timesPickers[i],selectedDays[j].number,al_id,alarm);
         }
       }
       Navigator.of(context).pop();
@@ -375,7 +378,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     }
   }
 
-  handleNotification(TimeOfDay time , int dayofWeek,int al_id) async {
+  handleNotification(TimeOfDay time , int dayofWeek,int al_id,MedicineAlarm alarm) async {
 
     if(DateTime.now().weekday > dayofWeek)
       dayofWeek=dayofWeek+7;
@@ -416,7 +419,8 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
             )),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime);
+        UILocalNotificationDateInterpretation.absoluteTime,
+        payload: alarm.alarmId.toString());
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
@@ -426,11 +430,11 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
   void selectNotification(String? payload) async {
     if (payload != null) {
       debugPrint('notification payload: $payload');
+      await Navigator.push(
+        context,
+        MaterialPageRoute<void>(builder: (context) => MedicineTaken(int.parse(payload))),
+      );
     }
-    await Navigator.push(
-      context,
-      MaterialPageRoute<void>(builder: (context) => Homepage()),
-    );
   }
 }
 
