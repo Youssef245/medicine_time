@@ -327,34 +327,54 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
 
   int getNumber(String string)
   {
-    if(string=="مرة") return 1;
-    else if (string=="مرتين") return 2;
-    else return 3;
+    if(string=="مرة") {
+      return 1;
+    } else if (string=="مرتين") {
+      return 2;
+    } else {
+      return 3;
+    }
   }
 
   addAlarm() async {
     final AlarmService service = AlarmService();
     int alarm_id = await service.getLastID();
+    List<MedicineAlarm> allAlarms = await dbHelper.getallAlarms();
     var now = DateTime.now();
     var formatter = DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(now);
     List <_DayofWeek> selectedDays = days_of_week.where((element) => element.chosen).toList();
     String quantity1,quantity2;
-    if(dose_quantity!.text=="")
+    if(dose_quantity!.text=="") {
       quantity1="0";
-    else
+    } else {
       quantity1=dose_quantity!.text;
+    }
 
-    if(dose_quantity2!.text=="")
+    if(dose_quantity2!.text=="") {
       quantity2="0";
-    else
+    } else {
       quantity2=dose_quantity2!.text;
+    }
 
     if(widget.chosenMedicine!=null)
     {
       for(int i=0;i<getNumber(times!);i++)
       {
         alarm_id++;
+
+        //Not to Have Two Alarms at the Same Time
+        for(int z=0;z<allAlarms.length;z++)
+        {
+          if(allAlarms[z].hour==timesPickers[i].hour && allAlarms[z].minute==timesPickers[i].minute) {
+            timesPickers[i].replacing(
+                hour: timesPickers[i].hour,
+                minute: timesPickers[i].minute+5,
+            );
+          }
+        }
+
+        // Add Medicine for Every Chosen Time and Day
         for(int j=0;j<selectedDays.length;j++)
         {
           MedicineAlarm alarm = MedicineAlarm.name2(timesPickers[i].hour, selectedDays[j].number, timesPickers[i].minute, widget.chosenMedicine, quantity1,
@@ -380,16 +400,18 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
 
   handleNotification(TimeOfDay time , int dayofWeek,int al_id,MedicineAlarm alarm) async {
 
-    if(DateTime.now().weekday > dayofWeek)
+    if(DateTime.now().weekday > dayofWeek) {
       dayofWeek=dayofWeek+7;
+    }
     int dayofweekdiff = DateTime.now().weekday - dayofWeek;
     dayofweekdiff = dayofweekdiff.abs();
     DateTime alarmdate =DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time.hour, time.minute);
     int nowInMinutes = TimeOfDay.now().hour * 60 + TimeOfDay.now().minute;
     int timeinMinutes = time.hour* 60 + time.minute;
     alarmdate = alarmdate.add(Duration(days: dayofweekdiff));
-    if(timeinMinutes<nowInMinutes&&dayofweekdiff==0)
+    if(timeinMinutes<nowInMinutes&&dayofweekdiff==0) {
       alarmdate = alarmdate.add(const Duration(days: 7));
+    }
 
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Africa/Cairo'));

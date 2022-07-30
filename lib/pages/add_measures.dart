@@ -124,7 +124,7 @@ class _MyAddMeasuresState extends State<MyAddMeasures> {
                 child: ElevatedButton(onPressed: (){
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
                       ViewMeasures()));
-                }, child: Text("القياسات السابقة",style: const TextStyle(color: Colors.teal),),
+                }, child: const Text("القياسات السابقة",style:  TextStyle(color: Colors.teal),),
                   style: ElevatedButton.styleFrom(primary: Colors.white70),),
               )
 
