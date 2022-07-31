@@ -55,13 +55,13 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     "محلول", "بخاخ/بخة", "لبوس", "كريم/مرهم"];
   String? dose_units2_value = "قرص";
 
-  List <_DayofWeek> days_of_week = [_DayofWeek("سبت",false,6),
-    _DayofWeek("جمعة", false, 5),
-    _DayofWeek("خميس", false, 4),
-    _DayofWeek("أربعاء", false, 3),
-    _DayofWeek("ثلاثاء", false, 2),
-    _DayofWeek("أثنين", false, 1),
-    _DayofWeek("أحد", false, 7)];
+  List <_DayOfWeek> days_of_week = [_DayOfWeek("سبت",false,6),
+    _DayOfWeek("جمعة", false, 5),
+    _DayOfWeek("خميس", false, 4),
+    _DayOfWeek("أربعاء", false, 3),
+    _DayOfWeek("ثلاثاء", false, 2),
+    _DayOfWeek("أثنين", false, 1),
+    _DayOfWeek("أحد", false, 7)];
 
   bool everyday = false;
 
@@ -343,7 +343,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     var now = DateTime.now();
     var formatter = DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(now);
-    List <_DayofWeek> selectedDays = days_of_week.where((element) => element.chosen).toList();
+    List <_DayOfWeek> selectedDays = days_of_week.where((element) => element.chosen).toList();
     String quantity1,quantity2;
     if(dose_quantity!.text=="") {
       quantity1="0";
@@ -392,7 +392,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
           handleNotification(timesPickers[i],selectedDays[j].number,al_id,alarm);
         }
       }
-      Navigator.of(context).pop();
+      //Navigator.of(context).pop();
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ViewAlarms()));
     }
@@ -425,13 +425,13 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
    /* */
 
     //DateTime alarmDate = DateTime.now().add(Duration (minutes: 2));
-    print(DateTime.now().add(DateTime.now().difference(alarmdate)));
+    print(tz.TZDateTime.from(alarmdate, tz.getLocation('Africa/Cairo')));
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         al_id,
         'حان وقت الدواء',
         'اضغط هنا!',
-        tz.TZDateTime.from(DateTime.now().add(alarmdate.difference(DateTime.now())), tz.getLocation('Africa/Cairo')),
+        tz.TZDateTime.from(alarmdate, tz.getLocation('Africa/Cairo')),
          NotificationDetails(
             android: AndroidNotificationDetails(
               'ALARMS_${al_id}', 'Alarm_${al_id}',
@@ -452,18 +452,17 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
   void selectNotification(String? payload) async {
     if (payload != null) {
       debugPrint('notification payload: $payload');
-      await Navigator.push(
-        context,
-        MaterialPageRoute<void>(builder: (context) => MedicineTaken(int.parse(payload))),
-      );
+        Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MedicineTaken(int.parse(payload)),
+      ));
     }
   }
 }
 
-class _DayofWeek {
+class _DayOfWeek {
   String day;
   bool chosen;
   int number;
 
-  _DayofWeek(this.day, this.chosen, this.number);
+  _DayOfWeek(this.day, this.chosen, this.number);
 }
