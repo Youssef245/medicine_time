@@ -289,7 +289,7 @@ app.get('/questions/:user_id',async (req,res)=>{
     dbConnection.execSql(request);
 }); 
 
-app.post('/effects',(req, res)=>{
+app.post('/usereffects',(req, res)=>{
     var body = req.body;
     var Request = tedious.Request; 
     var request = new Request(`insert into user_effects (user_id,kidney_effects,effects)
@@ -412,3 +412,31 @@ app.post('/users/:id',async (req,res)=>{
     dbConnection.execSql(request);
 });
 
+
+app.get('/usereffects/:user_id',async (req,res)=>{
+    var param = req.params;
+    var o = {};
+    o["data"]=[];
+    var Request = tedious.Request; 
+    var request = new Request(`select user_id
+    ,kidney_effects ,effects,date_inserted from user_effects where user_id= ${param.user_id} order by date_inserted DESC`,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+    });
+    request.on('row',function(columns){
+        var medicineObject={};
+        columns.forEach(function(column) {
+            medicineObject[column.metadata.colName] = column.value;
+        });
+        o["data"].push(medicineObject);
+    });
+    request.on('doneInProc', function () {
+        console.log(o["data"].length)
+        res.send(o);
+     });
+    dbConnection.execSql(request);
+}); 
