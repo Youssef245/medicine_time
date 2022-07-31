@@ -11,8 +11,6 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-//http://localhost:8080/medicines
-
 app.listen(
     PORT,
     ()=> console.log(`it's alive on http://localhost:${PORT}`)
@@ -214,4 +212,203 @@ app.post('/measures',(req, res)=>{
     dbConnection.execSql(request);
 });
 
+app.get('/sideeffects',async (req,res)=>{
+    var o = {};
+    o["data"]=[];
+    var Request = tedious.Request; 
+    var request = new Request("SELECT side_effect.effect , side_category.cat_name from side_effect , "+
+    "side_category where side_category.cat_id = side_effect.cat_id",function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+    });
+    request.on('row',function(columns){
+        var medicineObject={};
+        columns.forEach(function(column) {
+            medicineObject[column.metadata.colName] = column.value.replace('\r\n','');
+        });
+        o["data"].push(medicineObject);
+    });
+    request.on('doneInProc', function () {
+        console.log(o["data"].length)
+        res.send(o);
+     });
+    dbConnection.execSql(request);
+}); 
+
+app.post('/ask',(req, res)=>{
+    var body = req.body;
+    var Request = tedious.Request; 
+    var request = new Request(`insert into ask_ques (user_id,question,towho,date)
+     VALUES (${body.user_id},N'${body.question}'
+    ,N'${body.towho}','${body.date}')`,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+        else{
+            res.send({
+                question : 'Created Successfully'
+            });
+        }
+    });
+
+    dbConnection.execSql(request);
+});
+
+app.get('/questions/:user_id',async (req,res)=>{
+    var param = req.params;
+    var o = {};
+    o["data"]=[];
+    var Request = tedious.Request; 
+    var request = new Request(`select user_id
+    ,question ,towho,answers,date from ask_ques where user_id= ${param.user_id} order by date DESC`,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+    });
+    request.on('row',function(columns){
+        var medicineObject={};
+        columns.forEach(function(column) {
+            medicineObject[column.metadata.colName] = column.value;
+        });
+        o["data"].push(medicineObject);
+    });
+    request.on('doneInProc', function () {
+        console.log(o["data"].length)
+        res.send(o);
+     });
+    dbConnection.execSql(request);
+}); 
+
+app.post('/effects',(req, res)=>{
+    var body = req.body;
+    var Request = tedious.Request; 
+    var request = new Request(`insert into user_effects (user_id,kidney_effects,effects)
+     VALUES (${body.user_id},N'${body.kidney_effects}',N'${body.effects}')`,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+        else{
+            res.send({
+                effect : 'Created Successfully'
+            });
+        }
+    });
+
+    dbConnection.execSql(request);
+});
+
+app.post('/survey',(req, res)=>{
+    var body = req.body;
+    var Request = tedious.Request; 
+    var request = new Request(`insert into survey (user_id,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,s_date)
+     VALUES (${body.user_id},N'${body.q1}',N'${body.q2}',N'${body.q3}',N'${body.q4}',N'${body.q5}',
+     N'${body.q6}',N'${body.q7}',N'${body.q8}',N'${body.q9}',N'${body.q10}','${body.date}')`,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+        else{
+            res.send({
+                survey : 'Created Successfully'
+            });
+        }
+    });
+
+    dbConnection.execSql(request);
+});
+
+app.get('/users/:id',async (req,res)=>{
+    var o = {};
+    var param = req.params;
+    var Request = tedious.Request; 
+    var request = new Request(`
+    select ISNULL(mobile,'') as mobile,ISNULL(email,'') as email, ISNULL(height,'') as height, ISNULL(birth_date,'') as birth_date, ISNULL(education_level,'') as education_level
+    , ISNULL(gendar,'') as gendar, ISNULL(pressure,'') as pressure, ISNULL(glucose,'') as glucose, ISNULL(chl,'') as chl
+    , ISNULL(liver,'') as liver, ISNULL(heart,'') as heart, ISNULL(hemoglobin,'') as hemoglobin, ISNULL(cancer,'') as cancer
+    , ISNULL(manaya,'') as manaya, ISNULL(glucose_stage,'') as glucose_stage, ISNULL(heart_type,'') as heart_type, ISNULL(cancer_type,'') as cancer_type
+    ,ISNULL(manaya_type,'') as manaya_type, ISNULL(kidney_period,'') as kidney_period,ISNULL(kidney_stage,'') as kidney_stage, ISNULL(kidney_transplant,'') as kidney_transplant
+    ,ISNULL(password,'') as password, ISNULL(transplant,'') as transplant,ISNULL(liver_type,'') as liver_type  from users  where id = ${param.id}
+    `,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+    });
+    request.on('row',function(columns){
+        columns.forEach(function(column) {
+            o[column.metadata.colName] = column.value;
+        });
+    });
+    request.on('doneInProc', function () {
+        res.send(o);
+     });
+    dbConnection.execSql(request);
+});
+
+
+
+app.post('/users/:id',async (req,res)=>{
+    var param = req.params;
+    var body = req.body;
+    var Request = tedious.Request; 
+    var request = new Request(`
+    update users set
+       name= N'${body.name}'
+      ,password= N'${body.password}'
+      ,mobile= N'${body.mobile}'
+      ,email= N'${body.email}'
+      ,height= ${body.height}
+      ,gendar= N'${body.gendar}'
+      ,education_level= N'${body.education_level}'
+      ,birth_date= N'${body.birth_date}'
+      ,pressure= ${body.pressure}
+      ,glucose= ${body.glucose}
+      ,chl= ${body.chl}
+      ,heart= ${body.heart}
+      ,liver= ${body.liver}
+	  ,hemoglobin= ${body.hemoglobin}	
+      ,cancer= ${body.cancer}
+      ,manaya= ${body.manaya}
+	  ,glucose_stage= N'${body.glucose_stage}'
+      ,heart_type= N'${body.heart_type}'
+      ,cancer_type= N'${body.cancer_type}'
+      ,manaya_type= N'${body.manaya_type}'
+      ,kidney_period= N'${body.kidney_period}'
+      ,kidney_stage= N'${body.kidney_stage}'
+      ,kidney_transplant= N'${body.kidney_transplant}'
+      ,transplant= N'${body.transplant}'
+      ,liver_type= N'${body.liver_type}'
+      FROM users where id = ${param.id}
+    `,function(err){
+        if(err)
+        {
+            res.send({
+                error : err
+            });
+        }
+        else{
+            res.send({
+                survey : 'Created Successfully'
+            });
+        }
+    });
+    dbConnection.execSql(request);
+});
 
