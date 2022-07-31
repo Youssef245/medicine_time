@@ -162,7 +162,7 @@ class MedicineAlarm {
     return MedicineAlarm.name(
       json['id'],
       json['hour'],
-      json['weekday'],
+      json['day_of_week'],
       json['minute'],
       json['pillName'],
       json['dose_quantity'],

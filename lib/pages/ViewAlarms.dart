@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/pages/ViewHistory.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/services/medicine_service.dart';
@@ -121,6 +122,8 @@ class _MyViewAlarmsState extends State<MyViewAlarms> {
                                             LocalDB localdb = LocalDB();
                                             await localdb.deleteAlarm(alarm);
                                             await service.deleteAlarm(alarm);
+                                            FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+                                            await flutterLocalNotificationsPlugin.cancel(alarm.id);
                                             getData();
                                           },
                                           icon: const Icon(

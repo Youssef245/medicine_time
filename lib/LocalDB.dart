@@ -209,7 +209,7 @@ class LocalDB {
     Database database = await openDB();
     DateTime now = DateTime.now();
     MedicineAlarm alarm;
-    List<Map> list = await database.rawQuery("SELECT * FROM alarms where $KEY_ROWID = $id and $KEY_DAY_WEEK = ${now.weekday} ");
+    List<Map> list = await database.rawQuery("SELECT * FROM alarms where $KEY_ALARM_ID = $id and $KEY_DAY_WEEK = ${now.weekday} ");
     alarm = MedicineAlarm.fromJson(list[0] as Map<String, dynamic>);
     closeDB(database);
     return alarm;

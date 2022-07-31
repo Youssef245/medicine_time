@@ -21,9 +21,35 @@ class UserSerivce {
 
       print(payload);
 
+      return User.fromJson2(payload as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to fetch items');
+    }
+  }
+
+  Future<User> getUserInfo(int id) async {
+    final response = await http.get(Uri.parse( getUsersInfoURL(id.toString()) ) );
+    if (response.statusCode == 200) {
+      final payload = jsonDecode(response.body);
+
       return User.fromJson(payload as Map<String, dynamic>);
     } else {
       throw Exception('Failed to fetch items');
     }
   }
+
+  Future<int> updateUserInfo(Map<String, dynamic> payload,int id) async {
+    final response = await http.post(Uri.parse( postUsersInfoURL(id.toString()) ),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(payload));
+    print(response.statusCode);
+    print(response.body);
+    return response.statusCode;
+  }
+
+
+
+
 }

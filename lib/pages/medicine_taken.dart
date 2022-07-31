@@ -9,6 +9,7 @@ import '../LocalDB.dart';
 import '../entities/medicine_alarm.dart';
 import '../services/alarm_service.dart';
 import '../services/history_service.dart';
+import 'home_page.dart';
 
 class MedicineTaken extends StatelessWidget {
   int alarmId;
@@ -130,9 +131,19 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                               ),
                               Row(
                                 children: [
-                                  TextButton(onPressed: (){}, child:
+                                  TextButton(onPressed: () async{
+                                    await createHistory(false);
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => Homepage(),
+                                    ));
+                                  }, child:
                                   Image.asset('images/image_reminder_configure.png',height: 40 , width: 40,)),
-                                  TextButton(onPressed: (){}, child:
+                                  TextButton(onPressed: () async{
+                                    await createHistory(true);
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => Homepage(),
+                                    ));
+                                  }, child:
                                   Image.asset('images/image_reminder_take.png',height: 40 , width: 40,))
                                 ],
                               )
