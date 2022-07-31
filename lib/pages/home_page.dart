@@ -4,6 +4,7 @@ import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
+import 'package:medicine_time/pages/about.dart';
 import 'package:medicine_time/pages/add_measures.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/globals.dart' as globals;
@@ -12,16 +13,13 @@ import 'package:medicine_time/services/history_service.dart';
 import 'package:medicine_time/services/measures_service.dart';
 
 import '../entities/Measure.dart';
+import 'add_side_effect.dart';
+import 'ask_doctor.dart';
 
 class Homepage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        initialRoute: '/',
-        routes: {
-          '/ViewAlarms': (context) => ViewAlarms(),
-          '/AddMeasures' : (context) => AddMeasures(),
-        },
         home:MyHomepage()
     );
 
@@ -41,7 +39,7 @@ class _MyHomepageState extends State<MyHomepage> {
     _HomePageItem("حسابي", "images/users.png",2),
     _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",3),
     _HomePageItem("القياسات", "images/measures.png",4),
-    _HomePageItem("اسأل الطبيب او الصيدلي", "images/measures.png",5),
+    _HomePageItem("اسأل الطبيب او الصيدلي", "images/call.png",5),
     _HomePageItem("معلومات ونصائح", "images/knowledge.png",6),
     _HomePageItem("عن التطبيق", "images/about.png",7),
     _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",8),
@@ -140,7 +138,6 @@ class _HomePageItem {
 }
 
 void onClicked (BuildContext context,int index){
-  Navigator.of(context).pop();
   switch (index) {
     case 1:
       Navigator.of(context).push(MaterialPageRoute(
@@ -154,7 +151,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 3:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage(),
+        builder: (context) => AddSideEffects(),
       ));
       break;
     case 4:
@@ -164,7 +161,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 5:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage(),
+        builder: (context) => AskDoctor(),
       ));
       break;
     case 6:
@@ -174,7 +171,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 7:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage(),
+        builder: (context) => const About(),
       ));
       break;
     case 8:

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class UserEffect {
   int? user_id;
   String? kidney_effects;
@@ -15,6 +17,12 @@ class UserEffect {
       "kidney_effects" : kidney_effects,
       "effects" : effects,
     };
+  }
+
+  String getFormattedDate() {
+    var formatter = DateFormat.yMMMMd('ar_EG');
+    String formattedDate = formatter.format(date_inserted!);
+    return formattedDate;
   }
 
   factory UserEffect.fromJson(Map<String, dynamic> json) {

@@ -31,7 +31,7 @@ class _MyChooseMedicineState extends State<MyChooseMedicine> {
   List<MedCategory> filteredCategories = [];
   String? chosenCategory;
   String? chosenMedicine;
-  bool isLoaded=false;
+    bool isLoaded=false;
 
   @override
   void initState() {

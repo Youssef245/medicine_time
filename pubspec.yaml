@@ -51,6 +51,7 @@ dependencies:
   awesome_notifications: any
   flutter_alarm_clock:
       path : F:\FCI\medicine_time\flutter_alarm_clock-main
+  darq: ^1.2.1
 
 dev_dependencies:
   flutter_test:

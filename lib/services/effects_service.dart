@@ -37,7 +37,7 @@ class EffectsService {
     return response.statusCode;
   }
 
-  Future<List<UserEffect>> getQuestions(int id) async {
+  Future<List<UserEffect>> getEffects(int id) async {
     final response = await http.get(Uri.parse( getUserEffects(id.toString()) ) );
     if (response.statusCode == 200) {
       final payload = jsonDecode(response.body);
