@@ -1,10 +1,11 @@
+
+import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:medicine_time/services/user_service.dart';
 import 'package:medicine_time/globals.dart' as globals;
 import '../entities/user.dart';
-import 'home_page.dart';
 
 class UpdateInformation extends StatelessWidget {
   const UpdateInformation({Key? key}) : super(key: key);
@@ -42,32 +43,32 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
   TextEditingController? kidneyPeriod;
   TextEditingController? kidneyTransplant;
 
-  bool? pressure ,
-      glucose ,
-      col ,
-      heart ,
-      liver ,
-      hemoglobin ,
-      cancer ,
-      manaya ;
+  List<_checkBox> boxes = [ _checkBox("pressure", false),
+    _checkBox("glucose", false) ,
+    _checkBox("col", false)  ,
+    _checkBox("heart", false)  ,
+    _checkBox("liver", false)   ,
+    _checkBox("hemoglobin", false)  ,
+    _checkBox("cancer", false) ,
+    _checkBox("manaya", false) ];
 
   bool showPassword = false;
   List <String> educationLevel = [
     "...اختار مستوى التعليم...",
-    "متوسط أو أقل",
-    "ثانوي او ما يعادله",
-    "جامعي أو أعلى"
+    "متوسط او أقل",
+    "ثانوى او ما يعادله",
+    "جامعى او أعلى"
   ];
   List <String> glucoseLevels = [
     "...الرجاء اختيار النوع...",
-    "النوع الأول",
-    "النوع الثاني",
+    "النوع الاول",
+    "النوع الثانى",
   ];
   List<String> kidneyStages = [
-    "...الرجاء اختيار مرحلة المرض...",
+    "الرجاء اختيار مرحلة المرض",
     "1",
     "2",
-    "3أ",
+    "3ا",
     "3ب",
     "4",
     "5",
@@ -79,6 +80,7 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
   options? option;
   static DateTime now =  DateTime.now();
   DateTime date =  DateTime(now.year, now.month, now.day);
+  
 
   @override
   void initState() {
@@ -88,15 +90,13 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
   }
 
   getData () async {
-    glucoseStage = glucoseLevels.first;
-    educationLevelValue = educationLevel.first;
-    kidneyStage = kidneyStages.first;
 
     String? id = await globals.user.read(key: "id");
+    String? userName = await globals.user.read(key: "name");
     UserSerivce service = UserSerivce();
     user = await service.getUserInfo(int.parse(id!));
 
-    nameController = TextEditingController(text: user!.name);
+    nameController = TextEditingController(text: userName);
     phoneController = TextEditingController(text: user!.mobile);
     emailController = TextEditingController(text: user!.email);
     heightController = TextEditingController(text: user!.height.toString());
@@ -113,14 +113,34 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
     userGender = setGender(user!.gendar!);
     option = setOption(user!.transplant!);
 
-    pressure = user!.pressure!;
-    glucose = user!.glucose!;
-    col = user!.chl!;
-    heart = user!.heart!;
-    liver = user!.liver!;
-    hemoglobin = user!.hemoglobin!;
-    cancer = user!.cancer!;
-    manaya = user!.manaya!;
+    if(user!.glucose_stage!="") {
+      glucoseStage = glucoseLevels.firstWhere((element) => element==user!.glucose_stage);
+    } else {
+      glucoseStage = glucoseLevels.first;
+    }
+
+    if(user!.education_level!="") {
+      print(user!.education_level);
+      print(educationLevel);
+      educationLevelValue = educationLevel.firstWhere((element) => element==user!.education_level);
+    } else {
+      educationLevelValue = educationLevel.first;
+    }
+
+    if(user!.education_level!="") {
+      kidneyStage = kidneyStages.firstWhere((element) => element==user!.kidney_stage);
+    } else {
+      kidneyStage = kidneyStages.first;
+    }
+
+    boxes.firstWhere((element) => element.name=="pressure").value = user!.pressure!;
+    boxes.firstWhere((element) => element.name=="glucose").value = user!.glucose!;
+    boxes.firstWhere((element) => element.name=="col").value = user!.chl!;
+    boxes.firstWhere((element) => element.name=="heart").value = user!.heart!;
+    boxes.firstWhere((element) => element.name=="liver").value = user!.liver!;
+    boxes.firstWhere((element) => element.name=="hemoglobin").value = user!.hemoglobin!;
+    boxes.firstWhere((element) => element.name=="cancer").value = user!.cancer!;
+    boxes.firstWhere((element) => element.name=="manaya").value= user!.manaya!;
 
     setState(() {
       isLoaded = true;
@@ -144,22 +164,22 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
         emailController!.text,
         newHeight,
         getValueGender(userGender),
-        educationLevelValue,
+        educationLevelValue==educationLevel.first ? "" : educationLevelValue,
         formattedDate,
-        pressure,
-        glucose,
-        col,
-        heart,
-        liver,
-        hemoglobin,
-        cancer,
-        manaya,
-        glucoseStage,
+        boxes.firstWhere((element) => element.name=="pressure").value,
+        boxes.firstWhere((element) => element.name=="glucose").value,
+        boxes.firstWhere((element) => element.name=="col").value,
+        boxes.firstWhere((element) => element.name=="heart").value,
+        boxes.firstWhere((element) => element.name=="liver").value,
+        boxes.firstWhere((element) => element.name=="hemoglobin").value,
+        boxes.firstWhere((element) => element.name=="cancer").value,
+        boxes.firstWhere((element) => element.name=="manaya").value,
+        glucoseStage==glucoseLevels.first ? "" : glucoseStage,
         heartController!.text,
         cancerController!.text,
         manayaController!.text,
         kidneyPeriod!.text,
-        kidneyStage,
+        kidneyStage==kidneyStages.first ? "" :kidneyStage,
         kidneyTransplant!.text,
         getValueOption(option),
         liverController!.text,
@@ -167,6 +187,7 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
 
     String? id = await globals.user.read(key: "id");
     UserSerivce service = UserSerivce();
+    print(newUser.toJson());
     await service.updateUserInfo(newUser.toJson(), int.parse(id!));
 
   }
@@ -175,12 +196,19 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      body: isLoaded ? Padding(
         padding: const EdgeInsets.only(top : 80,right: 15),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              firstPart(),
+              inputField(field: " : اسم المستخدم",controller: nameController!),
+              inputField(field: " : رقم الهاتف",controller: phoneController!,numbers: true),
+              inputField(field: " : البريد الإلكتروني",controller: emailController!),
+              inputField(field: " : الطول",controller: heightController!,numbers: true),
+              genderRadio(),
+              passwordField(),
+              datePicker(),
+              dropDownInput(field: " : المستوى التعليمي",values: educationLevel,edu: true),
               const SizedBox(height: 5,),
               Container(
                 color: Colors.teal,
@@ -194,7 +222,14 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
                 ),
               ),
               const SizedBox(height: 5,),
-              secondPart(),
+              checkBoxes(false,false,"ارتفاع ضغط الدم","pressure",TextEditingController()),
+              checkBoxes(false,true,"السكري","glucose",TextEditingController()),
+              checkBoxes(false,false,"ارتفاع الكوليسترول والدهون في الدم","col",TextEditingController()),
+              checkBoxes(true,false,"أمراض القلب","heart",heartController!),
+              checkBoxes(true,false,"أمراض الكبد","liver",liverController!),
+              checkBoxes(false,false,"انيميا","hemoglobin",TextEditingController()),
+              checkBoxes(true,false,"سرطان","cancer",cancerController!),
+              checkBoxes(true,false,"أمراض مناعية أو روماتيزمية","manaya",manayaController!),
               Container(
                 color: Colors.teal,
                 width: MediaQuery.of(context).size.width,
@@ -207,113 +242,113 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
                 ),
               ),
               const SizedBox(height: 5,),
-              thirdPart(),
+              inputField(field: " : فترة المرض بالكلى", controller: kidneyPeriod!),
+              dropDownInput(field: " : مرحلة مرض الكلى",values: kidneyStages,kidney: true),
+              transplantRadio(),
               const SizedBox(height: 5,),
               ElevatedButton(onPressed: () async {
-                //registerMeasure();
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                    Homepage()));
+                updateUser();
+               // Navigator.of(context).pop();
+               // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                 //   Homepage()));
               }, child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
                 style: ElevatedButton.styleFrom(primary: Colors.white70),),
               const SizedBox(height: 5,),
             ],
           )
         ),
-      ),
+      ) : const Center(child: CircularProgressIndicator(),)
     );
   }
 
-  Widget firstPart () {
-    return Column(
-      children: [
-        inputField("اسم المستخدم",nameController!,false),
-        inputField("رقم الهاتف",phoneController!,false),
-        inputField("البريد الإلكتروني",emailController!,false),
-        inputField("الطول",heightController!,true),
-        genderRadio(),
-        passwordField(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${date.year}/${date.month}/${date.day}'),
-            IconButton(
-              icon: const Icon(Icons.date_range , color: Colors.teal,size: 20),
-              onPressed: () async {
-                DateTime? newDate = await showDatePicker(
-                    context: context,
-                    initialDate: date,
-                    firstDate: DateTime(1900),
-                    lastDate: date);
-
-                if(newDate == null) return;
-
-                setState(() {
-                  date = newDate;
-                });
-              },
-            )
-          ],
-        )
-      ],
-    );
-  }
-
-  Widget inputField(String field , TextEditingController controller , bool numbers)
+  Widget datePicker ()
   {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Flexible(
-          child: Container(
-            width: MediaQuery.of(context).size.width,height:30,
-            padding: EdgeInsets.only(left: 10),
-            child: TextFormField(decoration:const  InputDecoration(
-              border:  OutlineInputBorder(
-              borderSide:  BorderSide(width: 2.0),),),
-              keyboardType: numbers ? TextInputType.number : null,
-              controller: controller ,),
-          ),
+        IconButton(
+          icon: const Icon(Icons.date_range , color: Colors.teal,size: 30),
+          onPressed: () async {
+            DateTime? newDate = await showDatePicker(
+                context: context,
+                initialDate: date,
+                firstDate: DateTime(1900),
+                lastDate: date);
+
+            if(newDate == null) return;
+
+            setState(() {
+              date = newDate;
+            });
+          },
         ),
-        Flexible(child: Text(" : $field",style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
+        Text('${date.year}/${date.month}/${date.day}',
+        style: TextStyle(color: Colors.black , fontSize: 20),),
+        Text(" : تاريخ الميلاد",style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify),
+      ],
+    );
+  }
+
+  Widget inputField({String field = "" , required TextEditingController controller
+    ,bool numbers = false ,bool checkbox = false})
+  {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          width: checkbox ? MediaQuery.of(context).size.width/3 : MediaQuery.of(context).size.width/2,
+          height:30,
+          //padding: EdgeInsets.only(left: 10),
+          child: AutoSizeTextField(
+            controller: controller,
+            style: TextStyle(fontSize: 15,color: Colors.black),
+            decoration: const InputDecoration(border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
+            maxLines: 1,
+            ),
+        ),
+        Text(field,style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify),
       ],
     );
   }
 
   Widget passwordField () {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        TextFormField(style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-              border:  const OutlineInputBorder(
-              borderSide:  BorderSide(width: 2.0),),
-              labelStyle: const TextStyle(color: Colors.white),
-              suffixIcon: IconButton(
-                onPressed: (){
-                  setState(() {
-                    showPassword = !showPassword;
-                  });
-                },
-                icon: showPassword ? const Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.white,
-                ) : const Icon(
-                  Icons.visibility_off,
-                  color: Colors.white,
-                ),
-              )
+        Container(
+          width: MediaQuery.of(context).size.width/2,height:30,
+          padding: EdgeInsets.only(left: 10),
+          child: TextFormField(style: const TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+                border:  const OutlineInputBorder(
+                borderSide:  BorderSide(width: 2.0),),
+                suffixIcon: IconButton(
+                  onPressed: (){
+                    setState(() {
+                      showPassword = !showPassword;
+                    });
+                  },
+                  icon: showPassword ? const Icon(
+                    Icons.remove_red_eye,
+                    color: Colors.black,
+                  ) : const Icon(
+                    Icons.visibility_off,
+                    color: Colors.black,
+                  ),
+                )
+            ),
+            controller: passwordController,
+            obscureText: showPassword ? true : false,
+            cursorColor: Colors.black,
           ),
-          controller: passwordController,
-          obscureText: showPassword ? true : false,
-          cursorColor: Colors.white,
         ),
-        const Flexible(child: Text(" : كلمة السر",style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
+        Text(" : كلمة السر",style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify),
 
       ],
     );
   }
 
-  Widget dropDownInput (String field , String value , List<String> values)
+  Widget dropDownInput ({String field = "", required List<String> values , bool kidney = false,bool edu =false})
   {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -326,13 +361,23 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
                 child: Text(value),
               );
             }).toList(),
-            value: value,
+            value:  edu ? educationLevelValue : kidney ?  kidneyStage : glucoseStage ,
             onChanged: (String? newValue) {
               setState(() {
-                value = newValue!;
+                if(edu){
+                  educationLevelValue = newValue!;
+                }
+                else {
+                  if(kidney) {
+                    kidneyStage = newValue!;
+                  } else {
+                    glucoseStage = newValue!;
+                  }
+                }
+
               });
             }),
-        Flexible(child: Text(" : $field",style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
+        Text(field,style: const TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify),
       ],
     );
   }
@@ -342,40 +387,45 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
    return Row(
      mainAxisAlignment: MainAxisAlignment.end,
      children: [
-       ListTile(
-         title: const Text('ذكر'),
-         leading: Radio<gender>(
-           value: gender.male,
-           groupValue: userGender,
-           onChanged: (gender? value) {
-             setState(() {
-               userGender = value;
-             });
-           },
+       Flexible(
+         child: ListTile(
+           title: const Text('ذكر'),
+           leading: Radio<gender>(
+             value: gender.male,
+             groupValue: userGender,
+             onChanged: (gender? value) {
+               setState(() {
+                 userGender = value;
+               });
+             },
+           ),
          ),
        ),
-       ListTile(
-         title: const Text('أنثى'),
-         leading: Radio<gender>(
-           value: gender.female,
-           groupValue: userGender,
-           onChanged: (gender? value) {
-             setState(() {
-               userGender = value;
-             });
-           },
+       Flexible(
+         child: ListTile(
+           title: const Text('أنثى'),
+           leading: Radio<gender>(
+             value: gender.female,
+             groupValue: userGender,
+             onChanged: (gender? value) {
+               setState(() {
+                 userGender = value;
+               });
+             },
+           ),
          ),
        ),
-       const Flexible(child: Text(" : الجنس",style:  TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
+       Text(" : الجنس",style:  TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify),
      ],
    );
  }
 
   Widget transplantRadio ()
   {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        Text(" : هل تم زراعة الكلى",style:  TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify),
         ListTile(
           title: const Text('لا'),
           leading: Radio<options>(
@@ -388,106 +438,91 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
             },
           ),
         ),
-        Row(
-          children: [
-            ListTile(
-              title: const Text('نعم'),
-              leading: Radio<options>(
-                value: options.yes,
-                groupValue: option,
-                onChanged: (options? value) {
-                  setState(() {
-                    option = value;
-                  });
-                },
-              ),
-            ),
-            if(option==options.yes)
-              inputField("", kidneyTransplant!, false),
-          ],
+        ListTile(
+          title: const Text('نعم'),
+          leading: Radio<options>(
+            value: options.yes,
+            groupValue: option,
+            onChanged: (options? value) {
+              setState(() {
+                option = value;
+              });
+            },
+          ),
         ),
-        const Flexible(child: Text(" : هل تم زراعة الكلى",style:  TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
+        if(option==options.yes)
+          Center(child: inputField(controller: kidneyTransplant!)),
       ],
     );
   }
 
- Widget secondPart (){
-    return Column(
-      children: [
-        checkBoxes(false,false,"ارتفاع ضغط الدم",pressure!,TextEditingController()),
-        checkBoxes(false,true,"السكري",glucose!,TextEditingController()),
-        checkBoxes(false,false,"ارتفاع الكوليسترول والدهون في الدم",pressure!,TextEditingController()),
-        checkBoxes(true,false,"أمراض القلب",heart!,heartController!),
-        checkBoxes(true,false,"أمراض الكبد",liver!,liverController!),
-        checkBoxes(false,false,"انيميا",hemoglobin!,TextEditingController()),
-        checkBoxes(true,false,"سرطان",cancer!,cancerController!),
-        checkBoxes(true,false,"أمراض مناعية أو روماتيزمية",manaya!,manayaController!),
-      ],
-    );
- }
-
- Widget checkBoxes(bool textField ,bool dropDown,  String field,  bool checkValue,TextEditingController controller) {
+ Widget checkBoxes(bool textField ,bool dropDown,  String field,  String checkName,
+     TextEditingController controller) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if(dropDown) dropDownInput("", glucoseStage!, glucoseLevels),
-        if(textField) inputField("", controller, false),
-        ListTile(
-          title: Text(field,style: const TextStyle(color: Colors.teal),),
-          leading: Checkbox(value: false,onChanged: (value) {
-            setState(() {
-              checkValue = value!;
-            });
-          },),
-        )
+        if(dropDown&&boxes.firstWhere((element) => element.name==checkName).value!)
+          dropDownInput(values: glucoseLevels),
+        if(textField&&boxes.firstWhere((element) => element.name==checkName).value!)
+          inputField(controller:  controller,checkbox: true),
+         Checkbox(value: boxes.firstWhere((element) => element.name==checkName).value!,onChanged: (value) {
+              setState(() {
+                boxes.firstWhere((element) => element.name==checkName).value = value!;
+              });
+            },),
+        Text(field,style: const TextStyle(color: Colors.teal),),
       ],
     );
 
- }
-
- Widget thirdPart() {
-    return Column(
-      children: [
-        inputField("فترة المرض بالكلى", kidneyPeriod!, false),
-        dropDownInput("مرحلة مرض الكلى", kidneyStage!, kidneyStages),
-        transplantRadio(),
-      ],
-    );
  }
 
  getValueGender(gender? g)
  {
-   if(g==gender.male)
+   if(g==gender.male) {
      return "ذكر";
-   else if (g==gender.female)
+   } else if (g==gender.female) {
      return "أنثى";
-   else
+   } else {
      return "";
+   }
  }
 
  getValueOption (options? o)
  {
-   if(o==options.yes)
+   if(o==options.yes) {
      return "نعم";
-   else if (o==options.no)
+   } else if (o==options.no) {
      return "لا";
-   else
+   } else {
      return "";
+   }
  }
 
  setOption(String? o)
  {
-   if(o=="نعم")
+   if(o=="نعم") {
      return options.yes;
-   else
+   } else {
      return options.no;
+   }
  }
 
  setGender(String? g)
  {
-   if(g=="ذكر")
+   if(g=="ذكر") {
      return gender.male;
-   else
+   } else {
      return gender.female;
+   }
  }
+
+
+}
+
+class _checkBox {
+  String? name;
+  bool? value;
+
+  _checkBox(this.name,this.value);
 }
 

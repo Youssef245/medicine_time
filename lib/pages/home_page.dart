@@ -8,6 +8,7 @@ import 'package:medicine_time/pages/about.dart';
 import 'package:medicine_time/pages/add_measures.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/globals.dart' as globals;
+import 'package:medicine_time/pages/update_information.dart';
 import 'package:medicine_time/services/alarm_service.dart';
 import 'package:medicine_time/services/history_service.dart';
 import 'package:medicine_time/services/measures_service.dart';
@@ -146,7 +147,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 2:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage(),
+        builder: (context) => UpdateInformation(),
       ));
       break;
     case 3:
