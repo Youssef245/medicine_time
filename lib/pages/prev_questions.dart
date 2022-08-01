@@ -47,7 +47,7 @@ class _MyPrevQuestionsState extends State<MyPrevQuestions> {
           backgroundColor: Colors.teal,
           title: const Center(child:  Text("الأسئلة السابقة",style: TextStyle(color: Colors.white),)),
         ),
-        body: Padding(
+        body: isLoaded ? Padding(
           padding: const EdgeInsets.only(top: 15 , left: 15,right: 15),
           child: SingleChildScrollView(
               child:Column(
@@ -73,7 +73,7 @@ class _MyPrevQuestionsState extends State<MyPrevQuestions> {
                 ],
               )
           ),
-        )
+        ): const Center(child: CircularProgressIndicator(),)
     );
   }
 }

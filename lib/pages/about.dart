@@ -46,9 +46,11 @@ class MyAbout extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Image.asset("images/about2.png",
-                width: 150,
-                height: 150,
+              Center(
+                child: Image.asset("images/about2.png",
+                  width: 150,
+                  height: 150,
+                ),
               ),
               Text(text,
                 style: const TextStyle(

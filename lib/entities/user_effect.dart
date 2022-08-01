@@ -1,12 +1,13 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class UserEffect {
   int? user_id;
   String? kidney_effects;
   String? effects;
-  DateTime? date_inserted;
+  String? date;
 
-  UserEffect(this.user_id, this.kidney_effects,this.effects,this.date_inserted);
+  UserEffect(this.user_id, this.kidney_effects,this.effects,this.date);
 
   UserEffect.name(this.user_id, this.kidney_effects,this.effects);
 
@@ -20,8 +21,10 @@ class UserEffect {
   }
 
   String getFormattedDate() {
+    initializeDateFormatting();
+    DateTime dateTime = DateFormat('MMMM d, y', 'en_US').parse("$date");
     var formatter = DateFormat.yMMMMd('ar_EG');
-    String formattedDate = formatter.format(date_inserted!);
+    String formattedDate = formatter.format(dateTime);
     return formattedDate;
   }
 

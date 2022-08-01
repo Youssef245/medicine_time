@@ -59,11 +59,13 @@ class _MyAddSideEffectsState extends State<MyAddSideEffects> {
   }
 
   getData() async {
-    filteredEffects = sideEffects;
-    kidneyEffectsValue = kidneyEffects.first;
     EffectsService service = EffectsService();
     sideEffects = await service.getSideEffects();
     sideEffects!.distinct((d) => d.category).toList().forEach((element) {sideCategories.add(element.category);});
+    print(sideCategories);
+    filteredEffects = sideEffects;
+    kidneyEffectsValue = kidneyEffects.first;
+    sideCategoriesValue = sideCategories.where((element) => element=="الكل").first;
     setState(() {
       isLoaded = true;
     });
@@ -99,14 +101,17 @@ class _MyAddSideEffectsState extends State<MyAddSideEffects> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Image.asset("images/symptoms1.png",
-                width: 150,
-                height: 150,
+              Center(
+                child: Image.asset("images/symptoms1.png",
+                  width: 150,
+                  height: 150,
+                ),
               ),
-              fistPart(),
-              const SizedBox(height: 5,),
+              const SizedBox(height: 10,),
+              firstPart(),
+              const SizedBox(height: 10),
               secondPart(),
-              const SizedBox(height: 5,),
+              const SizedBox(height: 10,),
               ElevatedButton(onPressed: () async {
                 addEffect();
                 Navigator.of(context).pop();
@@ -131,17 +136,22 @@ class _MyAddSideEffectsState extends State<MyAddSideEffects> {
     );
   }
 
-  Widget fistPart ()
+  Widget firstPart ()
   {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Container(
-          color: Colors.teal,
-          width: MediaQuery.of(context).size.width,
-          height: 26,
-          child: const Text(
-            "أعراض مرض الكلى",
-            style: TextStyle(color: Colors.white,fontSize: 23),
+        Center(
+          child: Container(
+            color: Colors.teal,
+            width: MediaQuery.of(context).size.width,
+            height: 40,
+            child: const Center(
+              child:  Text(
+                "أعراض مرض الكلى",
+                style: TextStyle(color: Colors.white,fontSize: 23),
+              ),
+            ),
           ),
         ),
         DropdownButton<String>(
@@ -160,23 +170,29 @@ class _MyAddSideEffectsState extends State<MyAddSideEffects> {
             }),
         const SizedBox(height: 5,),
         if(kidneyEffectsValue==kidneyEffects.last)
-          Container(width: 80,
-              child: TextFormField(decoration: const InputDecoration(
-                hintText: "أعراض أخرى",),controller: kidneyController,)),
+          Container(width: MediaQuery.of(context).size.width,
+              child: TextFormField(
+                  decoration:  const InputDecoration(hintText: "أعراض أخرى" ,
+                    border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
+                  controller: kidneyController ,
+                  textAlignVertical: TextAlignVertical.center)),
       ],
     );
   }
 
   Widget secondPart () {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
           color: Colors.teal,
           width: MediaQuery.of(context).size.width,
-          height: 26,
-          child: const Text(
-            "الأعراض الجانبية",
-            style: TextStyle(color: Colors.white,fontSize: 23),
+          height: 40,
+          child: const Center(
+            child: Text(
+              "الأعراض الجانبية",
+              style: TextStyle(color: Colors.white,fontSize: 23),
+            ),
           ),
         ),
         DropdownButton<String>(
@@ -213,9 +229,12 @@ class _MyAddSideEffectsState extends State<MyAddSideEffects> {
               });
             }),
         if(sideEffectsValue=="لا يوجد")
-          Container(width: 80,
-              child: TextFormField(decoration: const InputDecoration(
-                hintText: "أعراض أخرى",),controller: kidneyController,)),
+          Container(width: MediaQuery.of(context).size.width*0.6,
+              child: TextFormField(
+                  decoration:  const InputDecoration(hintText: "أعراض أخرى" ,
+                    border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
+                  controller: sideController ,
+                  textAlignVertical: TextAlignVertical.center)),
 
       ],
     );

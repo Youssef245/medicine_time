@@ -26,19 +26,6 @@ void main() async {
   await dbHelper.createHistory(history4);
   await dbHelper.createHistory(history5);*/
   //print(await Permission.ignoreBatteryOptimizations.request().isGranted);
-  AwesomeNotifications().initialize(
-    // set the icon to null if you want to use the default app icon
-      'resource://drawable/logo3',
-      [
-        NotificationChannel(
-            channelKey: 'scheduled',
-            channelName: 'Basic notifications',
-            channelDescription: 'Notification channel for basic tests',
-            defaultColor: Color(0xFF9D50DD),
-            ledColor: Colors.white)
-      ],
-      debug: true
-  );
   String? status = await globals.user.read(key: "logged");
   if(status=="true")
     runApp(Homepage());

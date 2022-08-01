@@ -128,11 +128,11 @@ class User {
       "heart_type" : heart_type,
       "cancer_type" : cancer_type,
       "manaya_type" : manaya_type,
+      "liver_type" : liver_type,
       "kidney_period" : kidney_period,
       "kidney_stage" : kidney_stage,
       "kidney_transplant" : kidney_transplant,
       "transplant" : transplant,
-      "liver_type" : liver_type,
     };
 
   }
