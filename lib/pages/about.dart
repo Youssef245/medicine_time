@@ -41,24 +41,28 @@ class MyAbout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top : 80,right: 15),
+        padding: const EdgeInsets.only(top : 80),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Center(
-                child: Image.asset("images/about2.png",
-                  width: 150,
-                  height: 150,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Center(
+                  child: Image.asset("images/about2.png",
+                    width: 150,
+                    height: 150,
+                  ),
                 ),
-              ),
-              Text(text,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 15
-                ),
-              )
-            ],
+                const SizedBox(height: 10,),
+                Text(text,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 15
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

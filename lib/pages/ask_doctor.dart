@@ -49,14 +49,16 @@ class _MyAskDoctorState extends State<MyAskDoctor> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top : 80,right: 15),
+        padding: const EdgeInsets.only(top : 80,right: 15,left: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Image.asset("images/ask1.png",
-                width: 150,
-                height: 150,
+              Center(
+                child: Image.asset("images/ask1.png",
+                  width: 150,
+                  height: 150,
+                ),
               ),
               const SizedBox(height: 5,),
               Container(width: MediaQuery.of(context).size.width,
@@ -84,12 +86,15 @@ class _MyAskDoctorState extends State<MyAskDoctor> {
                 ],
               ),
               const SizedBox(height: 10,),
-              ElevatedButton(onPressed: () async {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                    Homepage()));
-              }, child: const Text("إرسال",style: TextStyle(color: Colors.teal),),
-                style: ElevatedButton.styleFrom(primary: Colors.white70),),
+              Center(
+                child: ElevatedButton(onPressed: () async {
+                  sendQuestion();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                      Homepage()));
+                }, child: const Text("إرسال",style: TextStyle(color: Colors.teal,fontSize: 20),),
+                  style: ElevatedButton.styleFrom(primary: Colors.white70,fixedSize: Size(90, 50)),),
+              ),
               const SizedBox(height: 15,),
               Align(
                 alignment: FractionalOffset.bottomLeft,

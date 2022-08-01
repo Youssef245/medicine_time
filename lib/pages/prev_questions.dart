@@ -53,12 +53,13 @@ class _MyPrevQuestionsState extends State<MyPrevQuestions> {
               child:Column(
                 children: [
                   ...questions.map((question) {
+                    print(question.date);
                     return Column(
                       children: [
-                        Text(question.getFormattedDate(),style: const TextStyle(color :Colors.teal,fontSize: 23)),
+                        Text(question.date!,style: const TextStyle(color :Colors.teal,fontSize: 23)),
                         const SizedBox(height: 7,),
-                        Text(" السؤال : ${question.question}",style: const TextStyle(color :Colors.black,fontSize: 18),),
-                        if(question.answer!="")
+                        Text("${question.question}  : السؤال ",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                        if(question.answer!=null)
                         Column(
                           children: [
                             Text(" الإجابة : ${question.answer}",style: const TextStyle(color :Colors.black,fontSize: 18),),

@@ -22,7 +22,8 @@ class UserEffect {
 
   String getFormattedDate() {
     initializeDateFormatting();
-    DateTime dateTime = DateFormat('MMMM d, y', 'en_US').parse("$date");
+    String part = date!.split("T")[0];
+    DateTime dateTime = DateFormat('yyyy-MM-dd', 'en_US').parse("$part");
     var formatter = DateFormat.yMMMMd('ar_EG');
     String formattedDate = formatter.format(dateTime);
     return formattedDate;
@@ -33,7 +34,7 @@ class UserEffect {
         json['user_id'],
         json['kidney_effects'],
         json['effects'],
-        json['date_inserted'],
+        json['date'],
     );
   }
 }

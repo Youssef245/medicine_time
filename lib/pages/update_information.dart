@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:medicine_time/services/user_service.dart';
 import 'package:medicine_time/globals.dart' as globals;
 import '../entities/user.dart';
+import 'home_page.dart';
 
 class UpdateInformation extends StatelessWidget {
   const UpdateInformation({Key? key}) : super(key: key);
@@ -196,67 +197,96 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoaded ? Padding(
-        padding: const EdgeInsets.only(top : 80,right: 15),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              inputField(field: " : اسم المستخدم",controller: nameController!),
-              inputField(field: " : رقم الهاتف",controller: phoneController!,numbers: true),
-              inputField(field: " : البريد الإلكتروني",controller: emailController!),
-              inputField(field: " : الطول",controller: heightController!,numbers: true),
-              genderRadio(),
-              passwordField(),
-              datePicker(),
-              dropDownInput(field: " : المستوى التعليمي",values: educationLevel,edu: true),
-              const SizedBox(height: 5,),
-              Container(
-                color: Colors.teal,
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                child: const Center(
-                  child:  Text(
-                    "أمراض أخرى",
-                    style: TextStyle(color: Colors.white,fontSize: 23),
+      body: isLoaded ? SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.teal,
+              width: MediaQuery.of(context).size.width,
+              height: 200,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 25.0),
+                child: Center(
+                  child: Image.asset("images/user4.png",
+                    width: 150,
+                    height: 150,
                   ),
                 ),
               ),
-              const SizedBox(height: 5,),
-              checkBoxes(false,false,"ارتفاع ضغط الدم","pressure",TextEditingController()),
-              checkBoxes(false,true,"السكري","glucose",TextEditingController()),
-              checkBoxes(false,false,"ارتفاع الكوليسترول والدهون في الدم","col",TextEditingController()),
-              checkBoxes(true,false,"أمراض القلب","heart",heartController!),
-              checkBoxes(true,false,"أمراض الكبد","liver",liverController!),
-              checkBoxes(false,false,"انيميا","hemoglobin",TextEditingController()),
-              checkBoxes(true,false,"سرطان","cancer",cancerController!),
-              checkBoxes(true,false,"أمراض مناعية أو روماتيزمية","manaya",manayaController!),
-              Container(
-                color: Colors.teal,
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                child: const Center(
-                  child:  Text(
-                    "الكلى",
-                    style: TextStyle(color: Colors.white,fontSize: 23),
-                  ),
+            ),
+            const SizedBox(height: 10,),
+            inputField(field: " : اسم المستخدم",controller: nameController!),
+            const SizedBox(height: 10,),
+            inputField(field: " : رقم الهاتف",controller: phoneController!,numbers: true),
+            const SizedBox(height: 10,),
+            inputField(field: " : البريد الإلكتروني",controller: emailController!),
+            const SizedBox(height: 10,),
+            inputField(field: " : الطول",controller: heightController!,numbers: true),
+            const SizedBox(height: 10,),
+            genderRadio(),
+            const SizedBox(height: 10,),
+            passwordField(),
+            const SizedBox(height: 10,),
+            datePicker(),
+            const SizedBox(height: 10,),
+            dropDownInput(field: " : المستوى التعليمي",values: educationLevel,edu: true),
+            const SizedBox(height: 5,),
+            Container(
+              color: Colors.teal,
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: const Center(
+                child:  Text(
+                  "أمراض أخرى",
+                  style: TextStyle(color: Colors.white,fontSize: 23),
                 ),
               ),
-              const SizedBox(height: 5,),
-              inputField(field: " : فترة المرض بالكلى", controller: kidneyPeriod!),
-              dropDownInput(field: " : مرحلة مرض الكلى",values: kidneyStages,kidney: true),
-              transplantRadio(),
-              const SizedBox(height: 5,),
-              ElevatedButton(onPressed: () async {
-                updateUser();
-               // Navigator.of(context).pop();
-               // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                 //   Homepage()));
-              }, child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
-                style: ElevatedButton.styleFrom(primary: Colors.white70),),
-              const SizedBox(height: 5,),
-            ],
-          )
-        ),
+            ),
+            const SizedBox(height: 5,),
+            checkBoxes(false,false,"ارتفاع ضغط الدم","pressure",TextEditingController()),
+            const SizedBox(height: 5,),
+            checkBoxes(false,true,"السكري","glucose",TextEditingController()),
+            const SizedBox(height: 5,),
+            checkBoxes(false,false,"ارتفاع الكوليسترول والدهون في الدم","col",TextEditingController()),
+            const SizedBox(height: 5,),
+            checkBoxes(true,false,"أمراض القلب","heart",heartController!),
+            const SizedBox(height: 5,),
+            checkBoxes(true,false,"أمراض الكبد","liver",liverController!),
+            const SizedBox(height: 5,),
+            checkBoxes(false,false,"انيميا","hemoglobin",TextEditingController()),
+            const SizedBox(height: 5,),
+            checkBoxes(true,false,"سرطان","cancer",cancerController!),
+            const SizedBox(height: 5,),
+            checkBoxes(true,false,"أمراض مناعية أو روماتيزمية","manaya",manayaController!),
+            const SizedBox(height: 5,),
+            Container(
+              color: Colors.teal,
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: const Center(
+                child:  Text(
+                  "الكلى",
+                  style: TextStyle(color: Colors.white,fontSize: 23),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5,),
+            inputField(field: " : فترة المرض بالكلى", controller: kidneyPeriod!),
+            const SizedBox(height: 10,),
+            dropDownInput(field: " : مرحلة مرض الكلى",values: kidneyStages,kidney: true),
+            const SizedBox(height: 5,),
+            transplantRadio(),
+            const SizedBox(height: 5,),
+            ElevatedButton(onPressed: () async {
+              updateUser();
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                  Homepage()));
+            }, child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
+              style: ElevatedButton.styleFrom(primary: Colors.white70),),
+            const SizedBox(height: 5,),
+          ],
+        )
       ) : const Center(child: CircularProgressIndicator(),)
     );
   }
@@ -297,12 +327,14 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
       children: [
         Container(
           width: checkbox ? MediaQuery.of(context).size.width/3 : MediaQuery.of(context).size.width/2,
-          height:30,
-          //padding: EdgeInsets.only(left: 10),
+          //height:30,
           child: AutoSizeTextField(
             controller: controller,
             style: TextStyle(fontSize: 15,color: Colors.black),
-            decoration: const InputDecoration(border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
+            decoration: InputDecoration(
+              hintText: checkbox ? "برجاء ادخال المرض" : "",
+              contentPadding: EdgeInsets.only(top: 0.0,bottom: 0.0,left: 3),
+              border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
             maxLines: 1,
             ),
         ),
