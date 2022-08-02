@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:medicine_time/LocalDB.dart';
 import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
+import 'package:medicine_time/pages/ButtonsPage.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
 import 'package:medicine_time/pages/about.dart';
 import 'package:medicine_time/pages/add_measures.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/globals.dart' as globals;
+import 'package:medicine_time/pages/survey.dart';
 import 'package:medicine_time/pages/update_information.dart';
 import 'package:medicine_time/services/alarm_service.dart';
 import 'package:medicine_time/services/history_service.dart';
@@ -167,7 +169,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 6:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage(),
+        builder: (context) => ButtonsPage("معلومات ونصائح"),
       ));
       break;
     case 7:
@@ -177,7 +179,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 8:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage(),
+        builder: (context) => Survey(),
       ));
       break;
   }
