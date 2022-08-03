@@ -1,7 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:medicine_time/pages/home_page.dart';
-import 'package:medicine_time/services/user_service.dart';
+import 'dart:convert';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medicine_time/pages/home_page.dart';
+import 'package:medicine_time/pages/static_view.dart';
+import 'package:medicine_time/services/user_service.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import '../entities/user.dart';
 import 'package:medicine_time/globals.dart' as globals;
 
@@ -135,6 +142,8 @@ class _LoginPageState extends State<MyLoginPage> {
                 ),
                   const SizedBox(height: 10,),
                  ElevatedButton(onPressed: () async {
+                   setNotification2();
+                   setNotification1();
                    String status = await login(nameController.text, passwordController.text);
                    if(status=="true")
                    {
@@ -150,5 +159,110 @@ class _LoginPageState extends State<MyLoginPage> {
             ),
           ) : const Center(child: CircularProgressIndicator(),),
         );
+  }
+
+  setNotification1() async
+  {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =  InitializationSettings(
+      android: initializationSettingsAndroid,);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification1);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        900,
+        'هل استخدمتني اليوم؟',
+        '',
+        _nextInstanceOf1PM(),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'DidYouUseMe', 'DidYouUseMe',
+              channelDescription: 'DidYouUseMe',importance: Importance.high, priority: Priority.high,
+              playSound: true,
+            )),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  }
+
+  void selectNotification1(String? payload) async {
+      debugPrint('notification payload: $payload');
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Homepage()),);
+  }
+
+  setNotification2() async
+  {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =  InitializationSettings(
+      android: initializationSettingsAndroid,);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification1);
+
+    Random random = Random();
+    int randomNumber = random.nextInt(42);
+    final String response = await rootBundle.loadString('assets/statics.json');
+    final data = await json.decode(response);
+    String title = data['titles'][randomNumber];
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        901,
+        'هل تعلم؟',
+        title,
+        _nextInstanceOf6PM(),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'randomKnowledge', 'randomKnowledge',
+              channelDescription: 'randomKnowledge',importance: Importance.high, priority: Priority.high,
+              playSound: true,
+            )),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: (randomNumber+1).toString());
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  }
+
+  void selectNotification2(String? payload) async {
+    if(payload != null)
+    {
+      debugPrint('notification payload: $payload');
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => StaticView(int.parse(payload))),);
+    }
+  }
+
+
+
+  tz.TZDateTime _nextInstanceOf1PM() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 13);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
+  tz.TZDateTime _nextInstanceOf6PM() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 18);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
   }
 }

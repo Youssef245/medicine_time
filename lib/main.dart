@@ -1,14 +1,19 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/LocalDB.dart';
 import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/pages/choose_medicine.dart';
 import 'package:medicine_time/pages/home_page.dart';
+import 'package:medicine_time/pages/medicine_taken.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 import 'globals.dart' as globals;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 
 
 void main() async {
@@ -27,8 +32,14 @@ void main() async {
   await dbHelper.createHistory(history5);*/
   //print(await Permission.ignoreBatteryOptimizations.request().isGranted);
   String? status = await globals.user.read(key: "logged");
-  if(status=="true")
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+  await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  if(status=="true"&&notificationAppLaunchDetails!.didNotificationLaunchApp) {
+    print(notificationAppLaunchDetails.payload);
+    runApp(MedicineTaken(int.parse(notificationAppLaunchDetails.payload!)));
+  } else if (status=="true"&& !notificationAppLaunchDetails!.didNotificationLaunchApp) {
     runApp(Homepage());
-  else
+  } else {
     runApp(LoginPage());
+  }
 }

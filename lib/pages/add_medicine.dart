@@ -442,11 +442,11 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
-        payload: alarm.alarmId.toString());
+        payload: alarm.alarmId.toString(),
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-
-
+    
   }
 
   void selectNotification(String? payload) async {

@@ -51,7 +51,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
     });
   }
 
-  resetNotification() async
+  /*resetNotification() async
   {
     DateTime dateTime = DateTime.now().add(const Duration(days: 7));
 
@@ -92,7 +92,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
         builder: (context) => MedicineTaken(int.parse(payload)),
       ));
     }
-  }
+  }*/
 
   createHistory(bool taken) async
   {
@@ -178,7 +178,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                               Row(
                                 children: [
                                   TextButton(onPressed: () async{
-                                    resetNotification();
+                                    //resetNotification();
                                     await createHistory(false);
                                     Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => Homepage(),
@@ -186,8 +186,9 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                                   }, child:
                                   Image.asset('images/image_reminder_configure.png',height: 40 , width: 40,)),
                                   TextButton(onPressed: () async{
-                                    resetNotification();
+                                   // resetNotification();
                                     await createHistory(true);
+                                    Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => Homepage(),
                                     ));
