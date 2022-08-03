@@ -28,17 +28,17 @@
     "buttons": [
       {
         "name": "ما هي الكلى؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 1
       },
       {
         "name": "هل تعلم؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 2
       },
       {
         "name": "ما هي وظائف الكلى؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 3
       }
     ],
@@ -52,29 +52,29 @@
     "buttons": [
       {
         "name": "ما هو مرض الكلى المزمن؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 4
       },
       {
         "name": "ما هو الفشل الكلوي الحاد؟ ما هي أسبابه؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 5
       },
       {
         "name": "ما هي عوامل الخطورة ومسببات مرض الكلى المزمن؟",
-        "redierct": "buttons"
+        "redirect": "buttons"
       },
       {
         "name": "كيف يتم تشخيص أمراض الكلى؟",
-        "redierct": "buttons"
+        "redirect": "buttons"
       },
       {
         "name": "ما هي مراحل مرض الكلى المزمن؟",
-        "redierct": "image"
+        "redirect": "image"
       },
       {
         "name": "ما هي الأعراض والمضاعفات؟",
-        "redierct": "buttons"
+        "redirect": "buttons"
       }
     ],
     "id": 2,
@@ -87,17 +87,17 @@
     "buttons": [
       {
         "name": "هل يمكن لأي شخص أن يصاب بأمراض الكلى؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 6
       },
       {
         "name": "ما هي عوامل الخطورة؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 7
       },
       {
         "name": "ما هي مسببات أمراض الكلى؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 8
       }
     ],
@@ -111,22 +111,22 @@
     "buttons": [
       {
         "name": "الكرياتينين في الدم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 9
       },
       {
         "name": "(EGFR) معدل الترشيح الكبيبي",
-        "redierct": "static",
+        "redirect": "static",
         "id": 10
       },
       {
         "name": "اختبار الألبومين (الزلال) في البول",
-        "redierct": "static",
+        "redirect": "static",
         "id": 11
       },
       {
         "name": "اختبارات أخرى",
-        "redierct": "static",
+        "redirect": "static",
         "id": 12
       }
     ],
@@ -140,17 +140,17 @@
     "buttons": [
       {
         "name": "الأعراض",
-        "redierct": "static",
+        "redirect": "static",
         "id": 13
       },
       {
         "name": "ما هي أسباب هذه الأعراض؟",
-        "redierct": "static",
+        "redirect": "static",
         "id": 14
       },
       {
         "name": "المضاعفات",
-        "redierct": "static",
+        "redirect": "static",
         "id": 15
       }
     ],
@@ -164,24 +164,24 @@
     "buttons": [
       {
         "name": "ابطاء تطور المرض وخيارات العلاج",
-        "redierct": "static",
+        "redirect": "static",
         "id": 16
       },
       {
         "name": "العلاج الدوائي",
-        "redierct": "buttons"
+        "redirect": "buttons"
       },
       {
         "name": "ما هي تحاليل المتابعة لمرضى الكلى؟",
-        "redierct": "buttons"
+        "redirect": "buttons"
       },
       {
         "name": "نمط الحياة والنظام الغذائي",
-        "redierct": "buttons"
+        "redirect": "buttons"
       },
       {
         "name": "ماذا يحدث إذا تفاقم مرض الكلى لدي؟",
-        "redierct": "buttons"
+        "redirect": "buttons"
       }
     ],
     "id": 6,
@@ -194,52 +194,52 @@
     "buttons": [
       {
         "name": "حماية وظائف الكلى ",
-        "redierct": "static",
+        "redirect": "static",
         "id": 17
       },
       {
         "name": "علاج ارتفاع ضغط الدم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 18
       },
       {
         "name": "علاج ارتفاع السكر في الدم ",
-        "redierct": "static",
+        "redirect": "static",
         "id": 19
       },
       {
         "name": "علاج ارتفاع الكوليسترول فى الدم ",
-        "redierct": "static",
+        "redirect": "static",
         "id": 20
       },
       {
         "name": "علاج فقر الدم (الأنيميا)",
-        "redierct": "static",
+        "redirect": "static",
         "id": 21
       },
       {
         "name": "علاج اضطرابات المعادن والعظام",
-        "redierct": "static",
+        "redirect": "static",
         "id": 22
       },
       {
         "name": "علاج ارتفاع البوتاسيوم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 23
       },
       {
         "name": "علاج النقرس",
-        "redierct": "static",
+        "redirect": "static",
         "id": 24
       },
       {
         "name": "علاج زيادة حموضة الدم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 25
       },
       {
         "name": "نصائح خاصة باستخدام الأدوية",
-        "redierct": "static",
+        "redirect": "static",
         "id": 26
       }
     ],
@@ -253,42 +253,42 @@
     "buttons": [
       {
         "name": "\tوظائف الكلى",
-        "redierct": "static",
+        "redirect": "static",
         "id": 27
       },
       {
         "name": " ضغط الدم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 28
       },
       {
         "name": "السكر التراكمي (HbA1c) ",
-        "redierct": "static",
+        "redirect": "static",
         "id": 29
       },
       {
         "name": "\tمستوى الجلوكوز في الدم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 30
       },
       {
         "name": "\tالكوليسترول",
-        "redierct": "static",
+        "redirect": "static",
         "id": 31
       },
       {
         "name": "الوزن",
-        "redierct": "static",
+        "redirect": "static",
         "id": 32
       },
       {
         "name": "\tالهيموجلوبين",
-        "redierct": "static",
+        "redirect": "static",
         "id": 33
       },
       {
         "name": "التحاليل الأخرى",
-        "redierct": "static",
+        "redirect": "static",
         "id": 34
       }
     ],
@@ -302,32 +302,32 @@
     "buttons": [
       {
         "name": "اتبع نظامًا غذائيًا صحيًا للكلى/ للقلب/ للسكري /لارتفاع الضغط/لارتفاع الكولسترول",
-        "redierct": "static",
+        "redirect": "static",
         "id": 35
       },
       {
         "name": "البروتين",
-        "redierct": "static",
+        "redirect": "static",
         "id": 36
       },
       {
         "name": "الفوسفور",
-        "redierct": "static",
+        "redirect": "static",
         "id": 37
       },
       {
         "name": "البوتاسيوم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 38
       },
       {
         "name": "الصوديوم",
-        "redierct": "static",
+        "redirect": "static",
         "id": 39
       },
       {
         "name": "السوائل",
-        "redierct": "static",
+        "redirect": "static",
         "id": 40
       }
     ],
@@ -341,12 +341,12 @@
     "buttons": [
       {
         "name": "الغسيل الكلوي",
-        "redierct": "static",
+        "redirect": "static",
         "id": 41
       },
       {
         "name": "زرع الكلى",
-        "redierct": "static",
+        "redirect": "static",
         "id": 42
       }
     ],

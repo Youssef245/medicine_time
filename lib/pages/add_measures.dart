@@ -228,10 +228,17 @@ class _inputItem {
 
 class _pressureItem extends _inputItem {
 
+  @override
   String? field;
+  @override
   String? label;
-  String label2;
-  TextEditingController controller2;
 
-  _pressureItem(this.field, this.label, this.label2, controller, this.controller2);
+  String label2;
+
+  @override
+  TextEditingController? controller;
+
+  TextEditingController? controller2;
+
+  _pressureItem(this.field, this.label, this.label2, this.controller, this.controller2);
 }

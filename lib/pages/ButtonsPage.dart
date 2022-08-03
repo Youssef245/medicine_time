@@ -3,36 +3,36 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medicine_time/pages/image_view.dart';
+import 'package:medicine_time/pages/static_view.dart';
 
-class ButtonsPage extends StatelessWidget {
+/*class ButtonsPage extends StatelessWidget {
   String page;
 
   ButtonsPage(this.page, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'ButtonsPage', home: MyButtonsPage(page));
+    return MaterialApp(title: page, home: MyButtonsPage(page));
   }
-}
+}*/
 
-class MyButtonsPage extends StatefulWidget {
+class ButtonsPage extends StatefulWidget {
   String page;
 
-  MyButtonsPage(this.page,{Key? key}) : super(key: key);
+  ButtonsPage(this.page,{Key? key}) : super(key: key);
 
   @override
-  State<MyButtonsPage> createState() => _MyButtonsPageState();
+  State<ButtonsPage> createState() => _MyButtonsPageState();
 }
 
-class _MyButtonsPageState extends State<MyButtonsPage> {
+class _MyButtonsPageState extends State<ButtonsPage> {
   bool isLoaded = false;
   _Butttons? buttonPage;
 
   getData() async {
     final String response = await rootBundle.loadString('assets/generated.json');
     final data = await json.decode(response);
-
-    print(data[widget.page]);
     buttonPage = _Butttons.fromJson(data[widget.page]);
     setState(() {
       isLoaded = true;
@@ -52,7 +52,7 @@ class _MyButtonsPageState extends State<MyButtonsPage> {
       body: Padding(
         padding: const EdgeInsets.only(top : 40,left: 20,right: 20),
         child: SingleChildScrollView(
-          child: Column(
+          child: isLoaded ? Column(
             children: [
               Center(child: Text(buttonPage!.title!,
               style: const TextStyle(color: Colors.black,fontSize: 20),)),
@@ -65,15 +65,34 @@ class _MyButtonsPageState extends State<MyButtonsPage> {
               ...buttonPage!.buttons!.map((button)  {
                 return Column(
                   children: [
-                    ElevatedButton(onPressed: ()  {}, child:  Text(button,style: const TextStyle(color: Colors.white,fontSize: 20),),
+                    ElevatedButton(onPressed: ()  {
+                      if(button.redirect=="buttons")
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ButtonsPage(button.name!),
+                        ));
+                      }
+                      else if (button.redirect=="static")
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => StaticView(button.id!),
+                        ));
+                      }
+                      else if (button.redirect=="image")
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ImageView(),
+                        ));
+                      }
+                    }, child:  Text(button.name!,style: const TextStyle(color: Colors.white,fontSize: 20),),
                       style: ElevatedButton.styleFrom(primary: Colors.teal,
-                          fixedSize: Size(MediaQuery.of(context).size.width, 50)),),
+                          minimumSize: Size(MediaQuery.of(context).size.width, 50)),),
                     const SizedBox(height: 50,)
                   ],
                 );
               }).toList()
             ],
-          )
+          ) : const Center(child: CircularProgressIndicator(),)
         ),
       ),
     );
@@ -86,7 +105,7 @@ class _Butttons {
   String? path;
   bool? image;
   String? title;
-  List<dynamic>? buttons;
+  List<_ButtonDetails>? buttons;
 
   _Butttons(
       this.id, this.extra, this.path, this.image, this.title, this.buttons);
@@ -98,7 +117,24 @@ class _Butttons {
       json['path'],
       json['image'],
       json['title'],
-      json['buttons'],
+      List<_ButtonDetails>.from(json['buttons'].map((x) => _ButtonDetails.fromJson(x))) ,
+    );
+  }
+}
+
+class _ButtonDetails
+{
+  String? name;
+  String? redirect;
+  int? id;
+
+  _ButtonDetails(this.name, this.redirect, this.id);
+
+  factory _ButtonDetails.fromJson(Map<String, dynamic> json) {
+    return _ButtonDetails(
+      json['name'],
+      json['redirect'],
+      json['id'],
     );
   }
 }
