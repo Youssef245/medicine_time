@@ -142,15 +142,15 @@ class _LoginPageState extends State<MyLoginPage> {
                 ),
                   const SizedBox(height: 10,),
                  ElevatedButton(onPressed: () async {
-                   setNotification2();
-                   setNotification1();
+                   //setNotification2();
+                   //setNotification1();
                    String status = await login(nameController.text, passwordController.text);
                    if(status=="true")
                    {
                      if(save) saveCredentials(nameController.text, passwordController.text);
                      Navigator.of(context).pop();
                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                         Homepage()));
+                         MyHomepage()));
                    }
                  }, child: Text("تسجيل الدخول",style: const TextStyle(color: Colors.teal),),
                    style: ElevatedButton.styleFrom(primary: Colors.white70),)

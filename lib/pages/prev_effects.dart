@@ -7,23 +7,14 @@ import '../entities/question.dart';
 import 'package:medicine_time/globals.dart' as globals;
 
 
-class PrevEffects extends StatelessWidget {
-  const PrevEffects({Key? key}) : super(key: key);
+class PrevEffects extends StatefulWidget {
+  PrevEffects();
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'PrevEffects', home: MyPrevEffects());
-  }
+  State<PrevEffects> createState() => _MyPrevEffectsState();
 }
 
-class MyPrevEffects extends StatefulWidget {
-  MyPrevEffects();
-
-  @override
-  State<MyPrevEffects> createState() => _MyPrevEffectsState();
-}
-
-class _MyPrevEffectsState extends State<MyPrevEffects> {
+class _MyPrevEffectsState extends State<PrevEffects> {
   bool isLoaded = false;
   List<UserEffect> effects = [];
 

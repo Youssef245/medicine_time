@@ -16,21 +16,15 @@ import '../services/alarm_service.dart';
 import 'home_page.dart';
 import 'medicine_taken.dart';
 
-class AddMeasures extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'AddMeasure', home: MyAddMeasures());
-  }
-}
 
-class MyAddMeasures extends StatefulWidget {
-  MyAddMeasures();
+class AddMeasures extends StatefulWidget {
+  AddMeasures();
 
   @override
-  State<MyAddMeasures> createState() => _MyAddMeasuresState();
+  State<AddMeasures> createState() => _MyAddMeasuresState();
 }
 
-class _MyAddMeasuresState extends State<MyAddMeasures> {
+class _MyAddMeasuresState extends State<AddMeasures> {
   LocalDB dbHelper = LocalDB();
   DateTime now = DateTime.now();
   TextEditingController sy_pressureController= TextEditingController();

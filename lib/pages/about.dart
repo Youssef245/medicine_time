@@ -1,17 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+
 class About extends StatelessWidget {
-  const About({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'About', home: MyAbout());
-  }
-}
-
-class MyAbout extends StatelessWidget {
-   MyAbout({Key? key}) : super(key: key);
+  About({Key? key}) : super(key: key);
 
   String text = "هو تطبيق هاتفي يهدف إلى مساعدة مرضي الكلى من خلال \n" +
       "• تسجيل أدويتهم وتذكيرهم بمواعيدها، \n" +

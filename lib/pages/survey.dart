@@ -5,25 +5,16 @@ import 'package:medicine_time/globals.dart' as globals;
 import 'package:medicine_time/services/survey_service.dart';
 import 'home_page.dart';
 
-class Survey extends StatelessWidget {
-  const Survey({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'About', home: MySurvey());
-  }
-}
-
 enum answer {agree , strongAgree , neutral, refuse, strongRefuse, noChoice}
 
-class MySurvey extends StatefulWidget {
-  MySurvey({Key? key}) : super(key: key);
+class Survey extends StatefulWidget {
+  Survey({Key? key}) : super(key: key);
 
   @override
-  State<MySurvey> createState() => _MySurveyState();
+  State<Survey> createState() => _MySurveyState();
 }
 
-class _MySurveyState extends State<MySurvey> {
+class _MySurveyState extends State<Survey> {
   List <answer> answers = List.filled(10, answer.noChoice);
 
   String text = "هذا الاستبيان مكون من عشرة اسئلة يقيس قابلية و سهولة استخدام التطبيق بشكل عام. الرجاء اختيار الإجابة التي تعبر عن ردّك الفوري على"
@@ -176,7 +167,7 @@ class _MySurveyState extends State<MySurvey> {
                       sendSurvey();
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                          Homepage()));
+                          MyHomepage()));
                     },child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
                       style: ElevatedButton.styleFrom(primary: Colors.white70),),
                   ],

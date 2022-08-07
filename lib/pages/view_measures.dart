@@ -10,21 +10,15 @@ import '../entities/medicine_alarm.dart';
 import '../services/alarm_service.dart';
 import 'medicine_taken.dart';
 
-class ViewMeasures extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'ViewMeasures', home: MyViewMeasures());
-  }
-}
 
-class MyViewMeasures extends StatefulWidget {
-  MyViewMeasures();
+class ViewMeasures extends StatefulWidget {
+  ViewMeasures();
 
   @override
-  State<MyViewMeasures> createState() => _MyViewMeasuresState();
+  State<ViewMeasures> createState() => _MyViewMeasuresState();
 }
 
-class _MyViewMeasuresState extends State<MyViewMeasures> {
+class _MyViewMeasuresState extends State<ViewMeasures> {
   bool isLoaded = false;
   LocalDB dbHelper = LocalDB();
   List<Measure> measures = [];

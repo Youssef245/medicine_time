@@ -4,26 +4,15 @@ import 'package:medicine_time/entities/medicine.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/services/medicine_service.dart';
 
-class ChooseMedicine extends StatelessWidget{
 
+class ChooseMedicine extends StatefulWidget {
+
+  ChooseMedicine();
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home:MyChooseMedicine()
-    );
-  }
+  State<ChooseMedicine> createState() => _MyChooseMedicineState();
 }
 
-
-
-class MyChooseMedicine extends StatefulWidget {
-
-  MyChooseMedicine();
-  @override
-  State<MyChooseMedicine> createState() => _MyChooseMedicineState();
-}
-
-class _MyChooseMedicineState extends State<MyChooseMedicine> {
+class _MyChooseMedicineState extends State<ChooseMedicine> {
 
   List<Medicine> allmedicines = [];
   List<MedCategory> allcategories = [];

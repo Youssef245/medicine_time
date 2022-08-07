@@ -8,26 +8,17 @@ import 'package:medicine_time/globals.dart' as globals;
 import '../entities/user.dart';
 import 'home_page.dart';
 
-class UpdateInformation extends StatelessWidget {
-  const UpdateInformation({Key? key}) : super(key: key);
+class UpdateInformation extends StatefulWidget {
+  UpdateInformation({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'UpdateInformation', home: MyUpdateInformation());
-  }
-}
-
-class MyUpdateInformation extends StatefulWidget {
-  MyUpdateInformation({Key? key}) : super(key: key);
-
-  @override
-  State<MyUpdateInformation> createState() => _MyUpdateInformationState();
+  State<UpdateInformation> createState() => _MyUpdateInformationState();
 }
 
 enum gender {male, female}
 enum options {no , yes}
 
-class _MyUpdateInformationState extends State<MyUpdateInformation> {
+class _MyUpdateInformationState extends State<UpdateInformation> {
   User? user;
   bool isLoaded = false;
   TextEditingController? nameController;
@@ -281,7 +272,7 @@ class _MyUpdateInformationState extends State<MyUpdateInformation> {
               updateUser();
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                  Homepage()));
+                  MyHomepage()));
             }, child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
               style: ElevatedButton.styleFrom(primary: Colors.white70),),
             const SizedBox(height: 5,),

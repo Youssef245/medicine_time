@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/LocalDB.dart';
 import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
@@ -18,14 +19,26 @@ import 'package:medicine_time/services/measures_service.dart';
 import '../entities/Measure.dart';
 import 'add_side_effect.dart';
 import 'ask_doctor.dart';
+import 'medicine_taken.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class Homepage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
         title: 'HomePage',  home:MyHomepage()
     );
+  }
 
+  void selectNotification(String? payload) async {
+    print("fklewfewlfkwe");
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+      navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+          MedicineTaken(int.parse(payload)) ));
+    }
   }
 
 }
@@ -47,9 +60,12 @@ class _MyHomepageState extends State<MyHomepage> {
     _HomePageItem("عن التطبيق", "images/about.png",7),
     _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",8),
   ];
-  
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
+    super.initState();
     sendOffline();
     setState(() {
       isLoaded = true;
@@ -57,6 +73,14 @@ class _MyHomepageState extends State<MyHomepage> {
   }
   
   sendOffline () async {
+
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =  InitializationSettings(
+      android: initializationSettingsAndroid,);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: Homepage().selectNotification);
+
     LocalDB dbHelper = LocalDB();
     AlarmService alarmService = AlarmService();
     List<MedicineAlarm> offlineAlarms = await dbHelper.getOfflineAlarms();
@@ -174,7 +198,7 @@ void onClicked (BuildContext context,int index){
       break;
     case 7:
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const About(),
+        builder: (context) => About(),
       ));
       break;
     case 8:

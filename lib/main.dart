@@ -32,6 +32,16 @@ void main() async {
   await dbHelper.createHistory(history5);*/
   //print(await Permission.ignoreBatteryOptimizations.request().isGranted);
   String? status = await globals.user.read(key: "logged");
+
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings =  InitializationSettings(
+    android: initializationSettingsAndroid,);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: Homepage().selectNotification);
+
+
   final NotificationAppLaunchDetails? notificationAppLaunchDetails =
   await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   if(status=="true"&&notificationAppLaunchDetails!.didNotificationLaunchApp) {

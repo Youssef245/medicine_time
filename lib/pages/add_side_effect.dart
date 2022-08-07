@@ -8,22 +8,12 @@ import 'home_page.dart';
 import 'package:medicine_time/globals.dart' as globals;
 
 
-class AddSideEffects extends StatelessWidget {
-
-  const AddSideEffects({Key? key}) : super(key: key);
-
+class AddSideEffects extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-  return MaterialApp(home: MyAddSideEffects());
-  }
+  State<AddSideEffects> createState() => _MyAddSideEffectsState();
 }
 
-class MyAddSideEffects extends StatefulWidget {
-  @override
-  State<MyAddSideEffects> createState() => _MyAddSideEffectsState();
-}
-
-class _MyAddSideEffectsState extends State<MyAddSideEffects> {
+class _MyAddSideEffectsState extends State<AddSideEffects> {
 
   List<String> kidneyEffects = [
     "لا يوجد",
@@ -116,7 +106,7 @@ class _MyAddSideEffectsState extends State<MyAddSideEffects> {
                 addEffect();
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                    Homepage()));
+                    MyHomepage()));
               }, child: const Text("حفظ",style: TextStyle(color: Colors.teal),),
                 style: ElevatedButton.styleFrom(primary: Colors.white70),),
               const SizedBox(height: 15,),

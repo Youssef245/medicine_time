@@ -20,29 +20,16 @@ import 'package:workmanager/workmanager.dart';
 
 import 'choose_medicine.dart';
 
-class AddMedicine extends StatelessWidget {
+class AddMedicine extends StatefulWidget{
   String? chosenMedicine;
 
   AddMedicine(this.chosenMedicine, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'AddMedicine',
-        home: MyAddMedicine(chosenMedicine)
-    );
-  }
-}
-class MyAddMedicine extends StatefulWidget{
-  String? chosenMedicine;
-
-  MyAddMedicine(this.chosenMedicine, {Key? key}) : super(key: key);
-
-  @override
-  State<MyAddMedicine> createState() => _MyAddMedicineState();
+  State<AddMedicine> createState() => _MyAddMedicineState();
 }
 
-class _MyAddMedicineState extends State<MyAddMedicine> {
+class _MyAddMedicineState extends State<AddMedicine> {
   List<TimeOfDay> timesPickers = [TimeOfDay.now(),TimeOfDay.now(),TimeOfDay.now()];
   List<String> dose_units = ["مجم" ,"جرام" ,"مجم/جرام" ,"مل" ,"مجم/مل" ,"ميكروجرام/مل" ,"ميكروجرام" ,"وحدة دولية/مل"
     ,"مجم/مجم" ,"مجم/جرام" ,"جرام/جرام" ,"%"];
@@ -392,7 +379,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
           handleNotification(timesPickers[i],selectedDays[j].number,al_id,alarm);
         }
       }
-      //Navigator.of(context).pop();
+      Navigator.of(context).pop();
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ViewAlarms()));
     }
@@ -421,7 +408,7 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+        onSelectNotification: Homepage().selectNotification);
    /* */
 
     //DateTime alarmDate = DateTime.now().add(Duration (minutes: 2));
@@ -447,15 +434,6 @@ class _MyAddMedicineState extends State<MyAddMedicine> {
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     
-  }
-
-  void selectNotification(String? payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: $payload');
-        Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MedicineTaken(int.parse(payload)),
-      ));
-    }
   }
 }
 

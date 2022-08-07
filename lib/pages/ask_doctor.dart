@@ -9,23 +9,15 @@ import 'package:medicine_time/globals.dart' as globals;
 
 import 'home_page.dart';
 
-class AskDoctor extends StatelessWidget {
-  const AskDoctor({Key? key}) : super(key: key);
+
+class AskDoctor extends StatefulWidget {
+  AskDoctor({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'AskDoctor', home: MyAskDoctor());
-  }
+  State<AskDoctor> createState() => _MyAskDoctorState();
 }
 
-class MyAskDoctor extends StatefulWidget {
-  MyAskDoctor({Key? key}) : super(key: key);
-
-  @override
-  State<MyAskDoctor> createState() => _MyAskDoctorState();
-}
-
-class _MyAskDoctorState extends State<MyAskDoctor> {
+class _MyAskDoctorState extends State<AskDoctor> {
 
   TextEditingController questionController = TextEditingController();
   List<String> options = ["الطبيب","الصيدلي"];
@@ -91,7 +83,7 @@ class _MyAskDoctorState extends State<MyAskDoctor> {
                   sendQuestion();
                   Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                      Homepage()));
+                      MyHomepage()));
                 }, child: const Text("إرسال",style: TextStyle(color: Colors.teal,fontSize: 20),),
                   style: ElevatedButton.styleFrom(primary: Colors.white70,fixedSize: Size(90, 50)),),
               ),

@@ -180,17 +180,17 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                                   TextButton(onPressed: () async{
                                     //resetNotification();
                                     await createHistory(false);
+                                    Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Homepage(),
+                                      builder: (context) => MyHomepage(),
                                     ));
                                   }, child:
                                   Image.asset('images/image_reminder_configure.png',height: 40 , width: 40,)),
                                   TextButton(onPressed: () async{
-                                   // resetNotification();
                                     await createHistory(true);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Homepage(),
+                                      builder: (context) => MyHomepage(),
                                     ));
                                   }, child:
                                   Image.asset('images/image_reminder_take.png',height: 40 , width: 40,))

@@ -5,23 +5,14 @@ import '../entities/question.dart';
 import 'package:medicine_time/globals.dart' as globals;
 
 
-class PrevQuestions extends StatelessWidget {
-  const PrevQuestions({Key? key}) : super(key: key);
+class PrevQuestions extends StatefulWidget {
+  PrevQuestions();
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'PrevQuestions', home: MyPrevQuestions());
-  }
+  State<PrevQuestions> createState() => _MyPrevQuestionsState();
 }
 
-class MyPrevQuestions extends StatefulWidget {
-   MyPrevQuestions();
-
-  @override
-  State<MyPrevQuestions> createState() => _MyPrevQuestionsState();
-}
-
-class _MyPrevQuestionsState extends State<MyPrevQuestions> {
+class _MyPrevQuestionsState extends State<PrevQuestions> {
   bool isLoaded = false;
   List<Question> questions = [];
 

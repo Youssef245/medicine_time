@@ -9,21 +9,14 @@ import '../entities/medicine_alarm.dart';
 import '../services/alarm_service.dart';
 import 'medicine_taken.dart';
 
-class ViewHistory extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'ViewHistory', home: MyViewHistory());
-  }
-}
-
-class MyViewHistory extends StatefulWidget {
-  MyViewHistory();
+class ViewHistory extends StatefulWidget {
+  ViewHistory();
 
   @override
-  State<MyViewHistory> createState() => _MyViewHistoryState();
+  State<ViewHistory> createState() => _MyViewHistoryState();
 }
 
-class _MyViewHistoryState extends State<MyViewHistory> {
+class _MyViewHistoryState extends State<ViewHistory > {
   bool isLoaded = false;
   LocalDB dbHelper = LocalDB();
   List<History> histories = [];
