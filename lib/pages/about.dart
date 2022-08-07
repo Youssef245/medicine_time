@@ -48,6 +48,7 @@ class About extends StatelessWidget {
                 ),
                 const SizedBox(height: 10,),
                 Text(text,
+                  textDirection: TextDirection.rtl,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15

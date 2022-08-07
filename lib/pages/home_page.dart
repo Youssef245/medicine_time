@@ -10,6 +10,7 @@ import 'package:medicine_time/pages/about.dart';
 import 'package:medicine_time/pages/add_measures.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
 import 'package:medicine_time/globals.dart' as globals;
+import 'package:medicine_time/pages/static_view.dart';
 import 'package:medicine_time/pages/survey.dart';
 import 'package:medicine_time/pages/update_information.dart';
 import 'package:medicine_time/services/alarm_service.dart';
@@ -32,8 +33,17 @@ class Homepage extends StatefulWidget{
     print("fklewfewlfkwe");
     if (payload != null) {
       debugPrint('notification payload: $payload');
-      navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
-          MedicineTaken(int.parse(payload)) ));
+      List<String> arguments = payload.split(" ");
+      if(arguments[0]=="Alarm") {
+        navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+            MedicineTaken(int.parse(arguments[1])) ));
+      } else if(arguments[0]=="Static") {
+        navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+            StaticView(int.parse(arguments[1])) ));
+      } else {
+        navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+            Homepage() ));
+      }
     }
   }
 }

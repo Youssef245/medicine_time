@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification1);
+        onSelectNotification: Homepage().selectNotification);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         900,
@@ -181,12 +181,6 @@ class _LoginPageState extends State<LoginPage> {
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   }
 
-  void selectNotification1(String? payload) async {
-      debugPrint('notification payload: $payload');
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Homepage()),);
-  }
-
   setNotification2() async
   {
     tz.initializeTimeZones();
@@ -197,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification1);
+        onSelectNotification: Homepage().selectNotification);
 
     Random random = Random();
     int randomNumber = random.nextInt(42);

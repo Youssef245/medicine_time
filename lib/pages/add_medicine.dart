@@ -153,6 +153,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
             Center(
               child: widget.chosenMedicine==null ? TextButton(
                 onPressed: () {
+                  Navigator.of(context).pop;
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChooseMedicine()));
                 },
@@ -163,6 +164,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
               ) :
               TextButton(
                 onPressed: (){
+                  Navigator.of(context).pop;
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChooseMedicine()));
                 },

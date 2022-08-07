@@ -40,16 +40,21 @@ void main() async {
     print(notificationAppLaunchDetails.payload);
     List<String> arguments = notificationAppLaunchDetails.payload!.split(" ");
     if(arguments[0]=="Alarm") {
-      runApp(MaterialApp(home: MedicineTaken(int.parse(arguments[1])),));
+      runApp(MaterialApp(navigatorKey: navigatorKey,
+        home: MedicineTaken(int.parse(arguments[1])),));
     } else if(arguments[0]=="Static") {
-      runApp(MaterialApp(home: StaticView(int.parse(arguments[1]))));
+      runApp(MaterialApp(navigatorKey: navigatorKey,
+          home: StaticView(int.parse(arguments[1]))));
     } else {
-      runApp(MaterialApp(home: Homepage()));
+      runApp(MaterialApp(navigatorKey: navigatorKey,
+          home: Homepage()));
     }
 
   } else if (status=="true"&& !notificationAppLaunchDetails!.didNotificationLaunchApp) {
-    runApp(MaterialApp(home: Homepage()));
+    runApp(MaterialApp(navigatorKey: navigatorKey,
+        home: Homepage()));
   } else {
-    runApp(MaterialApp(home : LoginPage()));
+    runApp(MaterialApp(navigatorKey: navigatorKey,
+        home : LoginPage()));
   }
 }
