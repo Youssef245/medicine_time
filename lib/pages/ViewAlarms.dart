@@ -8,6 +8,7 @@ import 'package:medicine_time/services/medicine_service.dart';
 import '../LocalDB.dart';
 import '../entities/medicine_alarm.dart';
 import '../services/alarm_service.dart';
+import 'home_page.dart';
 import 'medicine_taken.dart';
 
 class ViewAlarms extends StatefulWidget {
@@ -23,6 +24,8 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
   List<MedicineAlarm> alarms = [];
   DateTime date =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -31,6 +34,13 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
   }
 
   getData() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =  InitializationSettings(
+      android: initializationSettingsAndroid,);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: Homepage().selectNotification);
+
     alarms = await dbHelper.getAlarmsbyDay(date);
     setState(() {
       isLoaded = true;

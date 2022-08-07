@@ -272,7 +272,7 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
               updateUser();
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                  MyHomepage()));
+                  Homepage()));
             }, child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
               style: ElevatedButton.styleFrom(primary: Colors.white70),),
             const SizedBox(height: 5,),

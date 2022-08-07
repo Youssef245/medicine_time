@@ -83,7 +83,7 @@ class _MyAskDoctorState extends State<AskDoctor> {
                   sendQuestion();
                   Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                      MyHomepage()));
+                      Homepage()));
                 }, child: const Text("إرسال",style: TextStyle(color: Colors.teal,fontSize: 20),),
                   style: ElevatedButton.styleFrom(primary: Colors.white70,fixedSize: Size(90, 50)),),
               ),

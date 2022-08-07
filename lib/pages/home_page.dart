@@ -23,14 +23,10 @@ import 'medicine_taken.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-class Homepage extends StatelessWidget{
+
+class Homepage extends StatefulWidget{
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-        title: 'HomePage',  home:MyHomepage()
-    );
-  }
+  State<Homepage> createState() => _MyHomepageState();
 
   void selectNotification(String? payload) async {
     print("fklewfewlfkwe");
@@ -40,16 +36,9 @@ class Homepage extends StatelessWidget{
           MedicineTaken(int.parse(payload)) ));
     }
   }
-
 }
 
-
-class MyHomepage extends StatefulWidget{
-  @override
-  State<MyHomepage> createState() => _MyHomepageState();
-}
-
-class _MyHomepageState extends State<MyHomepage> {
+class _MyHomepageState extends State<Homepage> {
   bool isLoaded = false;
   List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png",1),
     _HomePageItem("حسابي", "images/users.png",2),
@@ -98,35 +87,38 @@ class _MyHomepageState extends State<MyHomepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: isLoaded ? SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 30,),
-              Align(
-                alignment: Alignment.topLeft,
-                child: ElevatedButton(onPressed: () async {
-                  await globals.user.write(key: 'logged', value: "false");
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                      LoginPage()), (Route<dynamic> route) => false);
-                }, child: Text("خروج",style: const TextStyle(color: Colors.teal),),
-                  style: ElevatedButton.styleFrom(primary: Colors.white70),),
-              ),
-              Image.asset("images/home.png",
-              width: 200,
-              height: 200,),
-              for(int i=0;i<items.length;i=i+2)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(child: cardWidget(items[i+1],context)),
-                    Flexible(child: cardWidget(items[i],context)),
-                  ],
-                )
-            ],
-          ),
-        ) : const Center(child: CircularProgressIndicator() ,),
-      );
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          body: isLoaded ? SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 30,),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(onPressed: () async {
+                    await globals.user.write(key: 'logged', value: "false");
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                        LoginPage()), (Route<dynamic> route) => false);
+                  }, child: Text("خروج",style: const TextStyle(color: Colors.teal),),
+                    style: ElevatedButton.styleFrom(primary: Colors.white70),),
+                ),
+                Image.asset("images/home.png",
+                width: 200,
+                height: 200,),
+                for(int i=0;i<items.length;i=i+2)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(child: cardWidget(items[i+1],context)),
+                      Flexible(child: cardWidget(items[i],context)),
+                    ],
+                  )
+              ],
+            ),
+          ) : const Center(child: CircularProgressIndicator() ,),
+        ),
+    );
   }
 
   Widget cardWidget (_HomePageItem item,BuildContext context)

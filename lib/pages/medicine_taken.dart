@@ -182,7 +182,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                                     await createHistory(false);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => MyHomepage(),
+                                      builder: (context) => Homepage(),
                                     ));
                                   }, child:
                                   Image.asset('images/image_reminder_configure.png',height: 40 , width: 40,)),
@@ -190,7 +190,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                                     await createHistory(true);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => MyHomepage(),
+                                      builder: (context) => Homepage(),
                                     ));
                                   }, child:
                                   Image.asset('images/image_reminder_take.png',height: 40 , width: 40,))

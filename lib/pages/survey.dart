@@ -167,7 +167,7 @@ class _MySurveyState extends State<Survey> {
                       sendSurvey();
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                          MyHomepage()));
+                          Homepage()));
                     },child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
                       style: ElevatedButton.styleFrom(primary: Colors.white70),),
                   ],

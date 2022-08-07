@@ -106,7 +106,7 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
                 addEffect();
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                    MyHomepage()));
+                    Homepage()));
               }, child: const Text("حفظ",style: TextStyle(color: Colors.teal),),
                 style: ElevatedButton.styleFrom(primary: Colors.white70),),
               const SizedBox(height: 15,),

@@ -429,7 +429,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
-        payload: alarm.alarmId.toString(),
+        payload: "Alarm ${alarm.alarmId.toString()}",
         matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();

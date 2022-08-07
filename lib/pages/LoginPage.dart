@@ -12,25 +12,13 @@ import 'package:timezone/timezone.dart' as tz;
 import '../entities/user.dart';
 import 'package:medicine_time/globals.dart' as globals;
 
-class LoginPage extends StatelessWidget {
 
+class LoginPage extends StatefulWidget{
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home:MyLoginPage()
-    );
-
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-
-class MyLoginPage extends StatefulWidget{
-
-  @override
-  State<MyLoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<MyLoginPage> {
+class _LoginPageState extends State<LoginPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   User? user;
@@ -150,7 +138,7 @@ class _LoginPageState extends State<MyLoginPage> {
                      if(save) saveCredentials(nameController.text, passwordController.text);
                      Navigator.of(context).pop();
                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                         MyHomepage()));
+                         Homepage()));
                    }
                  }, child: Text("تسجيل الدخول",style: const TextStyle(color: Colors.teal),),
                    style: ElevatedButton.styleFrom(primary: Colors.white70),)
@@ -187,7 +175,8 @@ class _LoginPageState extends State<MyLoginPage> {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time);
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: "Use");
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   }
@@ -231,7 +220,7 @@ class _LoginPageState extends State<MyLoginPage> {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
-        payload: (randomNumber+1).toString());
+        payload: "Static ${(randomNumber+1).toString()}");
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   }
