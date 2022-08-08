@@ -38,7 +38,7 @@ class _MyPrevEffectsState extends State<PrevEffects> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.teal,
-          title: const Center(child:  Text("الأسئلة السابقة",style: TextStyle(color: Colors.white),)),
+          title: const Center(child:  Text("الأعراض السابقة",style: TextStyle(color: Colors.white),)),
         ),
         body: isLoaded ? Padding(
           padding: const EdgeInsets.only(top: 15 , left: 15,right: 15),

@@ -1,18 +1,11 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/entities/history.dart';
-import 'package:medicine_time/pages/add_medicine.dart';
-import 'package:medicine_time/services/medicine_service.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
-
 import '../LocalDB.dart';
 import '../entities/medicine_alarm.dart';
-import '../services/alarm_service.dart';
 import '../services/history_service.dart';
 import 'home_page.dart';
+import 'package:medicine_time/globals.dart' as globals;
 
 class MedicineTaken extends StatelessWidget {
   int alarmId;
@@ -51,54 +44,15 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
     });
   }
 
-  /*resetNotification() async
-  {
-    DateTime dateTime = DateTime.now().add(const Duration(days: 7));
 
-    tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings =  InitializationSettings(
-      android: initializationSettingsAndroid,);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
-
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-        alarm!.id,
-        'حان وقت الدواء',
-        'اضغط هنا!',
-        tz.TZDateTime.from(dateTime, tz.getLocation('Africa/Cairo')),
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-              'ALARMS_${alarm!.id}', 'Alarm_${alarm!.id}',
-              channelDescription: 'Alarm Channel for ${alarm!.id}',importance: Importance.high, priority: Priority.high,
-              playSound: true,
-              sound: RawResourceAndroidNotificationSound('cuco_sound'),
-            )),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime,
-        payload: alarm!.alarmId.toString());
-    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
-        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-  }
-
-  void selectNotification(String? payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: $payload');
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MedicineTaken(int.parse(payload)),
-      ));
-    }
-  }*/
 
   createHistory(bool taken) async
   {
+    String? id = await globals.user.read(key: "id");
     int action = taken ? 1 : 0 ;
     History history = History.name(alarm!.hour, alarm!.minute, alarm!.dateString, alarm!.pillName,
         action, alarm!.doseQuantity, alarm!.doseQuantity2, alarm!.weekday, alarm!.doseUnit, alarm!.doseUnit2, alarm!.alarmId);
+    history.userID = int.parse(id!);
     await dbHelper.createHistory(history);
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile||connectivityResult == ConnectivityResult.wifi) {

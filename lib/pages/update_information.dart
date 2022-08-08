@@ -119,7 +119,7 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
       educationLevelValue = educationLevel.first;
     }
 
-    if(user!.education_level!="") {
+    if(user!.kidney_stage!="") {
       kidneyStage = kidneyStages.firstWhere((element) => element==user!.kidney_stage);
     } else {
       kidneyStage = kidneyStages.first;

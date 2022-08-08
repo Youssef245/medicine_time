@@ -22,6 +22,13 @@ class _MyViewHistoryState extends State<ViewHistory > {
   List<History> histories = [];
   DateTime date =
   DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  List<String> filterOptions = [
+    "كل الأدوية",
+    "أدوية تم أخذها",
+    "أدوية لم يتم أخذها"
+  ];
+  String? chosenFilter;
+  List<History> filteredHistory = [];
 
   @override
   void initState() {
@@ -30,8 +37,10 @@ class _MyViewHistoryState extends State<ViewHistory > {
   }
 
   getData() async {
+    chosenFilter = filterOptions.first;
     histories = await dbHelper.getHistories();
     histories.sort((a, b) => a.getdate().compareTo(b.getdate()));
+    filteredHistory=histories;
     setState(() {
       isLoaded = true;
     });
@@ -56,7 +65,28 @@ class _MyViewHistoryState extends State<ViewHistory > {
         child: isLoaded
             ? Column(
           children: [
-            ...histories.map((history) {
+            DropdownButton<String>(
+                items: filterOptions
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                value: chosenFilter,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    chosenFilter = newValue!;
+                    if(chosenFilter==filterOptions.first) {
+                      filteredHistory = histories;
+                    } else if (chosenFilter==filterOptions.last) {
+                      filteredHistory = histories.where((e) => e.action==0).toList();
+                    } else {
+                      filteredHistory = histories.where((e) => e.action==1).toList();
+                    }
+                  });
+                }),
+            ...filteredHistory.map((history) {
               return Column(
                 children: [
                   Container(

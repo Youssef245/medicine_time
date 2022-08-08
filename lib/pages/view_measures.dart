@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_time/pages/ViewHistory.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
+import 'package:medicine_time/pages/plot_options.dart';
 import 'package:medicine_time/services/medicine_service.dart';
 
 import '../LocalDB.dart';
@@ -48,6 +49,14 @@ class _MyViewMeasuresState extends State<ViewMeasures> {
         child: SingleChildScrollView(
           child:Column(
             children: [
+              Align(
+                alignment: FractionalOffset.topLeft,
+                child: ElevatedButton(onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                      PlotOptions(measures)));
+                }, child: const Text("الرسم التوضيحي",style:  TextStyle(color: Colors.teal),),
+                  style: ElevatedButton.styleFrom(primary: Colors.white70),),
+              ),
               ...measures.map((measure) {
                 return Column(
                 children: [

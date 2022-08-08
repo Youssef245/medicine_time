@@ -119,16 +119,32 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
                                             color: Colors.black, fontSize: 35),
                                       ),
                                       IconButton(
-                                          onPressed: () async {
-                                            AlarmService service =
-                                                AlarmService();
-                                            LocalDB localdb = LocalDB();
-                                            await localdb.deleteAlarm(alarm);
-                                            await service.deleteAlarm(alarm);
-                                            FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-                                            await flutterLocalNotificationsPlugin.cancel(alarm.id);
-                                            getData();
-                                          },
+                                          onPressed: () => showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) => AlertDialog(
+                                              title: const Text('هل انت متأكد من حذف الدواء ؟'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                  child: const Text('إلغاء'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    AlarmService service =
+                                                    AlarmService();
+                                                    LocalDB localdb = LocalDB();
+                                                    await localdb.deleteAlarm(alarm);
+                                                    await service.deleteAlarm(alarm);
+                                                    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+                                                    await flutterLocalNotificationsPlugin.cancel(alarm.id);
+                                                    getData();
+                                                    Navigator.pop(context, 'OK');
+                                                  },
+                                                  child: const Text('تأكيد'),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           icon: const Icon(
                                             Icons.cancel,
                                             color: Colors.red,

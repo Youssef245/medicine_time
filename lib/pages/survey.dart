@@ -1,3 +1,4 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -203,21 +204,37 @@ class _MySurveyState extends State<Survey> {
     var formatter = DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(DateTime.now());
 
-    SurveySerive service = SurveySerive();
-    await service.postSurvey({
-      "q1" : getAnswer(answers[0]),
-      "q2" : getAnswer(answers[1]),
-      "q3" : getAnswer(answers[2]),
-      "q4" : getAnswer(answers[3]),
-      "q5" : getAnswer(answers[4]),
-      "q6" : getAnswer(answers[5]),
-      "q7" : getAnswer(answers[6]),
-      "q8" : getAnswer(answers[7]),
-      "q9" : getAnswer(answers[8]),
-      "q10" : getAnswer(answers[9]),
-      "user_id" : int.parse(id!),
-      "date" : formattedDate,
-    });
+    bool nochoice = false;
+    answers.forEach((e) {if(e==answer.noChoice) nochoice=true; });
+
+    if(nochoice)
+    {
+      ArtSweetAlert.show(
+          context: context,
+          artDialogArgs: ArtDialogArgs(
+              type: ArtSweetAlertType.danger,
+              text: "يجب إجابة جميع الأسئلة لإتمام الاستبيان."
+          )
+      );
+    }
+    else
+    {
+      SurveySerive service = SurveySerive();
+      await service.postSurvey({
+        "q1" : getAnswer(answers[0]),
+        "q2" : getAnswer(answers[1]),
+        "q3" : getAnswer(answers[2]),
+        "q4" : getAnswer(answers[3]),
+        "q5" : getAnswer(answers[4]),
+        "q6" : getAnswer(answers[5]),
+        "q7" : getAnswer(answers[6]),
+        "q8" : getAnswer(answers[7]),
+        "q9" : getAnswer(answers[8]),
+        "q10" : getAnswer(answers[9]),
+        "user_id" : int.parse(id!),
+        "date" : formattedDate,
+      });
+    }
   }
 }
 

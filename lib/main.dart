@@ -19,8 +19,6 @@ FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalDB dbHelper = LocalDB();
-  await dbHelper.deleteHistory();
   String? status = await globals.user.read(key: "logged");
 
 

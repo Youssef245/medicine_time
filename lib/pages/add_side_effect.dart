@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_time/api.dart';
 import 'package:medicine_time/entities/user_effect.dart';
 import 'package:medicine_time/pages/prev_effects.dart';
 import 'package:medicine_time/services/effects_service.dart';
@@ -52,7 +53,6 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
     EffectsService service = EffectsService();
     sideEffects = await service.getSideEffects();
     sideEffects!.distinct((d) => d.category).toList().forEach((element) {sideCategories.add(element.category);});
-    print(sideCategories);
     filteredEffects = sideEffects;
     kidneyEffectsValue = kidneyEffects.first;
     sideCategoriesValue = sideCategories.where((element) => element=="الكل").first;
@@ -86,7 +86,7 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top : 80,right: 15),
+        padding: const EdgeInsets.only(top : 80,right: 15,left: 15),
         child: isLoaded ? SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -97,11 +97,11 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
                   height: 150,
                 ),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
               firstPart(),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               secondPart(),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
               ElevatedButton(onPressed: () async {
                 addEffect();
                 Navigator.of(context).pop();
@@ -162,7 +162,9 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
         if(kidneyEffectsValue==kidneyEffects.last)
           Container(width: MediaQuery.of(context).size.width,
               child: TextFormField(
+                textDirection : TextDirection.rtl,
                   decoration:  const InputDecoration(hintText: "أعراض أخرى" ,
+                    hintTextDirection: TextDirection.rtl,
                     border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
                   controller: kidneyController ,
                   textAlignVertical: TextAlignVertical.center)),
@@ -218,10 +220,12 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
                 sideEffectsValue = newValue!;
               });
             }),
-        if(sideEffectsValue=="لا يوجد")
-          Container(width: MediaQuery.of(context).size.width*0.6,
+        if(sideEffectsValue=="أخرى")
+          Container(width: MediaQuery.of(context).size.width,
               child: TextFormField(
+                textDirection: TextDirection.rtl,
                   decoration:  const InputDecoration(hintText: "أعراض أخرى" ,
+                    hintTextDirection: TextDirection.rtl,
                     border:  OutlineInputBorder(borderSide:  BorderSide(width: 2.0),),),
                   controller: sideController ,
                   textAlignVertical: TextAlignVertical.center)),

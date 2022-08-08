@@ -17,6 +17,7 @@ import 'package:medicine_time/services/alarm_service.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:workmanager/workmanager.dart';
+import 'package:medicine_time/globals.dart' as globals;
 
 import 'choose_medicine.dart';
 
@@ -298,6 +299,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
                 TextButton(onPressed: ()async {
                   final TimeOfDay? newTime = await showTimePicker(
                     context: context,
+
                     initialTime: timesPickers[z],
                   );
                   if (newTime != null) {
@@ -330,6 +332,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
     int alarm_id = await service.getLastID();
     List<MedicineAlarm> allAlarms = await dbHelper.getallAlarms();
     var now = DateTime.now();
+    String? id = await globals.user.read(key: "id");
     var formatter = DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(now);
     List <_DayOfWeek> selectedDays = days_of_week.where((element) => element.chosen).toList();
@@ -367,7 +370,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
         for(int j=0;j<selectedDays.length;j++)
         {
           MedicineAlarm alarm = MedicineAlarm.name2(timesPickers[i].hour, selectedDays[j].number, timesPickers[i].minute, widget.chosenMedicine, quantity1,
-              dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,3000);
+              dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,int.parse(id!));
           int? al_id = await dbHelper.createAlarm(alarm);
           alarm.id = al_id;
           if(_connectionStatus==ConnectivityResult.mobile||_connectionStatus==ConnectivityResult.wifi)
