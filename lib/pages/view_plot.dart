@@ -28,7 +28,6 @@ class _ViewPlotState extends State<ViewPlot> {
     int i=0;
     widget.data.forEach((e) {
       i++;
-      print(i);
       chartData.add(_ChartData(i, e));
     });
   }

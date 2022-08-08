@@ -31,46 +31,48 @@ class _MyPlotOptionsState extends State<PlotOptions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-              child:Column(
-                children: [
-                  const SizedBox(height: 7,),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      button(" الكرياتنين في الدم",1),
-                      button(" الترشيح الكبيبي",2),
-                    ],),
-                  const SizedBox(height: 5,),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      button("الضغط",3),
-                      button("هيموجلوبين",4),
-                    ],),
-                  const SizedBox(height: 5,),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      button("السكر التراكمي",5),
-                      button("السكر العشوائي",6),
-                    ],),
-                  const SizedBox(height: 5,),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                     button("صوديوم",7),
-                      button("بوتاسيوم",8),
-                    ],),
-                  const SizedBox(height: 5,),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      button("كالسيوم",9),
-                      button("فوسفات",10),
-                    ],),
-                  const SizedBox(height: 5,),
-                  button("الوزن",11),
-                  const SizedBox(height: 5,),
-                  const Divider(color: Colors.teal,thickness: 3,),
-                ],
-              )
+        body: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+            child: SingleChildScrollView(
+                child:Column(
+                  children: [
+                    const SizedBox(height: 7,),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        button(" الكرياتنين في الدم",1),
+                        button(" الترشيح الكبيبي",2),
+                      ],),
+                    const SizedBox(height: 5,),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        button("الضغط",3),
+                        button("هيموجلوبين",4),
+                      ],),
+                    const SizedBox(height: 5,),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        button("السكر التراكمي",5),
+                        button("السكر العشوائي",6),
+                      ],),
+                    const SizedBox(height: 5,),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                       button("صوديوم",7),
+                        button("بوتاسيوم",8),
+                      ],),
+                    const SizedBox(height: 5,),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        button("كالسيوم",9),
+                        button("فوسفات",10),
+                      ],),
+                    const SizedBox(height: 5,),
+                    button("الوزن",11),
+                    const SizedBox(height: 5,),
+                  ],
+                )
+            ),
           ),
         )
     );
