@@ -50,6 +50,7 @@ class _MyAddMeasuresState extends State<AddMeasures> {
   void initState() {
     super.initState();
     items = [
+      _inputItem.name( "الكرياتينين في الدم", "مجم/ديسيلتر",  createninController),
       _inputItem.name( "معدل الترشيح الكبيبي", "مل/دقيقة",  rangeController),
       _pressureItem("ضغط الدم", "120", "80", dia_pressureController, sy_pressureController),
       _inputItem.name( "السكر التراكمي", "%",  glucoseController),
@@ -200,12 +201,17 @@ class _MyAddMeasuresState extends State<AddMeasures> {
 
   getValue (TextEditingController controller,bool string)
   {
-    if(controller.text.isNotEmpty)
-      return controller.text;
-    else if (controller.text.isEmpty&&string)
+    if(controller.text.isNotEmpty) {
+      if(string) {
+        return controller.text;
+      } else {
+        return double.parse(controller.text);
+      }
+    } else if (controller.text.isEmpty&&string) {
       return "0.0";
-    else
+    } else {
       return 0.0;
+    }
   }
 
 }
