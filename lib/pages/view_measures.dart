@@ -49,14 +49,6 @@ class _MyViewMeasuresState extends State<ViewMeasures> {
         child: SingleChildScrollView(
           child:Column(
             children: [
-              Align(
-                alignment: FractionalOffset.topLeft,
-                child: ElevatedButton(onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                      PlotOptions(measures)));
-                }, child: const Text("الرسم التوضيحي",style:  TextStyle(color: Colors.teal),),
-                  style: ElevatedButton.styleFrom(primary: Colors.white70),),
-              ),
               ...measures.map((measure) {
                 return Column(
                 children: [
@@ -64,35 +56,35 @@ class _MyViewMeasuresState extends State<ViewMeasures> {
                   const SizedBox(height: 7,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(" الكرياتنين في الدم : ${measure.createnin}",style: const TextStyle(color :Colors.black,fontSize: 18),),
-                    Text(" الترشيح الكبيبي : ${measure.range}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                    if(measure.createnin!=0.0) Text(" الكرياتنين في الدم : ${measure.createnin}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                    if(measure.range!=0.0) Text(" الترشيح الكبيبي : ${measure.range}",style: const TextStyle(color :Colors.black,fontSize: 18),),
                   ],),
                   const SizedBox(height: 5,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(" الضغط : ${measure.pressure}",style: const TextStyle(color :Colors.black,fontSize: 18),),
-                      Text(" هيموجلوبين : ${measure.hemoglobin}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.pressure!="0.0/0.0") Text(" الضغط : ${measure.pressure}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.hemoglobin!=0.0) Text(" هيموجلوبين : ${measure.hemoglobin}",style: const TextStyle(color :Colors.black,fontSize: 18),),
                     ],),
                   const SizedBox(height: 5,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(" السكر التراكمي : ${measure.glucose}",style: const TextStyle(color :Colors.black,fontSize: 18),),
-                      Text(" السكر العشوائي : ${measure.random_glucose}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.glucose!=0.0) Text(" السكر التراكمي : ${measure.glucose}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.random_glucose!=0.0) Text(" السكر العشوائي : ${measure.random_glucose}",style: const TextStyle(color :Colors.black,fontSize: 18),),
                     ],),
                   const SizedBox(height: 5,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(" صوديوم : ${measure.sodium}",style: const TextStyle(color :Colors.black,fontSize: 18),),
-                      Text(" بوتاسيوم : ${measure.potassium}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.sodium!=0.0) Text(" صوديوم : ${measure.sodium}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.potassium!=0.0) Text(" بوتاسيوم : ${measure.potassium}",style: const TextStyle(color :Colors.black,fontSize: 18),),
                     ],),
                   const SizedBox(height: 5,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(" كالسيوم : ${measure.calcium}",style: const TextStyle(color :Colors.black,fontSize: 18),),
-                      Text(" فوسفات : ${measure.phosphate}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.calcium!=0.0) Text(" كالسيوم : ${measure.calcium}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                      if(measure.phosphate!=0.0) Text(" فوسفات : ${measure.phosphate}",style: const TextStyle(color :Colors.black,fontSize: 18),),
                     ],),
                   const SizedBox(height: 5,),
-                  Text(" الوزن : ${measure.weight}",style: const TextStyle(color :Colors.black,fontSize: 18),),
+                  if(measure.weight!=0.0) Text(" الوزن : ${measure.weight}",style: const TextStyle(color :Colors.black,fontSize: 18),),
                   const SizedBox(height: 5,),
                   const Divider(color: Colors.teal,thickness: 3,),
                 ],

@@ -31,7 +31,7 @@ class AddMedicine extends StatefulWidget{
 }
 
 class _MyAddMedicineState extends State<AddMedicine> {
-  List<TimeOfDay> timesPickers = [TimeOfDay.now(),TimeOfDay.now(),TimeOfDay.now()];
+  List<TimeOfDay> timesPickers = [TimeOfDay.now(),TimeOfDay.now(),TimeOfDay.now(),TimeOfDay.now(),TimeOfDay.now(),TimeOfDay.now()];
   List<String> dose_units = ["مجم" ,"جرام" ,"مجم/جرام" ,"مل" ,"مجم/مل" ,"ميكروجرام/مل" ,"ميكروجرام" ,"وحدة دولية/مل"
     ,"مجم/مجم" ,"مجم/جرام" ,"جرام/جرام" ,"%"];
   String? dose_units_value = "مجم";
@@ -278,7 +278,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
         children: [
           const Text("عدد المرات",style: TextStyle(fontSize: 15, color: Colors.teal),),
           DropdownButton<String>(
-              items: ["مرة","مرتين","ثلاث مرات"]
+              items: ["مرة","مرتين","ثلاث مرات","أربع مرات","خمس مرات","ست مرات"]
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -296,18 +296,20 @@ class _MyAddMedicineState extends State<AddMedicine> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               for(int z=0;z<getNumber(times!);z++)
-                TextButton(onPressed: ()async {
-                  final TimeOfDay? newTime = await showTimePicker(
-                    context: context,
+                Flexible(
+                  child: TextButton(onPressed: ()async {
+                    final TimeOfDay? newTime = await showTimePicker(
+                      context: context,
 
-                    initialTime: timesPickers[z],
-                  );
-                  if (newTime != null) {
-                    setState(() {
-                      timesPickers[z] = newTime;
-                    });
-                  }
-                }, child: Text("${timesPickers[z].hour}:${timesPickers[z].minute}",style: const TextStyle(color: Colors.black)),)
+                      initialTime: timesPickers[z],
+                    );
+                    if (newTime != null) {
+                      setState(() {
+                        timesPickers[z] = newTime;
+                      });
+                    }
+                  }, child: Text("${timesPickers[z].hour}:${timesPickers[z].minute}",style: const TextStyle(color: Colors.black)),),
+                )
             ],
           ),
           const SizedBox(height: 20,),
@@ -322,8 +324,17 @@ class _MyAddMedicineState extends State<AddMedicine> {
       return 1;
     } else if (string=="مرتين") {
       return 2;
-    } else {
+    } else if (string=="ثلاث مرات") {
       return 3;
+    }
+    else if (string=="أربع مرات") {
+      return 4;
+    }
+    else if (string=="خمس مرات") {
+      return 5;
+    }
+    else {
+      return 6;
     }
   }
 
@@ -354,17 +365,6 @@ class _MyAddMedicineState extends State<AddMedicine> {
       for(int i=0;i<getNumber(times!);i++)
       {
         alarm_id++;
-
-        //Not to Have Two Alarms at the Same Time
-        for(int z=0;z<allAlarms.length;z++)
-        {
-          if(allAlarms[z].hour==timesPickers[i].hour && allAlarms[z].minute==timesPickers[i].minute) {
-            timesPickers[i].replacing(
-                hour: timesPickers[i].hour,
-                minute: timesPickers[i].minute+5,
-            );
-          }
-        }
 
         // Add Medicine for Every Chosen Time and Day
         for(int j=0;j<selectedDays.length;j++)

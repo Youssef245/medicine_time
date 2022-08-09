@@ -5,9 +5,10 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ViewPlot extends StatefulWidget {
   List<double> data;
+  List<String> dates;
   String title;
 
-  ViewPlot(this.title,this.data,{Key? key}) : super(key: key);
+  ViewPlot(this.title,this.data,this.dates,{Key? key}) : super(key: key);
 
   @override
   State<ViewPlot> createState() => _ViewPlotState();
@@ -25,11 +26,11 @@ class _ViewPlotState extends State<ViewPlot> {
 
   fillData()
   {
-    int i=0;
-    widget.data.forEach((e) {
-      i++;
-      chartData.add(_ChartData(i, e));
-    });
+    for (int i = 0; i < widget.data.length; i++)
+    {
+      int num = i+1;
+      chartData.add(_ChartData(num, widget.data[i],widget.dates[i]));
+    }
   }
 
   @override
@@ -45,13 +46,19 @@ class _ViewPlotState extends State<ViewPlot> {
                 edgeLabelPlacement: EdgeLabelPlacement.shift,
                 interval: 1,
                 majorGridLines: const MajorGridLines(width: 0)),
-            series: <LineSeries<_ChartData , num>>[
-              LineSeries<_ChartData , num>(
+            series: <LineSeries<_ChartData , dynamic>>[
+              LineSeries<_ChartData , dynamic>(
                       dataSource: chartData,
                       xValueMapper: (_ChartData points, _) => points.x,
                       yValueMapper: (_ChartData points, _) => points.y,
+                      dataLabelMapper: (_ChartData points, _) => points.d,
                       // Enable data label
-                      dataLabelSettings: const DataLabelSettings(isVisible: true)
+                      dataLabelSettings: const DataLabelSettings(isVisible: true,
+                        angle: 45,
+                      ),
+                      markerSettings:const MarkerSettings(
+                          isVisible: true
+                      ),
                   )
             ],
             tooltipBehavior: TooltipBehavior(enable: true),
@@ -64,8 +71,9 @@ class _ViewPlotState extends State<ViewPlot> {
 }
 
 class _ChartData {
-  _ChartData(this.x, this.y);
+  _ChartData(this.x, this.y,this.d);
   final int x;
   final double y;
+  final String d;
 }
 
