@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:medicine_time/entities/Measure.dart';
 import 'package:medicine_time/pages/ViewHistory.dart';
 import 'package:medicine_time/pages/add_medicine.dart';
+import 'package:medicine_time/pages/plot_options.dart';
 import 'package:medicine_time/pages/view_measures.dart';
 import 'package:medicine_time/services/measures_service.dart';
 import 'package:medicine_time/services/medicine_service.dart';
@@ -114,14 +115,21 @@ class _MyAddMeasuresState extends State<AddMeasures> {
               }, child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
                             style: ElevatedButton.styleFrom(primary: Colors.white70),),
               const SizedBox(height: 15,),
-              Align(
-                alignment: FractionalOffset.bottomLeft,
-                child: ElevatedButton(onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                      ViewMeasures()));
-                }, child: const Text("القياسات السابقة",style:  TextStyle(color: Colors.teal),),
-                  style: ElevatedButton.styleFrom(primary: Colors.white70),),
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(onPressed: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                        ViewMeasures()));
+                  }, child: const Text("القياسات السابقة",style:  TextStyle(color: Colors.teal),),
+                    style: ElevatedButton.styleFrom(primary: Colors.white70),),
+                  ElevatedButton(onPressed: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                        PlotOptions()));
+                  }, child: const Text("الرسم التوضيحي",style:  TextStyle(color: Colors.teal),),
+                    style: ElevatedButton.styleFrom(primary: Colors.white70),),
+                ],
+              ),
 
             ],
           ),
