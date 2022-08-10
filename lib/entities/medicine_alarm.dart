@@ -12,6 +12,7 @@ class MedicineAlarm {
   String? _doseQuantity2;
   int? _alarmId;
   int? _userID;
+  int? everyOtherDay;
 
   MedicineAlarm() {
     _doseQuantity2="0";
@@ -29,7 +30,8 @@ class MedicineAlarm {
       this._doseUnit2,
       this._dateString,
       this._doseQuantity2,
-      this._alarmId,);
+      this._alarmId,
+      this.everyOtherDay);
 
   MedicineAlarm.name2(
       this._hour,
@@ -171,6 +173,7 @@ class MedicineAlarm {
       json['date'],
       json['dose_quantity2'],
       json['alarm_id'],
+      json['every_other_day']
     );
   }
 }

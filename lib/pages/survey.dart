@@ -166,9 +166,6 @@ class _MySurveyState extends State<Survey> {
                     const SizedBox(height: 15,),
                     ElevatedButton(onPressed: () async{
                       sendSurvey();
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-                          Homepage()));
                     },child: Text("تسجيل",style: const TextStyle(color: Colors.teal),),
                       style: ElevatedButton.styleFrom(primary: Colors.white70),),
                   ],
@@ -234,6 +231,9 @@ class _MySurveyState extends State<Survey> {
         "user_id" : int.parse(id!),
         "date" : formattedDate,
       });
+      Navigator.of(context).pop();
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+          Homepage()));
     }
   }
 }

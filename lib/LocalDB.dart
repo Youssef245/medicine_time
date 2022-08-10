@@ -25,6 +25,7 @@ class LocalDB {
   final String KEY_HOUR = "hour";
   final String KEY_MINUTE = "minute";
   final String KEY_DAY_WEEK = "day_of_week";
+  final String KEY_EVERY_OTHER_DAY = "every_other_Day";
   final String KEY_ALARMS_PILL_NAME = "pillName";
   final String KEY_DOSE_QUANTITY = "dose_quantity";
   final String KEY_DOSE_QUANTITY2 = "dose_quantity2";
@@ -72,6 +73,7 @@ class LocalDB {
             + KEY_ALARM_ID + " integer,"
             + KEY_HOUR + " integer,"
             + KEY_MINUTE + " integer,"
+            + KEY_EVERY_OTHER_DAY + " integer,"
             + KEY_ALARMS_PILL_NAME + " text not null,"
             + KEY_DATE_STRING + " text,"
             + KEY_DOSE_QUANTITY + " text,"
@@ -126,9 +128,9 @@ class LocalDB {
     Database database = await openDB();
     await database.transaction((txn) async {
       int id1 = await txn.rawInsert(
-          "INSERT INTO $ALARM_TABLE($KEY_HOUR, $KEY_MINUTE, $KEY_DAY_WEEK, $KEY_ALARMS_PILL_NAME,"
+          "INSERT INTO $ALARM_TABLE($KEY_HOUR, $KEY_MINUTE, $KEY_DAY_WEEK, $KEY_EVERY_OTHER_DAY, $KEY_ALARMS_PILL_NAME,"
               "$KEY_DOSE_QUANTITY, $KEY_DOSE_UNITS,$KEY_DOSE_QUANTITY2, $KEY_DOSE_UNITS2,$KEY_DATE_STRING, $KEY_ALARM_ID)"
-              "VALUES(${alarm.hour}, ${alarm.minute}, ${alarm.weekday}, '${alarm.pillName}', ${alarm.doseQuantity}, "
+              "VALUES(${alarm.hour}, ${alarm.minute}, ${alarm.weekday},${alarm.everyOtherDay}, '${alarm.pillName}', ${alarm.doseQuantity}, "
               "'${alarm.doseUnit}', ${alarm.doseQuantity2}, '${alarm.doseUnit2}', '${alarm.dateString}', ${alarm.alarmId})");
       print('inserted1: $id1');
       id=id1;

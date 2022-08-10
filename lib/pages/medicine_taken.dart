@@ -1,10 +1,13 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/entities/history.dart';
 import '../LocalDB.dart';
 import '../entities/medicine_alarm.dart';
 import '../services/history_service.dart';
 import 'home_page.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:medicine_time/globals.dart' as globals;
 
 class MedicineTaken extends StatelessWidget {
@@ -62,6 +65,39 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
        dbHelper.createOfflineHistory(history);
     }
 
+  }
+
+  resetNotification() async
+  {
+    DateTime dateTime = DateTime.now().add(const Duration(hours: 48));
+
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings =  InitializationSettings(
+      android: initializationSettingsAndroid,);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: Homepage().selectNotification);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        alarm!.id,
+        'حان وقت الدواء',
+        'اضغط هنا!',
+        tz.TZDateTime.from(dateTime, tz.getLocation('Africa/Cairo')),
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+              'ALARMS_${alarm!.id}', 'Alarm_${alarm!.id}',
+              channelDescription: 'Alarm Channel for ${alarm!.id}',importance: Importance.high, priority: Priority.high,
+              playSound: true,
+              sound: RawResourceAndroidNotificationSound('cuco_sound'),
+            )),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+        payload: "Alarm ${alarm!.alarmId.toString()}",
+    );
   }
 
   @override
@@ -132,7 +168,8 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                               Row(
                                 children: [
                                   TextButton(onPressed: () async{
-                                    //resetNotification();
+                                    if(alarm!.everyOtherDay==1)
+                                      resetNotification();
                                     await createHistory(false);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(
@@ -141,6 +178,8 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
                                   }, child:
                                   Image.asset('images/image_reminder_configure.png',height: 40 , width: 40,)),
                                   TextButton(onPressed: () async{
+                                    if(alarm!.everyOtherDay==1)
+                                      resetNotification();
                                     await createHistory(true);
                                     Navigator.of(context).pop();
                                     Navigator.of(context).push(MaterialPageRoute(

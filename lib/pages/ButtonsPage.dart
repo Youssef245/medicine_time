@@ -5,17 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medicine_time/pages/image_view.dart';
 import 'package:medicine_time/pages/static_view.dart';
-
-/*class ButtonsPage extends StatelessWidget {
-  String page;
-
-  ButtonsPage(this.page, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: page, home: MyButtonsPage(page));
-  }
-}*/
+import 'package:medicine_time/pages/test1.dart';
+import 'package:medicine_time/pages/test2.dart';
+import 'package:medicine_time/pages/test3.dart';
 
 class ButtonsPage extends StatefulWidget {
   String page;
@@ -82,6 +74,24 @@ class _MyButtonsPageState extends State<ButtonsPage> {
                       {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ImageView(),
+                        ));
+                      }
+                      else if (button.redirect=="test1")
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Test1(),
+                        ));
+                      }
+                      else if (button.redirect=="test2")
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Test2(),
+                        ));
+                      }
+                      else if (button.redirect=="test3")
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Test3(),
                         ));
                       }
                     }, child:  Text(button.name!,style: const TextStyle(color: Colors.white,fontSize: 20),),
