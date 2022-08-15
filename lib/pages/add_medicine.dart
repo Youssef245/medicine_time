@@ -52,6 +52,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
     _DayOfWeek("أحد", false, 7)];
 
   bool everyday = false;
+  bool everyOtherDay = false;
 
   TextEditingController? dose_quantity = TextEditingController();
   TextEditingController? dose_quantity2 = TextEditingController();
@@ -233,7 +234,14 @@ class _MyAddMedicineState extends State<AddMedicine> {
       child: Column(
         children: [
           const Text("أيام أخذ الدواء",style: TextStyle(fontSize: 15, color: Colors.teal),),
-          CheckboxListTile(value: everyday, onChanged: (bool? value) {
+          CheckboxListTile(value: everyOtherDay, onChanged: (bool? value) {
+            setState(() {
+              everyOtherDay = value!;
+            });
+          },
+            title: const Text("كل يومين"),
+          ),
+          if(!everyOtherDay) CheckboxListTile(value: everyday, onChanged: (bool? value) {
             setState(() {
               everyday = value!;
               for(int a=0;a<7;a++)
@@ -244,7 +252,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
           },
             title: const Text("كل يوم"),
           ),
-          Row(
+          if(!everyOtherDay) Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ...days_of_week.map((day) {
@@ -341,7 +349,6 @@ class _MyAddMedicineState extends State<AddMedicine> {
   addAlarm() async {
     final AlarmService service = AlarmService();
     int alarm_id = await service.getLastID();
-    List<MedicineAlarm> allAlarms = await dbHelper.getallAlarms();
     var now = DateTime.now();
     String? id = await globals.user.read(key: "id");
     var formatter = DateFormat.yMMMMd('en_US');
@@ -365,12 +372,17 @@ class _MyAddMedicineState extends State<AddMedicine> {
       for(int i=0;i<getNumber(times!);i++)
       {
         alarm_id++;
-
+        if(everyOtherDay)
+        {
+          int wDay = DateTime.now().weekday;
+          selectedDays = days_of_week.where((element) => element.number==wDay).toList();
+        }
         // Add Medicine for Every Chosen Time and Day
         for(int j=0;j<selectedDays.length;j++)
         {
           MedicineAlarm alarm = MedicineAlarm.name2(timesPickers[i].hour, selectedDays[j].number, timesPickers[i].minute, widget.chosenMedicine, quantity1,
               dose_units_value, dose_units2_value, formattedDate, quantity2 , alarm_id,int.parse(id!));
+          alarm.everyOtherDay= everyOtherDay? 1 :0 ;
           int? al_id = await dbHelper.createAlarm(alarm);
           alarm.id = al_id;
           if(_connectionStatus==ConnectivityResult.mobile||_connectionStatus==ConnectivityResult.wifi)
@@ -435,9 +447,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         payload: "Alarm ${alarm.alarmId.toString()}",
-        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
-    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
-    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+        matchDateTimeComponents: alarm.everyOtherDay==0 ?  DateTimeComponents.dayOfWeekAndTime : null);
     
   }
 }

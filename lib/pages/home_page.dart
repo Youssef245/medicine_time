@@ -1,5 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:medicine_time/LocalDB.dart';
 import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
@@ -80,19 +82,39 @@ class _MyHomepageState extends State<Homepage> {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: Homepage().selectNotification);
 
-    LocalDB dbHelper = LocalDB();
-    AlarmService alarmService = AlarmService();
-    List<MedicineAlarm> offlineAlarms = await dbHelper.getOfflineAlarms();
-    offlineAlarms.forEach((element) async {await alarmService.createAlarm(element.toJson());});
+    String? id = await globals.user.read(key: "id");
 
-    HistoryService historyService = HistoryService();
-    List<History> offlineHistory = await dbHelper.getOfflineHistories();
-    offlineHistory.forEach((element) async { await historyService.createHistory(element.toJson());});
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile||connectivityResult == ConnectivityResult.wifi) {
+      LocalDB dbHelper = LocalDB();
+      AlarmService alarmService = AlarmService();
+      List<MedicineAlarm> offlineAlarms = await dbHelper.getOfflineAlarms();
+      offlineAlarms.forEach((element) async {
+        element.userID = int.parse(id!);
+        await alarmService.createAlarm(element.toJson());
+      });
+      await dbHelper.deleteOfflineAlarms();
 
-    MeasuresService measuresService = MeasuresService();
-    List<Measure> offlineMeasures = await dbHelper.getOfflineMeasures();
-    offlineMeasures.forEach((element) async {await measuresService.addMeasure(element.toJson());});
+      HistoryService historyService = HistoryService();
+      List<History> offlineHistory = await dbHelper.getOfflineHistories();
+      offlineHistory.forEach((element) async {
+        var formatter = DateFormat.yMMMMd('en_US');
+        DateTime dateTime = formatter.parse(element.dateString);
+        //DateTime dateTime = DateTime.parse(element.dateString);
+        element.userID = int.parse(id!);
+        element.dayOfWeek = dateTime.weekday;
+        await historyService.createHistory(element.toJson());
+      });
+      await dbHelper.deleteOfflineHistory();
 
+      MeasuresService measuresService = MeasuresService();
+      List<Measure> offlineMeasures = await dbHelper.getOfflineMeasures();
+      offlineMeasures.forEach((element) async {
+        element.user_id = int.parse(id!);
+        await measuresService.addMeasure(element.toJson());
+      });
+      await dbHelper.deleteOfflineMeasures();
+    }
   }
 
   @override
