@@ -1,24 +1,15 @@
-import 'package:android_autostart/android_autostart.dart';
-import 'package:auto_start_flutter/auto_start_flutter.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:medicine_time/LocalDB.dart';
-import 'package:medicine_time/entities/history.dart';
+import 'package:medicine_time/pages/ButtonsPage.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
-import 'package:medicine_time/pages/add_medicine.dart';
-import 'package:medicine_time/pages/choose_medicine.dart';
+import 'package:medicine_time/pages/add_measures.dart';
+import 'package:medicine_time/pages/add_side_effect.dart';
+import 'package:medicine_time/pages/ask_doctor.dart';
 import 'package:medicine_time/pages/home_page.dart';
 import 'package:medicine_time/pages/medicine_taken.dart';
 import 'package:medicine_time/pages/static_view.dart';
-import 'package:medicine_time/services/alarm_service.dart';
-import 'package:medicine_time/services/history_service.dart';
-import 'package:medicine_time/services/measures_service.dart';
+import 'package:medicine_time/pages/survey.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:workmanager/workmanager.dart';
-import 'entities/Measure.dart';
-import 'entities/medicine_alarm.dart';
 import 'globals.dart' as globals;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -54,8 +45,28 @@ void main() async {
       runApp(MaterialApp(navigatorKey: navigatorKey,
           home: StaticView(int.parse(arguments[1]))));
     } else {
-      runApp(MaterialApp(navigatorKey: navigatorKey,
-          home: Homepage()));
+      switch (int.parse(arguments[1])) {
+        case 0 :
+          runApp(MaterialApp(navigatorKey: navigatorKey,
+              home: AddMeasures() ));
+          break;
+        case 1 :
+          runApp(MaterialApp(navigatorKey: navigatorKey,
+              home: AddSideEffects() ));
+          break;
+        case 2 :
+          runApp(MaterialApp(navigatorKey: navigatorKey,
+              home: Survey() ));
+          break;
+        case 3 :
+          runApp(MaterialApp(navigatorKey: navigatorKey,
+              home:  ButtonsPage("معلومات ونصائح") ));
+          break;
+        case 4 :
+          runApp(MaterialApp(navigatorKey: navigatorKey,
+              home: AskDoctor() ));
+          break;
+      }
     }
 
   } else if (status=="true"&& !notificationAppLaunchDetails!.didNotificationLaunchApp) {

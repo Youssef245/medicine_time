@@ -43,8 +43,28 @@ class Homepage extends StatefulWidget{
         navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
             StaticView(int.parse(arguments[1])) ));
       } else {
-        navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
-            Homepage() ));
+        switch (int.parse(arguments[1])) {
+          case 0 :
+            navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+                AddMeasures()));
+            break;
+          case 1 :
+            navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+                AddSideEffects() ));
+            break;
+          case 2 :
+            navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+                Survey() ));
+            break;
+          case 3 :
+            navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+                ButtonsPage("معلومات ونصائح") ));
+            break;
+          case 4 :
+            navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+                AskDoctor() ));
+            break;
+        }
       }
     }
   }
@@ -130,6 +150,8 @@ class _MyHomepageState extends State<Homepage> {
                   alignment: Alignment.topLeft,
                   child: ElevatedButton(onPressed: () async {
                     await globals.user.write(key: 'logged', value: "false");
+                    await flutterLocalNotificationsPlugin.cancel(900);
+                    await flutterLocalNotificationsPlugin.cancel(901);
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                         LoginPage()), (Route<dynamic> route) => false);
                   }, child: Text("خروج",style: const TextStyle(color: Colors.teal),),

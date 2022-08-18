@@ -161,6 +161,18 @@ class _LoginPageState extends State<LoginPage> {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: Homepage().selectNotification);
 
+    List <String> options = [
+      "القياسات"
+      "الأعراض"
+      "الاستبيان"
+      "معلومات ونصائح"
+      "اسأل الطبيب"
+    ];
+
+    Random random = Random();
+    int randomNumber = random.nextInt(options.length);
+
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
         900,
         'هل استخدمتني اليوم؟',
@@ -176,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
-        payload: "Use");
+        payload: "Use $randomNumber");
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   }
