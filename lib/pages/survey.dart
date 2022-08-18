@@ -216,7 +216,7 @@ class _MySurveyState extends State<Survey> {
     }
     else
     {
-      SurveySerive service = SurveySerive();
+      SurveyService service = SurveyService();
       await service.postSurvey({
         "q1" : getAnswer(answers[0]),
         "q2" : getAnswer(answers[1]),

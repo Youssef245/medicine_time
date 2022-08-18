@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:medicine_time/services/test_service.dart';
+import 'package:medicine_time/globals.dart' as globals;
 
 enum answer {yes , no , noChoice}
 
@@ -55,6 +57,20 @@ class _Test1State extends State<Test1> {
       }
     }
     return newScore;
+  }
+
+  sendAnswer(int nScore) async
+  {
+    String? id = await globals.user.read(key: "id");
+    String formattedDate = globals.getDateNow();
+
+    TestService testService = TestService();
+    await testService.postTest1({
+      "user_id" : int.parse(id!),
+      "date" : formattedDate,
+      "score" : nScore,
+      "base" : 6
+    });
   }
 
 
@@ -135,17 +151,19 @@ class _Test1State extends State<Test1> {
                     ],
                   ),
                   const SizedBox(height: 10,),
-                  Center(
-                    child: ElevatedButton(child : const Text("نتيجة الاختبار",style: TextStyle(color :Colors.white,fontSize: 18),)
-                      ,onPressed : (){
-                        int newScore = correctTest();
-                        setState(() {
-                          score = newScore;
-                          answered = true;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(primary: Colors.teal),),
-                  ),
+                  if(!answered)
+                    Center(
+                      child: ElevatedButton(child : const Text("نتيجة الاختبار",style: TextStyle(color :Colors.white,fontSize: 18),)
+                        ,onPressed : (){
+                          int newScore = correctTest();
+                          sendAnswer(newScore);
+                          setState(() {
+                            score = newScore;
+                            answered = true;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(primary: Colors.teal),),
+                    ),
                   if(answered)
                     Column(
                       children: [

@@ -41,16 +41,7 @@ void main() async {
   final NotificationAppLaunchDetails? notificationAppLaunchDetails =
   await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  print(await Permission.ignoreBatteryOptimizations.request().isGranted);
-  try {
-    //check auto-start availability.
-    var test = await isAutoStartAvailable;
-    print(test);
-    //if available then navigate to auto-start setting page.
-    if (test!) await getAutoStartPermission();
-  } on PlatformException catch (e) {
-    print(e);
-  }
+  await Permission.ignoreBatteryOptimizations.request().isGranted;
 
 
   if(status=="true"&&notificationAppLaunchDetails!.didNotificationLaunchApp) {

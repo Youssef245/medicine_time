@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:medicine_time/api.dart';
-import 'package:medicine_time/entities/medicine_alarm.dart';
-import 'package:medicine_time/entities/question.dart';
-import 'package:medicine_time/entities/user.dart';
 
-class SurveySerive {
+class SurveyService {
 
-  SurveySerive();
+  SurveyService();
 
   Future<int> postSurvey(Map<String, dynamic> payload) async {
     final response = await http.post(Uri.parse(surveyURL),
