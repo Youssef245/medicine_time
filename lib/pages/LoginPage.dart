@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   bool save = false;
   bool showPassword = true;
   bool isLoaded = false;
+  bool errorHappened = false;
 
   @override
   void initState() {
@@ -130,8 +131,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                   const SizedBox(height: 10,),
                  ElevatedButton(onPressed: () async {
-                   //setNotification2();
-                   //setNotification1();
+                   setNotification2();
+                   setNotification1();
                    String status = await login(nameController.text, passwordController.text);
                    if(status=="true")
                    {
@@ -140,8 +141,20 @@ class _LoginPageState extends State<LoginPage> {
                      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
                          Homepage()));
                    }
-                 }, child: Text("تسجيل الدخول",style: const TextStyle(color: Colors.teal),),
-                   style: ElevatedButton.styleFrom(primary: Colors.white70),)
+                   else
+                   {
+                     setState(() {
+                       errorHappened=true;
+                     });
+                   }
+                 }, child: const Text("تسجيل الدخول",style: TextStyle(color: Colors.teal),),
+                   style: ElevatedButton.styleFrom(primary: Colors.white70),),
+                  const SizedBox(height: 10,),
+                  errorHappened ? Container(
+                    color: Colors.white,
+                    child: const Text("كلمة السر أو اسم المستخدم غير صحيح"
+                      , style: TextStyle(color: Colors.red),),
+                  ) : const Text("")
                 ],
               ),
             ),

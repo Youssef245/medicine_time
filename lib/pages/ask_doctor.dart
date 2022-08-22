@@ -20,11 +20,11 @@ class AskDoctor extends StatefulWidget {
 class _MyAskDoctorState extends State<AskDoctor> {
 
   TextEditingController questionController = TextEditingController();
-  List<String> options = ["الطبيب","الصيدلي"];
-  String chosenvalue = "الطبيب";
+  List<String> options = ["","الطبيب","الصيدلي"];
+  String chosenvalue = "";
 
   sendQuestion () async{
-    if(questionController.text!="")
+    if(questionController.text!=""&&chosenvalue!="")
     {
       var now = DateTime.now();
       var formatter = DateFormat.yMMMMd('en_US');
@@ -74,7 +74,7 @@ class _MyAskDoctorState extends State<AskDoctor> {
                           chosenvalue = newValue!;
                         });
                       }),
-                  const Flexible(child: Text(" : اختر المسؤول عن السؤال ",style:  TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
+                  const Flexible(child: Text(" : اختر المختص",style:  TextStyle(color: Colors.teal, fontSize: 20),textAlign: TextAlign.justify)),
                 ],
               ),
               const SizedBox(height: 10,),
