@@ -78,7 +78,7 @@ class _Test2State extends State<Test2> {
     String formattedDate = globals.getDateNow();
 
     TestService testService = TestService();
-    await testService.postTest1({
+    await testService.postTest2({
       "user_id" : int.parse(id!),
       "date" : formattedDate,
       "score" : nScore,

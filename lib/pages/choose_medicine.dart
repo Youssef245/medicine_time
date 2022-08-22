@@ -32,6 +32,7 @@ class _MyChooseMedicineState extends State<ChooseMedicine> {
     final MedicineService service = MedicineService();
     allmedicines = await service.getMedicines();
     allcategories = await service.getCategories();
+    allmedicines.sort((a, b) => a.name.compareTo(b.name));
     chosenCategory = allcategories[0].name;
     chosenMedicine = allmedicines[0].name;
     filteredMedicines = allmedicines;

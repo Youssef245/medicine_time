@@ -173,7 +173,7 @@ class MedicineAlarm {
       json['date'],
       json['dose_quantity2'],
       json['alarm_id'],
-      json['every_other_day']
+      json['every_other_Day']
     );
   }
 }

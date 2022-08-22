@@ -431,6 +431,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
     //DateTime alarmDate = DateTime.now().add(Duration (minutes: 2));
     print(tz.TZDateTime.from(alarmdate, tz.getLocation('Africa/Cairo')));
 
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
         al_id,
         'حان وقت الدواء',

@@ -48,6 +48,12 @@ class _MyPlotOptionsState extends State<PlotOptions> {
             child: SingleChildScrollView(
                 child: isLoaded ? Column(
                   children: [
+                    Center(
+                      child: Image.asset("images/stats.png",
+                        width: 150,
+                        height: 150,
+                      ),
+                    ),
                     const SizedBox(height: 7,),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

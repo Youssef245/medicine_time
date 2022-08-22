@@ -53,7 +53,8 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
   {
     String? id = await globals.user.read(key: "id");
     int action = taken ? 1 : 0 ;
-    History history = History.name(alarm!.hour, alarm!.minute, alarm!.dateString, alarm!.pillName,
+    String formattedDate = globals.getDateNow();
+    History history = History.name(alarm!.hour, alarm!.minute, formattedDate, alarm!.pillName,
         action, alarm!.doseQuantity, alarm!.doseQuantity2, alarm!.weekday, alarm!.doseUnit, alarm!.doseUnit2, alarm!.alarmId);
     history.userID = int.parse(id!);
     await dbHelper.createHistory(history);
@@ -69,7 +70,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
 
   resetNotification() async
   {
-    DateTime dateTime = DateTime.now().add(const Duration(hours: 48));
+    DateTime dateTime = DateTime.now().add(const Duration(days: 2));
 
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
