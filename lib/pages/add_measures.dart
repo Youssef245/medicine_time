@@ -50,6 +50,7 @@ class _MyAddMeasuresState extends State<AddMeasures> {
   @override
   void initState() {
     super.initState();
+    Homepage().sendOffline();
     items = [
       _inputItem.name( "الكرياتينين في الدم", "مجم/ديسيلتر",  createninController),
       _inputItem.name( "معدل الترشيح الكبيبي", "مل/دقيقة",  rangeController),

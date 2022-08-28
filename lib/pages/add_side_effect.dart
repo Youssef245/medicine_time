@@ -46,6 +46,7 @@ class _MyAddSideEffectsState extends State<AddSideEffects> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Homepage().sendOffline();
     getData();
   }
 

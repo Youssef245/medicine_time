@@ -182,15 +182,18 @@ class _LoginPageState extends State<LoginPage> {
       "اسأل الطبيب"
     ];
 
-    Random random = Random();
-    int randomNumber = random.nextInt(options.length);
-
-
+    List <String> headers = [
+      "هل قمت بتسجيل قياساتك ؟",
+          "هل قمت بالتحقق من الأعراض؟",
+          "هل قمت بآداء الاستبيان ؟",
+          "تعرف على المعلومات والنصائح",
+          "يمكنك سؤال الطبيب عن ما تريد"
+    ];
     await flutterLocalNotificationsPlugin.zonedSchedule(
         900,
-        'هل استخدمتني اليوم؟',
-        '',
-        _nextInstanceOf1PM(),
+        "هل استخدمتني اليوم؟",
+        "",
+        _nextInstanceOf6PM(),
         const NotificationDetails(
             android: AndroidNotificationDetails(
               'DidYouUseMe', 'DidYouUseMe',
@@ -201,7 +204,8 @@ class _LoginPageState extends State<LoginPage> {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
-        payload: "Use $randomNumber");
+        payload: "Use"
+    );
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   }
@@ -218,17 +222,18 @@ class _LoginPageState extends State<LoginPage> {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: Homepage().selectNotification);
 
-    Random random = Random();
-    int randomNumber = random.nextInt(42);
-    final String response = await rootBundle.loadString('assets/statics.json');
+    /*final String response = await rootBundle.loadString('assets/statics.json');
     final data = await json.decode(response);
-    String title = data['titles'][randomNumber];
+    List<String> titles = [];
+    titles = (data['titles'] as List).map((item) => item as String).toList();*/
+
+    //List<String> headers = List.filled(titles.length, "معلومة اليوم");
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         901,
-        'هل تعلم؟',
-        title,
-        _nextInstanceOf6PM(),
+        "معلومة اليوم",
+        "",
+        _nextInstanceOf1PM(),
         const NotificationDetails(
             android: AndroidNotificationDetails(
               'randomKnowledge', 'randomKnowledge',
@@ -239,7 +244,8 @@ class _LoginPageState extends State<LoginPage> {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
-        payload: "Static ${(randomNumber+1).toString()}");
+        payload: "Static"
+    );
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   }
@@ -258,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
   tz.TZDateTime _nextInstanceOf1PM() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 13);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 20,44);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
@@ -267,7 +273,7 @@ class _LoginPageState extends State<LoginPage> {
   tz.TZDateTime _nextInstanceOf6PM() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 18);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 20,45);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }

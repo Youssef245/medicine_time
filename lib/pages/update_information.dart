@@ -78,6 +78,7 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Homepage().sendOffline();
     getData();
   }
 

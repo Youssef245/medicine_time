@@ -36,6 +36,13 @@ class _MyAskDoctorState extends State<AskDoctor> {
     }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Homepage().sendOffline();
+  }
+
 
   @override
   Widget build(BuildContext context) {

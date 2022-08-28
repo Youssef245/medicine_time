@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/LocalDB.dart';
@@ -44,10 +46,14 @@ void main() async {
       runApp(MaterialApp(navigatorKey: navigatorKey,
         home: MedicineTaken(int.parse(arguments[1])),));
     } else if(arguments[0]=="Static") {
+      Random random = Random();
+      int randomNumber = random.nextInt(42)+1;
       runApp(MaterialApp(navigatorKey: navigatorKey,
-          home: StaticView(int.parse(arguments[1]))));
+          home: StaticView(randomNumber)));
     } else {
-      switch (int.parse(arguments[1])) {
+      Random random = Random();
+      int randomNumber = random.nextInt(6);
+      switch (randomNumber) {
         case 0 :
           runApp(MaterialApp(navigatorKey: navigatorKey,
               home: AddMeasures() ));
@@ -67,6 +73,10 @@ void main() async {
         case 4 :
           runApp(MaterialApp(navigatorKey: navigatorKey,
               home: AskDoctor() ));
+          break;
+        case 5 :
+          runApp(MaterialApp(navigatorKey: navigatorKey,
+              home: ButtonsPage("الاختبارات القصيرة") ));
           break;
       }
     }

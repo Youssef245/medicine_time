@@ -34,6 +34,13 @@ class _MySurveyState extends State<Survey> {
     "كنت بحاجة إلى تعلم الكثير من الأمور قبل أن أتمكن من استخدام هذا التطبيق.",
   ];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    Homepage().sendOffline();
+    super.initState();
+  }
+
 
 
   @override

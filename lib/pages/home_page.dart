@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -30,6 +32,8 @@ final navigatorKey = GlobalKey<NavigatorState>();
 class Homepage extends StatefulWidget{
   @override
   State<Homepage> createState() => _MyHomepageState();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
   void selectNotification(String? payload) async {
     print("fklewfewlfkwe");
@@ -40,10 +44,14 @@ class Homepage extends StatefulWidget{
         navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
             MedicineTaken(int.parse(arguments[1])) ));
       } else if(arguments[0]=="Static") {
+        Random random = Random();
+        int randomNumber = random.nextInt(42)+1;
         navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
-            StaticView(int.parse(arguments[1])) ));
+            StaticView(randomNumber) ));
       } else {
-        switch (int.parse(arguments[1])) {
+        Random random = Random();
+        int randomNumber = random.nextInt(6);
+        switch (randomNumber) {
           case 0 :
             navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
                 AddMeasures()));
@@ -64,35 +72,14 @@ class Homepage extends StatefulWidget{
             navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
                 AskDoctor() ));
             break;
+          case 5 :
+            navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
+                ButtonsPage("الاختبارات القصيرة") ));
+            break;
         }
       }
     }
   }
-}
-
-class _MyHomepageState extends State<Homepage> {
-  bool isLoaded = false;
-  List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png",1),
-    _HomePageItem("حسابي", "images/users.png",2),
-    _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",3),
-    _HomePageItem("القياسات", "images/measures.png",4),
-    _HomePageItem("اسأل الطبيب او الصيدلي", "images/call.png",5),
-    _HomePageItem("معلومات ونصائح", "images/knowledge.png",6),
-    _HomePageItem("عن التطبيق", "images/about.png",7),
-    _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",8),
-  ];
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  @override
-  void initState() {
-    super.initState();
-    sendOffline();
-    setState(() {
-      isLoaded = true;
-    });
-  }
-  
   sendOffline () async {
 
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -135,6 +122,31 @@ class _MyHomepageState extends State<Homepage> {
       });
       await dbHelper.deleteOfflineMeasures();
     }
+  }
+}
+
+class _MyHomepageState extends State<Homepage> {
+  bool isLoaded = false;
+  List<_HomePageItem> items = [_HomePageItem("الأدوية", "images/medicines.png",1),
+    _HomePageItem("حسابي", "images/users.png",2),
+    _HomePageItem("الأعراض و الآثار الجانبية", "images/symptoms1.png",3),
+    _HomePageItem("القياسات", "images/measures.png",4),
+    _HomePageItem("اسأل الطبيب او الصيدلي", "images/call.png",5),
+    _HomePageItem("معلومات ونصائح", "images/knowledge.png",6),
+    _HomePageItem("عن التطبيق", "images/about.png",7),
+    _HomePageItem("استبيان سهولة الاستخدام", "images/survey.png",8),
+  ];
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.sendOffline();
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   @override

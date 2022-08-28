@@ -30,6 +30,7 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
   @override
   void initState() {
     super.initState();
+    Homepage().sendOffline();
     getData();
   }
 
