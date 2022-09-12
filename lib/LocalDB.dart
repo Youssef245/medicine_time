@@ -220,7 +220,7 @@ class LocalDB {
   Future<List<History>> getHistories () async {
     Database database = await openDB();
     List <History> alarms = [];
-    List<Map> list = await database.rawQuery("SELECT * FROM $HISTORIES_TABLE order by date(date) desc,hour asc,minute asc");
+    List<Map> list = await database.rawQuery("SELECT * FROM $HISTORIES_TABLE ORDER BY date($KEY_DATE_STRING) desc");
     alarms = list.map((alarm) => History.fromJson(alarm as Map<String, dynamic>)).toList();
     closeDB(database);
     return alarms;

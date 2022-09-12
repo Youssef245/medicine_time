@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/LocalDB.dart';
+import 'package:medicine_time/entities/history.dart';
 import 'package:medicine_time/entities/medicine_alarm.dart';
 import 'package:medicine_time/pages/ButtonsPage.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
@@ -24,6 +25,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String? status = await globals.user.read(key: "logged");
 
+  History history1 = History.name(2, 24, 'September 1, 2022', 'ابريكس', 1,
+      '0', '0', 5, 'مجم', 'مل', 945);
+  History history2 = History.name(2, 26, 'September 1, 2022', 'ابريكس', 1,
+      '0', '0', 5, 'مجم', 'مل', 945);
+  History history3 = History.name(2, 24, 'September 10, 2022', 'ابريكس', 1,
+      '0', '0', 5, 'مجم', 'مل', 945);
+  History history4 = History.name(2, 24, 'September 12, 2022', 'ابريكس', 1,
+      '0', '0', 5, 'مجم', 'مل', 945);
+
+  LocalDB db = LocalDB();
+  await db.createHistory(history1);
+  await db.createHistory(history2);
+  await db.createHistory(history3);
+  await db.createHistory(history4);
 
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('@mipmap/ic_launcher');

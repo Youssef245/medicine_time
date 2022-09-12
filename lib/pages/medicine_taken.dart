@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medicine_time/entities/history.dart';
@@ -54,17 +53,15 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
     String? id = await globals.user.read(key: "id");
     int action = taken ? 1 : 0 ;
     String formattedDate = globals.getDateNow();
-    History history = History.name(alarm!.hour, alarm!.minute, formattedDate, alarm!.pillName,
-        action, alarm!.doseQuantity, alarm!.doseQuantity2, alarm!.weekday, alarm!.doseUnit, alarm!.doseUnit2, alarm!.alarmId);
+
+    History history = History.name(DateTime.now().hour, DateTime.now().minute, formattedDate,
+        alarm!.pillName, action, alarm!.doseQuantity, alarm!.doseQuantity2, alarm!.weekday,
+        alarm!.doseUnit, alarm!.doseUnit2, alarm!.alarmId);
     history.userID = int.parse(id!);
+
     await dbHelper.createHistory(history);
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile||connectivityResult == ConnectivityResult.wifi) {
-      HistoryService service = HistoryService();
-      service.createHistory(history.toJson());
-    } else{
-       dbHelper.createOfflineHistory(history);
-    }
+    HistoryService service = HistoryService();
+    service.createHistory(history);
 
   }
 

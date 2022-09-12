@@ -12,8 +12,9 @@ import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/ViewAlarms.dart';
 import 'package:medicine_time/pages/about.dart';
 import 'package:medicine_time/pages/add_measures.dart';
-import 'package:medicine_time/pages/add_medicine.dart';
+import 'package:medicine_time/api.dart';
 import 'package:medicine_time/globals.dart' as globals;
+import 'package:http/http.dart' as http;
 import 'package:medicine_time/pages/static_view.dart';
 import 'package:medicine_time/pages/survey.dart';
 import 'package:medicine_time/pages/update_information.dart';
@@ -81,6 +82,7 @@ class Homepage extends StatefulWidget{
     }
   }
   sendOffline () async {
+    print("here!!");
 
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -91,14 +93,21 @@ class Homepage extends StatefulWidget{
 
     String? id = await globals.user.read(key: "id");
 
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile||connectivityResult == ConnectivityResult.wifi) {
+    final response =
+    await http.head(Uri.parse(medicinesURL));
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+
+      print("object");
+
       LocalDB dbHelper = LocalDB();
       AlarmService alarmService = AlarmService();
       List<MedicineAlarm> offlineAlarms = await dbHelper.getOfflineAlarms();
       offlineAlarms.forEach((element) async {
         element.userID = int.parse(id!);
-        await alarmService.createAlarm(element.toJson());
+        await alarmService.createAlarm(element);
       });
       await dbHelper.deleteOfflineAlarms();
 
@@ -110,7 +119,7 @@ class Homepage extends StatefulWidget{
         //DateTime dateTime = DateTime.parse(element.dateString);
         element.userID = int.parse(id!);
         element.dayOfWeek = dateTime.weekday;
-        await historyService.createHistory(element.toJson());
+        await historyService.createHistory(element);
       });
       await dbHelper.deleteOfflineHistory();
 

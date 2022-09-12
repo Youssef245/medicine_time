@@ -39,7 +39,8 @@ class _MyViewHistoryState extends State<ViewHistory > {
   getData() async {
     chosenFilter = filterOptions.first;
     histories = await dbHelper.getHistories();
-    histories.sort((a, b) => a.getdate().compareTo(b.getdate()));
+    //histories.sort((a, b) => a.getdate().compareTo(b.getdate()));
+    histories = histories.reversed.toList();
     filteredHistory=histories;
     setState(() {
       isLoaded = true;

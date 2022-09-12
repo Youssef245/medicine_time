@@ -1,7 +1,6 @@
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:medicine_time/globals.dart' as globals;
 import 'package:medicine_time/services/survey_service.dart';
 import 'home_page.dart';
@@ -61,6 +60,7 @@ class _MySurveyState extends State<Survey> {
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Text(text,
+                textDirection: TextDirection.rtl,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -205,8 +205,7 @@ class _MySurveyState extends State<Survey> {
 
   sendSurvey() async {
     String? id = await globals.user.read(key: "id");
-    var formatter = DateFormat.yMMMMd('en_US');
-    String formattedDate = formatter.format(DateTime.now());
+    String formattedDate = globals.getDateNow();
 
     bool nochoice = false;
     answers.forEach((e) {if(e==answer.noChoice) nochoice=true; });

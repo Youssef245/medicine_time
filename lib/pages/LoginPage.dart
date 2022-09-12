@@ -264,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
   tz.TZDateTime _nextInstanceOf1PM() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 20,44);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 13);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
@@ -273,7 +273,7 @@ class _LoginPageState extends State<LoginPage> {
   tz.TZDateTime _nextInstanceOf6PM() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-    tz.TZDateTime(tz.local, now.year, now.month, now.day, 20,45);
+    tz.TZDateTime(tz.local, now.year, now.month, now.day, 18);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }

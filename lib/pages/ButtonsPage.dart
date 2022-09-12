@@ -53,7 +53,7 @@ class _MyButtonsPageState extends State<ButtonsPage> {
                   width: 150,
                   height: 150,
                 ),
-              Text(buttonPage!.extra!),
+              Text(buttonPage!.extra!,textDirection: TextDirection.rtl,),
               ...buttonPage!.buttons!.map((button)  {
                 return Column(
                   children: [
@@ -94,7 +94,8 @@ class _MyButtonsPageState extends State<ButtonsPage> {
                           builder: (context) => Test3(),
                         ));
                       }
-                    }, child:  Text(button.name!,style: const TextStyle(color: Colors.white,fontSize: 20),),
+                    }, child: Text(button.name!,style: const TextStyle(color: Colors.white,fontSize: 20),
+                      textDirection: TextDirection.rtl,),
                       style: ElevatedButton.styleFrom(primary: Colors.teal,
                           minimumSize: Size(MediaQuery.of(context).size.width, 50)),),
                     const SizedBox(height: 50,)

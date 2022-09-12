@@ -66,6 +66,7 @@ class _MyStaticViewState extends State<MyStaticView> {
         padding: const EdgeInsets.only(top : 40,left: 20,right: 20),
         child:  SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Center(child: Text("صحة الكلى",
                 style: TextStyle(color: Colors.black,fontSize: 20),)),
@@ -76,14 +77,17 @@ class _MyStaticViewState extends State<MyStaticView> {
                 ),
               ),
               const SizedBox(height: 10,),
-              Container(
-                color: Colors.teal,
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                child: Center(
-                  child:  Text(
-                    title!,
-                    style: const TextStyle(color: Colors.white,fontSize: 20),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Container(
+                  color: Colors.teal,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text(
+                      title!,
+                      style: const TextStyle(color: Colors.white,fontSize: 20),
+                      textDirection: TextDirection.rtl,
+                    ),
                   ),
                 ),
               ),
