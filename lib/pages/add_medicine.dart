@@ -343,9 +343,9 @@ class _MyAddMedicineState extends State<AddMedicine> {
           handleNotification(timesPickers[i],selectedDays[j].number,al_id,alarm);
         }
       }
-      Navigator.of(context).pop();
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ViewAlarms()));
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+          builder: (context) => ViewAlarms()),
+              (route) => route.isFirst);
     }
   }
 

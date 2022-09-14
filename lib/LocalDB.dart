@@ -245,7 +245,7 @@ class LocalDB {
         +"histories "
         +"where "
         +"histories.alarm_id = $alarm_id "
-        +"and histories.date = '$date'");
+        +"and histories.date = '$date' ");
     if(list.isEmpty) {
       result = false;
     } else {
@@ -270,9 +270,15 @@ class LocalDB {
 
   Future deleteAlarm (MedicineAlarm medicineAlarm) async{
     Database database = await openDB();
+    int newID = 0;
+    await database.rawQuery("UPDATE $HISTORIES_TABLE "
+        "SET $KEY_ALARM_ID = $newID "
+        "WHERE $KEY_ALARM_ID = ${medicineAlarm.alarmId}");
+
     await database.rawDelete('DELETE FROM $ALARM_TABLE WHERE $KEY_ALARM_ID = ?', [medicineAlarm.alarmId]);
     closeDB(database);
   }
+
   Future deleteHistory() async{
     Database database = await openDB();
     await database.rawDelete('DELETE FROM $HISTORIES_TABLE');
