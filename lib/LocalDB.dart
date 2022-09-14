@@ -217,6 +217,15 @@ class LocalDB {
     return alarm;
   }
 
+  Future<List<MedicineAlarm>> getAlarmsbyAlarmID (int id) async {
+    Database database = await openDB();
+    List <MedicineAlarm> alarms = [];
+    List<Map> list = await database.rawQuery("SELECT * FROM alarms where $KEY_ALARM_ID = $id");
+    alarms = list.map((alarm) => MedicineAlarm.fromJson(alarm as Map<String, dynamic>)).toList();
+    closeDB(database);
+    return alarms;
+  }
+
   Future<List<History>> getHistories () async {
     Database database = await openDB();
     List <History> alarms = [];
@@ -224,6 +233,26 @@ class LocalDB {
     alarms = list.map((alarm) => History.fromJson(alarm as Map<String, dynamic>)).toList();
     closeDB(database);
     return alarms;
+  }
+
+  Future<bool> historyRecoreded (int alarm_id,String date) async {
+    bool result;
+    Database database = await openDB();
+    List<Map> list =
+    await database.rawQuery("select "
+        +"histories.pillName , histories.date , histories.alarm_id "
+        +"from "
+        +"histories "
+        +"where "
+        +"histories.alarm_id = $alarm_id "
+        +"and histories.date = '$date'");
+    if(list.isEmpty) {
+      result = false;
+    } else {
+      result = true;
+    }
+    closeDB(database);
+    return result;
   }
 
   Future<List<Measure>> getMeasures () async {

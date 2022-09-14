@@ -35,6 +35,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
     ,"مجم/مجم" ,"مجم/جرام" ,"جرام/جرام" ,"%"];
   String? dose_units_value = "مجم";
   String? times = "مرة";
+  bool pressed = false;
 
   LocalDB dbHelper = LocalDB();
 
@@ -68,7 +69,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
               const SizedBox(height: 20,),
               thirdCard(context),
               const SizedBox(height: 20,),
-              ElevatedButton(onPressed: addAlarm, child: const Text(
+              ElevatedButton(onPressed: pressed ? null : addAlarm, child: const Text(
                 "أضف الدواء",
                 style:
                 TextStyle(color: Colors.white, fontSize: 18),
@@ -297,6 +298,9 @@ class _MyAddMedicineState extends State<AddMedicine> {
   }
 
   addAlarm() async {
+    setState(() {
+      pressed = true;
+    });
     final AlarmService service = AlarmService();
     int alarm_id = await service.getLastID();
     var now = DateTime.now();

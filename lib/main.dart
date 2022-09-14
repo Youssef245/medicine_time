@@ -24,21 +24,7 @@ FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String? status = await globals.user.read(key: "logged");
-
-  History history1 = History.name(2, 24, 'September 1, 2022', 'ابريكس', 1,
-      '0', '0', 5, 'مجم', 'مل', 945);
-  History history2 = History.name(2, 26, 'September 1, 2022', 'ابريكس', 1,
-      '0', '0', 5, 'مجم', 'مل', 945);
-  History history3 = History.name(2, 24, 'September 10, 2022', 'ابريكس', 1,
-      '0', '0', 5, 'مجم', 'مل', 945);
-  History history4 = History.name(2, 24, 'September 12, 2022', 'ابريكس', 1,
-      '0', '0', 5, 'مجم', 'مل', 945);
-
   LocalDB db = LocalDB();
-  await db.createHistory(history1);
-  await db.createHistory(history2);
-  await db.createHistory(history3);
-  await db.createHistory(history4);
 
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -58,8 +44,16 @@ void main() async {
     print(notificationAppLaunchDetails.payload);
     List<String> arguments = notificationAppLaunchDetails.payload!.split(" ");
     if(arguments[0]=="Alarm") {
-      runApp(MaterialApp(navigatorKey: navigatorKey,
+      bool recorded = await db.historyRecoreded(int.parse(arguments[1]), globals.getDateNow());
+      if(!recorded) {
+        runApp(MaterialApp(navigatorKey: navigatorKey,
         home: MedicineTaken(int.parse(arguments[1])),));
+      }
+      else
+      {
+        runApp(MaterialApp(navigatorKey: navigatorKey,
+            home: Homepage()));
+      }
     } else if(arguments[0]=="Static") {
       Random random = Random();
       int randomNumber = random.nextInt(42)+1;

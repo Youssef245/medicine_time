@@ -52,6 +52,7 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Center(child:  Text("الأدوية الحالية",style: TextStyle(color: Colors.white),)),
         backgroundColor: Colors.teal,
         actions: [
           IconButton(
@@ -134,10 +135,11 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
                                                     AlarmService service =
                                                     AlarmService();
                                                     LocalDB localdb = LocalDB();
+                                                    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+                                                    List<MedicineAlarm> deletedAlarms =  await localdb.getAlarmsbyAlarmID(alarm.alarmId);
+                                                    deletedAlarms.forEach((element) async {await flutterLocalNotificationsPlugin.cancel(element.id);});
                                                     await localdb.deleteAlarm(alarm);
                                                     await service.deleteAlarm(alarm);
-                                                    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-                                                    await flutterLocalNotificationsPlugin.cancel(alarm.id);
                                                     getData();
                                                     Navigator.pop(context, 'OK');
                                                   },

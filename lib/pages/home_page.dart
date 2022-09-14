@@ -35,6 +35,7 @@ class Homepage extends StatefulWidget{
   State<Homepage> createState() => _MyHomepageState();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
+  LocalDB db = LocalDB();
 
   void selectNotification(String? payload) async {
     print("fklewfewlfkwe");
@@ -42,8 +43,11 @@ class Homepage extends StatefulWidget{
       debugPrint('notification payload: $payload');
       List<String> arguments = payload.split(" ");
       if(arguments[0]=="Alarm") {
+        bool recorded = await db.historyRecoreded(int.parse(arguments[1]), globals.getDateNow());
+        if(!recorded) {
         navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) =>
             MedicineTaken(int.parse(arguments[1])) ));
+        }
       } else if(arguments[0]=="Static") {
         Random random = Random();
         int randomNumber = random.nextInt(42)+1;
