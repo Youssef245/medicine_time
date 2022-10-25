@@ -2,6 +2,7 @@
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_bdaya/flutter_datetime_picker_bdaya.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:medicine_time/services/user_service.dart';
 import 'package:medicine_time/globals.dart' as globals;
@@ -105,6 +106,10 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
 
     userGender = setGender(user!.gendar!);
     option = setOption(user!.transplant!);
+
+    var formatter = intl.DateFormat.yMMMMd('en_US');
+    if(user!.birth_date != "" && user!.birth_date!=null)
+      date = formatter.parse(user!.birth_date!);
 
     if(user!.glucose_stage!="") {
       glucoseStage = glucoseLevels.firstWhere((element) => element==user!.glucose_stage);
@@ -298,11 +303,10 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
         IconButton(
           icon: const Icon(Icons.date_range , color: Colors.teal,size: 30),
           onPressed: () async {
-            DateTime? newDate = await showDatePicker(
-                context: context,
-                initialDate: date,
-                firstDate: DateTime(1900),
-                lastDate: date);
+            DateTime? newDate = await DatePicker.showDatePicker(
+                context,
+              locale: LocaleType.ar,
+            );
 
             if(newDate == null) return;
 

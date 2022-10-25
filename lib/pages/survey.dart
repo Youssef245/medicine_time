@@ -163,7 +163,8 @@ class _MySurveyState extends State<Survey> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Center(child : Text(questions[i]
-                                  ,style: const TextStyle(color: Colors.teal,fontWeight: FontWeight.bold),)),
+                                  ,style: const TextStyle(color: Colors.teal,fontWeight: FontWeight.bold),
+                                  textDirection: TextDirection.rtl,)),
                                 ),
                               )
                             ]

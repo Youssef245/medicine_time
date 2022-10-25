@@ -55,6 +55,7 @@ dependencies:
   auto_size_text_field: ^2.1.0
   syncfusion_flutter_charts: ^20.2.43
   flutter_local_notifications: ^9.8.0+1
+  flutter_datetime_picker_bdaya: ^2.0.0
 
 dev_dependencies:
   flutter_test:

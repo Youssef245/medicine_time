@@ -5,6 +5,7 @@ import 'package:awesome_notifications/android_foreground_service.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_datetime_picker_bdaya/flutter_datetime_picker_bdaya.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:medicine_time/LocalDB.dart';
@@ -262,13 +263,18 @@ class _MyAddMedicineState extends State<AddMedicine> {
               for(int z=0;z<getNumber(times!);z++)
                 Flexible(
                   child: TextButton(onPressed: ()async {
-                    final TimeOfDay? newTime = await showTimePicker(
-                      context: context,
-                      initialTime: timesPickers[z],
+                    TimeOfDay? newTime;
+                    await DatePicker.showTime12hPicker(
+                        context,
+                      locale: LocaleType.ar,
+                      onConfirm: (date)
+                      {
+                        newTime =TimeOfDay.fromDateTime(date);
+                      }
                     );
                     if (newTime != null) {
                       setState(() {
-                        timesPickers[z] = newTime;
+                        timesPickers[z] = newTime!;
                       });
                     }
                   }, child: Text("${timesPickers[z].hour}:${timesPickers[z].minute}",style: const TextStyle(color: Colors.black)),),
