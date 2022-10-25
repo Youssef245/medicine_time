@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 const FlutterSecureStorage user = FlutterSecureStorage();
 const FlutterSecureStorage credintials = FlutterSecureStorage();
+const FlutterSecureStorage logged = FlutterSecureStorage();
 
 getDateNow(){
   var formatter = DateFormat.yMMMMd('en_US');

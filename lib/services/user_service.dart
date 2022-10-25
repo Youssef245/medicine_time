@@ -19,9 +19,15 @@ class UserSerivce {
     if (response.statusCode == 200) {
       final payload = jsonDecode(response.body);
 
-      print(payload);
-
-      return User.fromJson2(payload as Map<String, dynamic>);
+      print(payload.isEmpty);
+      if(payload.isEmpty) {
+        return User.fromJson2({
+          "name" : "",
+          "password" : "",
+        });
+      } else {
+        return User.fromJson2(payload as Map<String, dynamic>);
+      }
     } else {
       throw Exception('Failed to fetch items');
     }

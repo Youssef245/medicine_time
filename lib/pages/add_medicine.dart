@@ -53,35 +53,40 @@ class _MyAddMedicineState extends State<AddMedicine> {
 
   bool everyday = false;
   bool everyOtherDay = false;
+  bool backButton = true;
+  bool errorHappened = false;
 
   TextEditingController? dose_quantity = TextEditingController();
   TextEditingController? dose_quantity2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-          child:Column(
-            children: [
-              firstCard(context),
-              const SizedBox(height: 20,),
-              secondCard(),
-              const SizedBox(height: 20,),
-              thirdCard(context),
-              const SizedBox(height: 20,),
-              ElevatedButton(onPressed: pressed ? null : addAlarm, child: const Text(
-                "أضف الدواء",
-                style:
-                TextStyle(color: Colors.white, fontSize: 18),
-              ),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.teal,
-                    minimumSize: const Size(144, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    )),)
-            ],
-          )
+    return WillPopScope(
+      onWillPop: () async => backButton,
+      child: Scaffold(
+        body: SingleChildScrollView(
+            child:Column(
+              children: [
+                firstCard(context),
+                const SizedBox(height: 20,),
+                secondCard(),
+                const SizedBox(height: 20,),
+                thirdCard(context),
+                const SizedBox(height: 20,),
+                ElevatedButton(onPressed: pressed ? null : addAlarm, child: const Text(
+                  "أضف الدواء",
+                  style:
+                  TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.teal,
+                      minimumSize: const Size(144, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      )),)
+              ],
+            )
+        ),
       ),
     );
   }
@@ -111,7 +116,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
                       builder: (context) => ChooseMedicine()));
                 },
                 child: const Text("اضغط لإضافة الدواء",style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 20,
                     color: Colors.black,
                     decoration: TextDecoration.underline),),
               ) :
@@ -185,13 +190,13 @@ class _MyAddMedicineState extends State<AddMedicine> {
       child: Column(
         children: [
           const Text("أيام أخذ الدواء",style: TextStyle(fontSize: 15, color: Colors.teal),),
-          CheckboxListTile(value: everyOtherDay, onChanged: (bool? value) {
+          /*CheckboxListTile(value: everyOtherDay, onChanged: (bool? value) {
             setState(() {
               everyOtherDay = value!;
             });
           },
             title: const Text("كل يومين"),
-          ),
+          ),*/
           if(!everyOtherDay) CheckboxListTile(value: everyday, onChanged: (bool? value) {
             setState(() {
               everyday = value!;
@@ -259,7 +264,6 @@ class _MyAddMedicineState extends State<AddMedicine> {
                   child: TextButton(onPressed: ()async {
                     final TimeOfDay? newTime = await showTimePicker(
                       context: context,
-
                       initialTime: timesPickers[z],
                     );
                     if (newTime != null) {
@@ -271,6 +275,11 @@ class _MyAddMedicineState extends State<AddMedicine> {
                 )
             ],
           ),
+          errorHappened ? Container(
+            color: Colors.white,
+            child: const Text("فشلت إضافة الدواء"
+              , style: TextStyle(color: Colors.red,fontSize: 20),),
+          ) : const Text(""),
           const SizedBox(height: 20,),
         ],
       ),
@@ -298,9 +307,6 @@ class _MyAddMedicineState extends State<AddMedicine> {
   }
 
   addAlarm() async {
-    setState(() {
-      pressed = true;
-    });
     final AlarmService service = AlarmService();
     int alarm_id = await service.getLastID();
     var now = DateTime.now();
@@ -321,8 +327,12 @@ class _MyAddMedicineState extends State<AddMedicine> {
       quantity2=dose_quantity2!.text;
     }
 
-    if(widget.chosenMedicine!=null)
+    if(widget.chosenMedicine!=null&&selectedDays.isNotEmpty)
     {
+      setState(() {
+        pressed = true;
+        backButton = false;
+      });
       for(int i=0;i<getNumber(times!);i++)
       {
         alarm_id++;
@@ -346,6 +356,12 @@ class _MyAddMedicineState extends State<AddMedicine> {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
           builder: (context) => ViewAlarms()),
               (route) => route.isFirst);
+    }
+    else
+    {
+      setState(() {
+        errorHappened = true;
+      });
     }
   }
 

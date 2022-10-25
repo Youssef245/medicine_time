@@ -51,7 +51,7 @@ class _MyViewHistoryState extends State<ViewHistory > {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child:  Text("الأدوية السابقة",style: TextStyle(color: Colors.white),)),
+        title: const Center(child:  Text("المنبهات السابقة",style: TextStyle(color: Colors.white),)),
         backgroundColor: Colors.teal,
         leading: InkWell(
           onTap: () {

@@ -2,7 +2,7 @@
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:medicine_time/services/user_service.dart';
 import 'package:medicine_time/globals.dart' as globals;
 import '../entities/user.dart';
@@ -142,7 +142,7 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
 
   updateUser () async {
 
-    var formatter = DateFormat.yMMMMd('en_US');
+    var formatter = intl.DateFormat.yMMMMd('en_US');
     String formattedDate = formatter.format(date);
 
     int newHeight=0;
@@ -177,6 +177,10 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
         getValueOption(option),
         liverController!.text,
     );
+
+    await globals.user.write(key: "name", value: nameController!.text);
+    await globals.credintials.write(key: "name", value: nameController!.text);
+    await globals.credintials.write(key: "password", value: passwordController!.text);
 
     String? id = await globals.user.read(key: "id");
     UserSerivce service = UserSerivce();
@@ -497,7 +501,7 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
                 boxes.firstWhere((element) => element.name==checkName).value = value!;
               });
             },),
-        Text(field,style: const TextStyle(color: Colors.teal),),
+        Flexible(child: Text(field,style: const TextStyle(color: Colors.teal,fontSize: 20),textDirection: TextDirection.rtl,)),
       ],
     );
 

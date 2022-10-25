@@ -52,7 +52,9 @@ class _LoginPageState extends State<LoginPage> {
       'password' : password,
     });
 
-    if(user != null)
+    print(user!.name);
+
+    if(user!.name != "")
     {
        globals.user.write(key: "name", value: user!.name);
        globals.user.write(key: "id", value: user!.id.toString());
@@ -62,6 +64,9 @@ class _LoginPageState extends State<LoginPage> {
       else
          globals.user.write(key: "remember", value: "false");
       return "true";
+    }
+    else {
+      return "false";
     }
 
   }

@@ -1,4 +1,4 @@
-package com.example.medicine_time2
+package com.casbec.medicine_time2
 
 import io.flutter.embedding.android.FlutterActivity
 
