@@ -77,7 +77,7 @@ class _MyMedicineTakenState extends State<MyMedicineTaken> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: Homepage().selectNotification);
+        onDidReceiveNotificationResponse: Homepage().selectNotification);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         alarm!.id,

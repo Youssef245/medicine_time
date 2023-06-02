@@ -37,7 +37,8 @@ class Homepage extends StatefulWidget{
   FlutterLocalNotificationsPlugin();
   LocalDB db = LocalDB();
 
-  void selectNotification(String? payload) async {
+  void selectNotification(NotificationResponse? notificationResponse) async {
+    String? payload = notificationResponse!.payload;
     print("fklewfewlfkwe");
     if (payload != null) {
       debugPrint('notification payload: $payload');
@@ -93,7 +94,7 @@ class Homepage extends StatefulWidget{
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: Homepage().selectNotification);
+        onDidReceiveNotificationResponse: Homepage().selectNotification);
 
     String? id = await globals.user.read(key: "id");
 

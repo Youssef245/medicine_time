@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: Homepage().selectNotification);
+        onDidReceiveNotificationResponse: Homepage().selectNotification);
 
     List <String> options = [
       "القياسات"
@@ -225,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: Homepage().selectNotification);
+        onDidReceiveNotificationResponse: Homepage().selectNotification);
 
     /*final String response = await rootBundle.loadString('assets/statics.json');
     final data = await json.decode(response);

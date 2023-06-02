@@ -40,7 +40,7 @@ class _MyViewAlarmsState extends State<ViewAlarms> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: Homepage().selectNotification);
+        onDidReceiveNotificationResponse: Homepage().selectNotification);
 
     alarms = await dbHelper.getAlarmsbyDay(date);
     setState(() {

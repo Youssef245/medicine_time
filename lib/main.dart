@@ -9,6 +9,7 @@ import 'package:medicine_time/pages/ButtonsPage.dart';
 import 'package:medicine_time/pages/LoginPage.dart';
 import 'package:medicine_time/pages/add_measures.dart';
 import 'package:medicine_time/pages/add_side_effect.dart';
+import 'package:medicine_time/pages/agreement.dart';
 import 'package:medicine_time/pages/ask_doctor.dart';
 import 'package:medicine_time/pages/home_page.dart';
 import 'package:medicine_time/pages/medicine_taken.dart';
@@ -24,6 +25,7 @@ FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String? status = await globals.user.read(key: "logged");
+  String? agreed = await globals.user.read(key: "agreed");
   LocalDB db = LocalDB();
 
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -31,7 +33,7 @@ void main() async {
   const InitializationSettings initializationSettings =  InitializationSettings(
     android: initializationSettingsAndroid,);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: Homepage().selectNotification);
+      onDidReceiveNotificationResponse: Homepage().selectNotification);
 
 
   final NotificationAppLaunchDetails? notificationAppLaunchDetails =
@@ -41,8 +43,8 @@ void main() async {
 
 
   if(status=="true"&&notificationAppLaunchDetails!.didNotificationLaunchApp) {
-    print(notificationAppLaunchDetails.payload);
-    List<String> arguments = notificationAppLaunchDetails.payload!.split(" ");
+    print(notificationAppLaunchDetails.notificationResponse!.payload);
+    List<String> arguments = notificationAppLaunchDetails.notificationResponse!.payload!.split(" ");
     if(arguments[0]=="Alarm") {
       bool recorded = await db.historyRecoreded(int.parse(arguments[1]), globals.getDateNow());
       if(!recorded) {
@@ -95,6 +97,6 @@ void main() async {
         home: Homepage()));
   } else {
     runApp(MaterialApp(navigatorKey: navigatorKey,
-        home : LoginPage()));
+        home : Agreement()));
   }
 }

@@ -264,7 +264,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
                 Flexible(
                   child: TextButton(onPressed: ()async {
                     TimeOfDay? newTime;
-                    await DatePicker.showTime12hPicker(
+                    await DatePickerBdaya.showTime12hPicker(
                         context,
                       locale: LocaleType.ar,
                       onConfirm: (date)
@@ -394,7 +394,7 @@ class _MyAddMedicineState extends State<AddMedicine> {
     const InitializationSettings initializationSettings =  InitializationSettings(
       android: initializationSettingsAndroid,);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: Homepage().selectNotification);
+        onDidReceiveNotificationResponse: Homepage().selectNotification);
    /* */
 
     //DateTime alarmDate = DateTime.now().add(Duration (minutes: 2));

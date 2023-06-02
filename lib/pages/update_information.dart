@@ -303,7 +303,7 @@ class _MyUpdateInformationState extends State<UpdateInformation> {
         IconButton(
           icon: const Icon(Icons.date_range , color: Colors.teal,size: 30),
           onPressed: () async {
-            DateTime? newDate = await DatePicker.showDatePicker(
+            DateTime? newDate = await DatePickerBdaya.showDatePicker(
                 context,
               locale: LocaleType.ar,
             );
