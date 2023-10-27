@@ -1,4 +1,4 @@
-const apiURL = "http://196.218.149.186:8095";
+const apiURL = "http://197.44.171.197:8095";
 //const apiURL = "http://192.168.1.9:8080";
 
 const medicinesURL = "$apiURL/medicines";
